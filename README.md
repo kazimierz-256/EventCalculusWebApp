@@ -1,6 +1,3 @@
-# ConcurrentScenario
-Knowledge Representation: Project 1
-
 # Folder z treścią
 Część frontowa i backendowa znajduje się w folderze apps/concurrent.
 
