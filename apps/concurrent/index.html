@@ -1,52 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">   
-    <head>
-        <title>Genealogist</title>
-    </head>
-    <body>
-        <h1>The Genealogist</h1>
-        <!-- Here starts the part of the GUI that was already in part 2 -->
-        <h3>Query</h3>
-        <div>
-            <select id="sample-queries">
-                <option selected disabled>Sample queries</option>
-                <option>ancestor_decendant(X, Y)</option>
-                <option>siblings(X, Y)</option>
-                <option>parent_child(X, Y)</option>
-                <option>father_child(X, Y)</option>
-                <option>mother_child(X, Y)</option>
-            </select>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/nouislider.css" media="screen,projection" />
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- TOP NAVIGATION -->
+    <nav>
+      <div class="nav-wrapper light-blue">
+        <a href="#" class="brand-logo light ">Reprezentacja Wiedzy</a>
+      </div>
+    </nav>
+
+
+
+
+    <!-- MAIN PAGE -->
+    <div id="form">
+      <!-- ACTION DOMAIN -->
+      <div class="input-field">
+        <textarea v-model="action_domain" id="action_domain" class="materialize-textarea">
+</textarea>
+        <label for="action_domain">Action domain</label>
+      </div>
+      <!-- SCENARIO -->
+      <div class="input-field">
+        <textarea v-model="scenario" id="scenario" class="materialize-textarea"></textarea>
+        <label for="scenario">Scenario</label>
+      </div>
+      <!-- QUERY -->
+      <div class="input-field">
+        <input v-model="query" id="query" type="text"
+          class="validate">
+        <label for="query">Your query to the system</label>
+      </div>
+      <a v-on:click="retrieve_answer()" class="waves-effect waves-light red btn-large">Exterminate humanity</a>
+
+
+    </div>
+
+    <!-- LOADER
+    <div v-show="loading" class="preloader-wrapper big active center-align">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
         </div>
-        <div>
-            <input id="query" type="text" placeholder="Query">
+        <div class="gap-patch">
+          <div class="circle"></div>
         </div>
-        <div>
-            <button id="ask-btn">Ask</button>
-            <button id="next-btn" disabled>Next</button>
-            <button id="stop-btn" disabled>Stop</button>
-            <button id="abort-btn" disabled>Abort</button>
-            <button id="clear-btn">Clear</button>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
         </div>
-        <!-- Here start the new part for updating the application db -->
-        <h3>Update</h3>
-        <div>
-            <input id="X" class="arg" type="text" placeholder="Parent">
-            <input id="Y" class="arg" type="text" placeholder="Child">
-        </div>
-        <div>
-            Parent is: 
-            <input class="radio" type="radio" name="sex" value="father_child" checked>Male
-            <input class="radio" type="radio" name="sex" value="mother_child">Female
-        </div>
-        <div>
-            <button id="assert-btn">Assert</button>
-            <button id="retract-btn">Retract</button>
-        </div>
-        <h3>Output</h3>
-        <div id="output"></div>
-        <!-- Placed at the end of the document so that page loads faster -->
-        <script src="/vendor/jquery/jquery-2.0.3.min.js"></script>
-        <script src="/pengine/pengines.js"></script>
-        <script src="js/genealogist.js"></script>
-    </body>
+      </div>
+    </div> -->
+
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script src="js/vue.js"></script>
+  <script src="js/nouislider.js"></script>
+  <script src="js/materialize.min.js"></script>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="/pengine/pengines.js"></script>
+  <script src="js/ipc.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
 </html>
