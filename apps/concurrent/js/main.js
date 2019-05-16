@@ -1,8 +1,8 @@
 
 // MATERIALIZE
-let toinitialize = 2;
+let toinitialize = 0;
 let materialize_init = () => {
-    if (toinitialize == 2) {
+    if (toinitialize == 0) {
         M.AutoInit();
         M.Collapsible.init(document.querySelectorAll('.collapsible'), {});
         M.Modal.init(document.querySelectorAll('.modal'), {});
@@ -14,9 +14,23 @@ let materialize_init = () => {
 document.addEventListener('DOMContentLoaded', () => materialize_init());
 
 // VUE
-let setLoading = (loading) => advisements.loading = advisements.loading = loading;
+// let setLoading = (loading) => advisements.loading = advisements.loading = loading;
 
-// var loader = new Vue({
+let dropdown = new Vue({
+    el: '#dropdown',
+    data: {
+        items: prescribed_stories
+    },
+    methods: {
+        prefill: function (story_id) {
+            let answer = prescribed_stories[story_id];
+            form.$data.action_domain = answer.action_domain;
+            form.$data.scenario = answer.scenario;
+            form.$data.query = answer.query;
+        }
+    }
+});
+// let loader = new Vue({
 //     el: '#loader',
 //     data: {
 //         loading: false
@@ -26,40 +40,12 @@ let setLoading = (loading) => advisements.loading = advisements.loading = loadin
 //     }
 // });
 
-var form = new Vue({
+let form = new Vue({
     el: '#form',
     data: {
-        action_domain: `SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12
-SHOOT13 causes not ALIVE3 if ALIVE1 and not JAMMED1 and FACING13
-SHOOT21 causes not ALIVE1 if ALIVE2 and not JAMMED2 and FACING21
-SHOOT23 causes not ALIVE3 if ALIVE2 and not JAMMED2 and FACING23
-SHOOT31 causes not ALIVE1 if ALIVE3 and not JAMMED3 and FACING31
-SHOOT32 causes not ALIVE2 if ALIVE3 and not JAMMED3 and FACING32
-impossible SHOOT31 at 0
-impossible SHOOT32 at 0
-impossible SHOOT31 at 1
-impossible SHOOT32 at 1
-ROTATE12 causes FACING12 if ALIVE1
-ROTATE13 causes FACING13 if ALIVE1
-ROTATE21 causes FACING21 if ALIVE2
-ROTATE23 causes FACING23 if ALIVE2
-ROTATE31 causes FACING31 if ALIVE3
-ROTATE32 causes FACING32 if ALIVE3
-LOAD1 releases JAMMED1 if ALIVE1
-LOAD2 releases JAMMED2 if ALIVE2
-LOAD3 causes NOT JAMMED3 if ALIVE3`,
-        scenario: `({
-(ALIVE1 and ALIVE2 and ALIVE3 and not JAMMED1 and not JAMMED2 and not JAMMED3 and FACING12 and FACING23 and FACING31,0),
-(not JAMMED1 or not JAMMED2,1)
-},
-{
-({LOAD1,LOAD2,LOAD3},0),
-({SHOOT12,SHOOT23},1),
-({ROTATE13,ROTATE21,SHOOT31},2),
-({SHOOT13,SHOOT21,ROTATE32},3),
-({SHOOT32},4)
-})`,
-        query: `possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`
+        action_domain: ``,
+        scenario: ``,
+        query: ``
     },
     methods: {
         retrieve_answer: function () {
@@ -69,13 +55,17 @@ LOAD3 causes NOT JAMMED3 if ALIVE3`,
 '${cleanse(this.$data.action_domain)}',
 '${cleanse(this.$data.scenario)}',
 '${cleanse(this.$data.query)}'
-            ).`.replace(/\n/gm, "")
+).`.replace(/\n/gm, "")
             );
         }
     }
     ,
     updated() {
         materialize_init();
+        M.updateTextFields();
+        M.textareaAutoResize($('#action_domain'));
+        M.textareaAutoResize($('#scenario'));
+        M.textareaAutoResize($('#query'));
     }
 });
 

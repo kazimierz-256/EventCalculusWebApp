@@ -8,6 +8,7 @@
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/nouislider.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/main.css" media="screen,projection" />
 
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,17 +20,32 @@
     <!-- TOP NAVIGATION -->
     <nav>
       <div class="nav-wrapper light-blue">
-        <a href="#" class="brand-logo light ">Reprezentacja Wiedzy</a>
+        <a href="#" class="brand-logo light">Reprezentacja Wiedzy</a>
       </div>
     </nav>
 
 
 
 
+
+    <ul id="dropdown" class="dropdown-content">
+      <!-- <li v-for="(item, index) in items">{{item.action_domain}} {{index}}</li> -->
+      <li v-for="(item, index) in items">
+        <a class="blue-text" v-on:click="prefill(index)" href="#!">{{index}}</a>
+      </li>
+      <!-- <li><a class="blue-text" v-on:click="prefill('test')" href="#!">Test</a></li>
+        <li><a class="blue-text" v-on:click="prefill('standoff')" href="#!">Warsaw Standoff</a></li>
+        <li><a class="blue-text" v-on:click="prefill('indyk')" href="#!">Indyk</a></li>
+        <li><a class="blue-text" v-on:click="prefill('promocja')" href="#!">Promocja</a></li> -->
+    </ul>
     <!-- MAIN PAGE -->
     <div id="form">
+
+      <a class="btn light-blue dropdown-trigger" href="#!" data-target="dropdown">Choose a prescribed story<i
+          class="material-icons right">arrow_drop_down</i></a>
       <!-- ACTION DOMAIN -->
       <div class="input-field">
+
         <textarea v-model="action_domain" id="action_domain" class="materialize-textarea">
 </textarea>
         <label for="action_domain">Action domain</label>
@@ -41,8 +57,7 @@
       </div>
       <!-- QUERY -->
       <div class="input-field">
-        <input v-model="query" id="query" type="text"
-          class="validate">
+        <input v-model="query" id="query" type="text" class="validate">
         <label for="query">Your query to the system</label>
       </div>
       <a v-on:click="retrieve_answer()" class="waves-effect waves-light red btn-large">Exterminate humanity</a>
@@ -74,6 +89,7 @@
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="/pengine/pengines.js"></script>
   <script src="js/ipc.js"></script>
+  <script src="js/prescrived_stories.js"></script>
   <script src="js/main.js"></script>
 </body>
 
