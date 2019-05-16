@@ -32,12 +32,20 @@ let dropdown = new Vue({
     }
 });
 
+let update_method = function () {
+    this.$data.answer = undefined;
+    M.updateTextFields();
+    M.textareaAutoResize($('#action_domain'));
+    M.textareaAutoResize($('#scenario'));
+    M.textareaAutoResize($('#query'));
+};
 let form = new Vue({
     el: '#form',
     data: {
         action_domain: ``,
         scenario: ``,
-        query: ``
+        query: ``,
+        answer: undefined
     },
     methods: {
         retrieve_answer: function () {
@@ -47,29 +55,36 @@ let form = new Vue({
 '${cleanse(this.$data.action_domain)}',
 '${cleanse(this.$data.scenario)}',
 '${cleanse(this.$data.query)}'
-).`.replace(/\n/gm, "")
+).`.replace(/\n/gm, ""),
+                () => {
+                    this.$data.answer = true;
+                }, () => {
+                    this.$data.answer = false;
+                }
             );
         }
     },
     mounted() {
         materialize_init();
     },
-    updated() {
-        M.updateTextFields();
-        M.textareaAutoResize($('#action_domain'));
-        M.textareaAutoResize($('#scenario'));
-        M.textareaAutoResize($('#query'));
+    watch: {
+        action_domain: update_method,
+        scenario: update_method,
+        query: update_method
     }
 });
 
 // PROLOG
-let verbose_command = (command, result_method) => {
-    console.log(command);
+let verbose_command = (command, result_method, onfailure) => {
     getAllSolutions('concurrent', command, undefined, results => {
+        console.log(command);
         console.log(results);
         if (result_method)
             result_method(results);
-    }, undefined, undefined, undefined, (par) => {
+    }, () => {
+        if (onfailure)
+            onfailure();
+    }, undefined, undefined, (par) => {
         M.toast({ html: par.data, classes: 'rounded' });
         console.error(par);
     }

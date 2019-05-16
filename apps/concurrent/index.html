@@ -62,6 +62,10 @@
       </div>
       <a v-on:click="retrieve_answer()" class="waves-effect waves-light light-blue btn-large">Retrieve answer</a>
 
+      <div id="answer" v-if="answer!=undefined">
+        <img src="gif/yep.gif" v-if="answer">
+        <img src="gif/nope.gif" v-else>
+      </div>
 
     </div>
 
