@@ -41,32 +41,42 @@
     <!-- MAIN PAGE -->
     <div id="form">
 
-        <a class="btn light-blue dropdown-trigger" href="#!" data-target="dropdown">Choose a prescribed story<i
+      <a class="waves-effect waves-light light-blue btn-large" v-on:click="retrieve_answer()">Retrieve answer</a>
+      <a class="btn-large light-blue" href="#" v-on:click="clear()">Clear</a>
+      <a class="btn-large light-blue dropdown-trigger" href="#!" data-target="dropdown">Choose a prescribed story<i
           class="material-icons right">arrow_drop_down</i></a>
-        <a class="btn light-blue btn-primary" href="#" role="button" id="clear-button" v-on:click="clear()">Clear</a>
+
+      <div id="answer-box">
+        <div id="answer" v-if="answer!=undefined">
+          <img class="z-depth-1" src="gif/yep.gif" v-if="answer">
+          <img class="z-depth-1" src="gif/nope.gif" v-else>
+        </div>
+        <img class="z-depth-1" src="gif/waiting.gif" v-else>
+      </div>
 
       <!-- ACTION DOMAIN -->
       <div class="input-field">
-
         <textarea v-model="action_domain" id="action_domain" class="materialize-textarea">
 </textarea>
         <label for="action_domain">Action domain</label>
       </div>
+
       <!-- SCENARIO -->
       <div class="input-field">
         <textarea v-model="scenario" id="scenario" class="materialize-textarea"></textarea>
         <label for="scenario">Scenario</label>
       </div>
+
       <!-- QUERY -->
       <div class="input-field">
         <input v-model="query" id="query" type="text" class="validate">
         <label for="query">Your query to the system</label>
       </div>
-      <a v-on:click="retrieve_answer()" class="waves-effect waves-light light-blue btn-large">Retrieve answer</a>
 
-      <div id="answer" v-if="answer!=undefined">
-        <img class="z-depth-1" src="gif/yep.gif" v-if="answer">
-        <img class="z-depth-1" src="gif/nope.gif" v-else>
+      <!-- DEBUG QUERY -->
+      <div class="input-field">
+        <input v-model="query" id="query" type="text" class="validate">
+        <label for="query">Your query to the system</label>
       </div>
 
     </div>

@@ -6,6 +6,6 @@
     margin: 2em 0 0 0;
 }
 
-#answer > img{
+#answer-box, #answer > img{
     height: 12em;
 }
