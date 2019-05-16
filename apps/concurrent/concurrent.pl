@@ -1,5 +1,6 @@
 :- module(concurrent, 
-	[   rw/3
+    [   rw/3,
+    logictreefromtext/2
 	]).
 
 :- use_module(debug_module).
@@ -9,21 +10,57 @@
 rw(ACTION_DOMAIN, SCENARIO, QUERY):-
     ACTION_DOMAIN=SCENARIO, SCENARIO=QUERY.
 
-possiblyExecutableScenario(+ACTION_DOMAIN, +SCENARIO, -VALID_MODEL) :- 
-	getMaximumDefinedTime(SCENARIO, MAXTIME),
-	model(ACTION_DOMAIN, SCENARIO, MAXTIME, VALID_MODEL, false).
+optional_whitespace([]) --> [].
+optional_whitespace([L]) --> [L], {char_type(L, white)}.
 
-model(+ACTION_DOMAIN, +SCENARIO, 0, -[INITIAL_STATE]) :- .
+string(STRING) --> {string_chars(STRING, LIST)},LIST.
 
-model(+ACTION_DOMAIN, +SCENARIO, +T, +ONLY_EXECUTABLE_MODELS, -NEW_MODEL) :-
-	model(ACTION_DOMAIN, SCENARIO, T-1, PREVIOUS_MODEL),
-	(ONLY_EXECUTABLE_MODELS = true ->
-	nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS)
-	; nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS) ; PREVIOUS_MODEL).
+fluentConsecutive([])     --> [].
+fluentConsecutive([L|Ls]) --> [L], {(char_type(L, upper) ; char_type(L, digit)),not(char_type(L, white))}, fluentConsecutive(Ls).
+fluent([L|Ls]) --> [L], { char_type(L, upper),not(char_type(L, white))}, fluentConsecutive(Ls).
 
-assignementSatisfyingConstraint(CONSTRAINT_LOGIC_TREE, ASSIGNMENT) :-
-	extractFluents(CONSTRAINT_LOGIC_TREE, FLUENTS),
-	
+%LOGICTREE
+logictreefromtext(STRING, T) :-
+    string_chars(STRING, CHARS),
+    phrase(logictree(T), CHARS).
+
+logictree(T) --> logictreeor(T).
+
+logictreeor(or(A,B)) --> logictreeand(A),string(" or "),logictreeor(B).
+logictreeor(A) --> logictreeand(A).
+
+logictreeand(and(A,B)) --> logictreeimplies(A),string(" and "),logictreeand(B).
+logictreeand(A) --> logictreeimplies(A).
+
+logictreeimplies(implies(A,B)) --> logictreeiff(A),string(" implies "),logictreeimplies(B).
+logictreeimplies(A) --> logictreeiff(A).
+
+logictreeiff(iff(A,B)) --> logictreeterm(A),string(" iff "),logictreeiff(B).
+logictreeiff(A) --> logictreeterm(A).
+
+logictreeterm(negate(T)) --> string("not "),logictree(T).
+logictreeterm(negate(T)) --> string("not("),optional_whitespace(_),logictree(T),optional_whitespace(_),[')'].
+logictreeterm(T) --> optional_whitespace(_),['('],optional_whitespace(_),logictree(T),optional_whitespace(_),[')'],optional_whitespace(_).
+logictreeterm(S) --> fluent(F),{string_chars(S, F)}.
+
+% possiblyExecutableScenario(+ACTION_DOMAIN, +SCENARIO, -VALID_MODEL) :- 
+% 	getMaximumDefinedTime(SCENARIO, MAXTIME),
+% 	model(ACTION_DOMAIN, SCENARIO, MAXTIME, VALID_MODEL, false).
+
+% model(+ACTION_DOMAIN, +SCENARIO, 0, -[INITIAL_STATE]) :- .
+
+% model(+ACTION_DOMAIN, +SCENARIO, +T, +ONLY_EXECUTABLE_MODELS, -NEW_MODEL) :-
+% 	model(ACTION_DOMAIN, SCENARIO, T-1, ONLY_EXECUTABLE_MODELS, PREVIOUS_MODEL),
+% 	(ONLY_EXECUTABLE_MODELS = true ->
+% 	nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS)
+% 	; nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS) ; PREVIOUS_MODEL).
+
+% nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS).
+
+% assignementSatisfyingConstraint(CONSTRAINT_LOGIC_TREE, ASSIGNMENT) :-
+% 	extractFluents(CONSTRAINT_LOGIC_TREE, FLUENTS),
+
+% state(TIME, FLUENT_ASSIGNMENTS)
 
 % Ola
 
