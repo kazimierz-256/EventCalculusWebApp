@@ -22,9 +22,9 @@ let dropdown = new Vue({
     methods: {
         prefill: function (story_id) {
             let answer = prescribed_stories[story_id];
-            form.$data.action_domain = answer.action_domain;
-            form.$data.scenario = answer.scenario;
-            form.$data.query = answer.query;
+            form.action_domain = answer.action_domain;
+            form.scenario = answer.scenario;
+            form.query = answer.query;
         }
     },
     mounted() {
@@ -32,12 +32,15 @@ let dropdown = new Vue({
     }
 });
 
-let update_method = function () {
-    this.$data.answer = undefined;
+let general_update = () => {
     M.updateTextFields();
     M.textareaAutoResize($('#action_domain'));
     M.textareaAutoResize($('#scenario'));
     M.textareaAutoResize($('#query'));
+}
+let update_method = function () {
+    this.answer = undefined;
+    general_update();
 };
 let form = new Vue({
     el: '#form',
@@ -52,14 +55,14 @@ let form = new Vue({
             verbose_command("test(9,Y).");
             let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
             verbose_command(`rw(
-'${cleanse(this.$data.action_domain)}',
-'${cleanse(this.$data.scenario)}',
-'${cleanse(this.$data.query)}'
+'${cleanse(this.action_domain)}',
+'${cleanse(this.scenario)}',
+'${cleanse(this.query)}'
 ).`.replace(/\n/gm, ""),
                 () => {
-                    this.$data.answer = true;
+                    this.answer = true;
                 }, () => {
-                    this.$data.answer = false;
+                    this.answer = false;
                 }
             );
         }
@@ -71,7 +74,8 @@ let form = new Vue({
         action_domain: update_method,
         scenario: update_method,
         query: update_method
-    }
+    },
+    updated: general_update
 });
 
 // PROLOG
