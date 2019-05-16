@@ -54,24 +54,23 @@ let form = new Vue({
         retrieve_answer: function () {
             verbose_command("test(9,Y).");
             let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
-            verbose_command(`rw(
-                '${cleanse(this.action_domain)}',
-                '${cleanse(this.scenario)}',
-                '${cleanse(this.query)}').`
-                .replace(/\n/gm, ""),
-                    () => {
-                        this.answer = true;
-                    }, () => {
-                        this.answer = false;
-                    }
+            verbose_command(`rw(` +
+                `'${cleanse(this.action_domain)}',` +
+                `'${cleanse(this.scenario)}',` +
+                `'${cleanse(this.query)}').`
+                    .replace(/\n/gm, ""),
+                () => {
+                    this.answer = true;
+                }, () => {
+                    this.answer = false;
+                }
             );
         },
 
-        clear: function() {
+        clear: function () {
             this.action_domain = ``;
             this.scenario = ``;
             this.query = ``;
-            this.answer = undefined;
         }
     },
     mounted() {
