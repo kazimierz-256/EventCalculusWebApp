@@ -1,10 +1,12 @@
 :- module(concurrent, 
     [   rw/3,
-    logic_tree_from_text/2
+    logic_tree_from_text/2,
+    logic_formula_satisfied/2
 	]).
 
 :- use_module(debug_module).
 :- use_module(logic_tree_parsing).
+:- use_module(logic_formula_satisfiability).
 
 % Kazik
 
