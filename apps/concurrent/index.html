@@ -33,15 +33,12 @@
       <li v-for="(item, index) in items">
         <a class="blue-text" v-on:click="prefill(index)" href="#!">{{index}}</a>
       </li>
-      <!-- <li><a class="blue-text" v-on:click="prefill('test')" href="#!">Test</a></li>
-        <li><a class="blue-text" v-on:click="prefill('standoff')" href="#!">Warsaw Standoff</a></li>
-        <li><a class="blue-text" v-on:click="prefill('indyk')" href="#!">Indyk</a></li>
-        <li><a class="blue-text" v-on:click="prefill('promocja')" href="#!">Promocja</a></li> -->
     </ul>
     <!-- MAIN PAGE -->
     <div id="form">
 
       <a class="waves-effect waves-light light-blue btn-large" v-on:click="retrieve_answer()">Retrieve answer</a>
+
       <a class="btn-large light-blue" href="#" v-on:click="clear()">Clear</a>
       <a class="btn-large light-blue dropdown-trigger" href="#!" data-target="dropdown">Choose a prescribed story<i
           class="material-icons right">arrow_drop_down</i></a>
@@ -54,10 +51,31 @@
         <img class="z-depth-1" src="gif/waiting.gif" v-else>
       </div>
 
+
+      <!-- DEBUG QUERY -->
+
+      <div class="row">
+        <div class="card light-green lighten-1">
+          <div class="card-content white-text">
+            <span class="card-title"><a class="waves-effect grey lighten-4 black-text btn"
+                v-on:click="debug_query()">DEBUG</a></span>
+            <div class="input-field">
+              <textarea v-model="debug" id="debug" class="materialize-textarea white-text">
+      </textarea>
+              <!-- <label for="debug">Debug query</label> -->
+              <span>*results are available from the web console</span>
+            </div>
+          </div>
+          <!-- <div class="card-action"> -->
+          <!-- </div> -->
+        </div>
+      </div>
+
+
       <!-- ACTION DOMAIN -->
       <div class="input-field">
         <textarea v-model="action_domain" id="action_domain" class="materialize-textarea">
-</textarea>
+  </textarea>
         <label for="action_domain">Action domain</label>
       </div>
 
@@ -68,12 +86,6 @@
       </div>
 
       <!-- QUERY -->
-      <div class="input-field">
-        <input v-model="query" id="query" type="text" class="validate">
-        <label for="query">Your query to the system</label>
-      </div>
-
-      <!-- DEBUG QUERY -->
       <div class="input-field">
         <input v-model="query" id="query" type="text" class="validate">
         <label for="query">Your query to the system</label>

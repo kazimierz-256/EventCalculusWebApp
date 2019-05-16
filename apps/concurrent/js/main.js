@@ -48,9 +48,33 @@ let form = new Vue({
         action_domain: ``,
         scenario: ``,
         query: ``,
-        answer: undefined
+        answer: undefined,
+        debug: "domain([], D),\n" +
+            "put_into_domain('LOAD', ['LOADED'], D, D1),\n" +
+            "put_into_domain('SHOOT', [and(not('LOADED'), not('ALIVE'))], D1, D2),\n" +
+            "put_into_domain('REBIRTH', ['ALIVE'], D2, D3),\n" +
+            "get_from_domain('LOAD', D3, VALUE),\n" +
+            "run_scenario([], D3, 0),\n" +
+            "run_scenario([(and(not('LOADED'), 'ALIVE'), 'SHOOT'), (true, 'REBIRTH')], D3, 0)."
     },
     methods: {
+        debug_query: function () {
+            // verbose_command("test(9,Y).");
+            let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
+            let debug_query = cleanse(this.debug).replace(/\n/gm, "");
+            verbose_command(debug_query,
+                (result) => {
+                    console.log(`%cDebug query:%c ${debug_query}`, `font-weight:bold`, ``)
+                    console.log(`%cResult of query`, `font-weight:bold`);
+                    console.log(result);
+                    this.answer = true;
+                }, () => {
+                    console.log(`%cDebug query:%c ${debug_query}`, `font-weight:bold`, ``)
+                    console.log(`%cResult failed`, `font-weight:bold`);
+                    this.answer = false;
+                }
+            );
+        },
         retrieve_answer: function () {
             // verbose_command("test(9,Y).");
             let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
@@ -65,15 +89,7 @@ let form = new Vue({
                     this.answer = false;
                 }
             );
-            verbose_command("domain([], D),\n" +
-                "put_into_domain('LOAD', ['LOADED'], D, D1)," +
-                "put_into_domain('SHOOT', [and(not('LOADED'), not('ALIVE'))], D1, D2)," +
-                "put_into_domain('REBIRTH', ['ALIVE'], D2, D3)," +
-                "get_from_domain('LOAD', D3, VALUE)," +
-                "run_scenario([], D3, 0)," +
-                "run_scenario([(and(not('LOADED'), 'ALIVE'), 'SHOOT'), (true, 'REBIRTH')], D3, 0).");
         },
-
         clear: function () {
             this.action_domain = ``;
             this.scenario = ``;
@@ -94,12 +110,12 @@ let form = new Vue({
 // PROLOG
 let verbose_command = (command, result_method, onfailure) => {
     getAllSolutions('concurrent', command, undefined, results => {
-        console.log(command);
-        console.log(results);
+        // console.log(command);
+        // console.log(results);
         if (result_method)
             result_method(results);
     }, () => {
-        console.log(command);
+        // console.log(command);
         if (onfailure)
             onfailure();
     }, undefined, undefined, (par) => {
