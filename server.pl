@@ -47,7 +47,8 @@ http:location(apps, root(apps), []).
 :- http_handler(root(admin),
 		http_redirect(moved_temporary, root(admin/'server.html')), []).
 :- http_handler(/,
-		http_redirect(moved_temporary, root(docs/'index.html')), []).
+		http_redirect(moved_temporary, root(apps/concurrent/'index.html')), []).
+		% http_redirect(moved_temporary, root(docs/'index.html')), []).
 
 
 
