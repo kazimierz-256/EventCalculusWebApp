@@ -1,8 +1,8 @@
 
 // MATERIALIZE
-let toinitialize = 0;
+let toinitialize = 3;
 let materialize_init = () => {
-    if (toinitialize == 0) {
+    if (toinitialize == 1) {
         M.AutoInit();
         M.Collapsible.init(document.querySelectorAll('.collapsible'), {});
         M.Modal.init(document.querySelectorAll('.modal'), {});
@@ -14,8 +14,6 @@ let materialize_init = () => {
 document.addEventListener('DOMContentLoaded', () => materialize_init());
 
 // VUE
-// let setLoading = (loading) => advisements.loading = advisements.loading = loading;
-
 let dropdown = new Vue({
     el: '#dropdown',
     data: {
@@ -28,17 +26,11 @@ let dropdown = new Vue({
             form.$data.scenario = answer.scenario;
             form.$data.query = answer.query;
         }
+    },
+    mounted() {
+        materialize_init();
     }
 });
-// let loader = new Vue({
-//     el: '#loader',
-//     data: {
-//         loading: false
-//     },
-//     updated() {
-//         materialize_init();
-//     }
-// });
 
 let form = new Vue({
     el: '#form',
@@ -58,10 +50,11 @@ let form = new Vue({
 ).`.replace(/\n/gm, "")
             );
         }
-    }
-    ,
-    updated() {
+    },
+    mounted() {
         materialize_init();
+    },
+    updated() {
         M.updateTextFields();
         M.textareaAutoResize($('#action_domain'));
         M.textareaAutoResize($('#scenario'));
@@ -69,54 +62,10 @@ let form = new Vue({
     }
 });
 
-// var advisements = new Vue({
-//     el: '#advisements',
-//     data: {
-//         items: [],
-//         loading: true
-//     },
-//     methods: {
-//         delete_diagnosis: item => {
-//             verbose_command(`removeAdvisement('${item[0].X}').`, () => refreshList());
-//         },
-//         add_universal_question: function (item) {
-//             let answers = [];
-//             for (let refkey in this.$refs) {
-//                 let reference = this.$refs[refkey];
-//                 let found = reference.find(el => el.id.startsWith(item[0].X + '$$universal$$answer-a'));
-//                 if (found && found.value)
-//                     answers.push(found.value);
-//             }
-//             console.log(answers);
-//         }
-//     },
-//     updated() {
-//         materialize_init();
-//     }
-// });
-
-// var newdiagnosis = new Vue({
-//     el: '#newdiagnosis',
-//     data: {
-//         diagnosis: ""
-//     },
-//     methods: {
-//         addNewBlankDiagnosis: diagnosis => {
-//             // console.log(diagnosis)
-//             verbose_command(`addBlankAdvisement('${diagnosis}').`, () => refreshList())
-//         }
-//     },
-//     updated() {
-//         materialize_init();
-//     }
-// });
-
-
 // PROLOG
-
 let verbose_command = (command, result_method) => {
     console.log(command);
-    getAllSolutions('concurrent', command, results => {
+    getAllSolutions('concurrent', command, undefined, results => {
         console.log(results);
         if (result_method)
             result_method(results);
@@ -126,18 +75,3 @@ let verbose_command = (command, result_method) => {
     }
     );
 }
-
-// setLoading(true);
-// let refreshList = () => {
-//     getAllSolutions('concurrent', `getAdvisements(X,Y).`, results => {
-//         console.log(results);
-//         advisements.items = results;
-//         setLoading(false);
-//     }, failur => {
-//         console.log('no items in database');
-//         advisements.items = [];
-//         setLoading(false);
-//     });
-// }
-
-// refreshList();
