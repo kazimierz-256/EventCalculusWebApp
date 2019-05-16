@@ -1,4 +1,4 @@
-let getExpertAwaitable = (application, query, onsuccess, onfailure, onstop, onabort, onerror) => {
+let getExpertAwaitable = (application, query, onsuccess, onfailure, onstop, onabort, onerror, onoutput) => {
     return new Pengine({
         application: application,
         ask: query,
@@ -41,11 +41,18 @@ let getExpertAwaitable = (application, query, onsuccess, onfailure, onstop, onab
             else {
                 console.error("Error: " + this.data);
             }
+        },
+        onoutput: function() {
+            if (onoutput)
+            onoutput(this);
+            else {
+                console.log("Stopped");
+            }
         }
     });
 }
 
-let getAllSolutions = (application, query, onsuccess, onfailure, onstop, onabort, onerror) => {
+let getAllSolutions = (application, query, onsuccess, onfailure, onstop, onabort, onerror, onoutput) => {
     let results = [];
     let pengine;
     let askAgain = () => pengine.next();
@@ -56,5 +63,5 @@ let getAllSolutions = (application, query, onsuccess, onfailure, onstop, onabort
         else{
             onsuccess(results);
         }
-    }, onfailure, onstop, onabort, onerror);
+    }, onfailure, onstop, onabort, onerror, onoutput);
 }
