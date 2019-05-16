@@ -42,11 +42,11 @@ let getExpertAwaitable = (application, query, onsuccess, onfailure, onstop, onab
                 console.error("Error: " + this.data);
             }
         },
-        onoutput: function() {
+        onoutput: function () {
             if (onoutput)
-            onoutput(this);
+                onoutput(this);
             else {
-                console.log("Stopped");
+                console.log(this.data);
             }
         }
     });
@@ -60,7 +60,7 @@ let getAllSolutions = (application, query, onsuccess, onfailure, onstop, onabort
         results.push(result.data);
         if (result.more)
             askAgain();
-        else{
+        else {
             onsuccess(results);
         }
     }, onfailure, onstop, onabort, onerror, onoutput);
