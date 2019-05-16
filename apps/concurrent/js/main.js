@@ -52,7 +52,7 @@ let form = new Vue({
     },
     methods: {
         retrieve_answer: function () {
-            verbose_command("test(9,Y).");
+            // verbose_command("test(9,Y).");
             let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
             verbose_command(`rw(` +
                 `'${cleanse(this.action_domain)}',` +
