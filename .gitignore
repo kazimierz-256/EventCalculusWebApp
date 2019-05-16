@@ -5,6 +5,7 @@ log
 passwd
 
 .DS_Store
+.idea/
 
 apps/.DS_Store
 

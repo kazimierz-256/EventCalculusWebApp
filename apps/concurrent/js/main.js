@@ -62,6 +62,13 @@ let form = new Vue({
                     this.$data.answer = false;
                 }
             );
+            verbose_command("domain([], D),\n" +
+                "put_into_domain('LOAD', ['LOADED'], D, D1)," +
+                "put_into_domain('SHOOT', [and(not('LOADED'), not('ALIVE'))], D1, D2)," +
+                "put_into_domain('REBIRTH', ['ALIVE'], D2, D3)," +
+                "get_from_domain('LOAD', D3, VALUE)," +
+                "run_scenario([], D3, 0)," +
+                "run_scenario([(and(not('LOADED'), 'ALIVE'), 'SHOOT'), (true, 'REBIRTH')], D3, 0).");
         }
     },
     mounted() {
@@ -82,6 +89,7 @@ let verbose_command = (command, result_method, onfailure) => {
         if (result_method)
             result_method(results);
     }, () => {
+        console.log(command);
         if (onfailure)
             onfailure();
     }, undefined, undefined, (par) => {
