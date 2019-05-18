@@ -3,17 +3,20 @@
         parse_domain/2
 	]).
 
-parse_cause_if([], EFFECT, EFFECT, IF) :-
-    IF = [].
-parse_cause_if(["if" | IF], EFFECT, EFFECT, IF).
-parse_cause_if([H | T], EFFECT_SF, EFFECT, IF) :-
-    H \= "if",
-    append(EFFECT_SF, [H], EFFECT_SF_NEW),
-    parse_cause_if(T, EFFECT_SF_NEW, EFFECT, IF).
+split_list_by_keyword(_, [], L1, L1, L2) :-
+    L2 = [].
+split_list_by_keyword(KEYWORD, [KEYWORD | L2], L1, L1, L2).
+split_list_by_keyword(KEYWORD, [H | T], L1_TEMP, L1, L2) :-
+    H \= KEYWORD,
+    append(L1_TEMP, [H], L1_TT),
+    split_list_by_keyword(KEYWORD, T, L1_TT, L1, L2).
+
+parse_cause_if(PARTS, L1, L2) :-
+    split_list_by_keyword("if", PARTS, [], L1, L2).
 
 get_action_and_val([ACTION, "causes"|REST], ACTION, VALUE) :-
     empty_assoc(ASSOC),
-    parse_cause_if(REST, [], EFFECT_PARTS, IF_PARTS),
+    parse_cause_if(REST, EFFECT_PARTS, IF_PARTS),
     !,
     atomic_list_concat(EFFECT_PARTS, ' ', ATOM_EF), 
     atom_string(ATOM_EF, EFFECT),
@@ -22,7 +25,7 @@ get_action_and_val([ACTION, "causes"|REST], ACTION, VALUE) :-
     put_assoc("causes", ASSOC, (EFFECT, IF), VALUE ).
 get_action_and_val([ACTION, "releases"|REST], ACTION, VALUE) :-
     empty_assoc(ASSOC),
-    parse_cause_if(REST, [], EFFECT_PARTS, IF_PARTS),
+    parse_cause_if(REST, EFFECT_PARTS, IF_PARTS),
     !,
     atomic_list_concat(EFFECT_PARTS, ' ', ATOM_EF), 
     atom_string(ATOM_EF, EFFECT),
@@ -38,9 +41,11 @@ parse_sentence(TEXT, ACTION, VALUE) :-
     get_action_and_val(PARTS, ACTION, VALUE).
 
 add_to_assoc_list("impossible", VALUE, ASSOC, NEW_ASSOC) :-
-    get_assoc("impossible", ASSOC, VALUE_SF),
-    append(VALUE_SF, [VALUE], NEW_VALUE),
-    put_assoc("impossible", ASSOC, NEW_VALUE, NEW_ASSOC).
+    member("impossible", ASSOC)
+    ->  get_assoc("impossible", ASSOC, VALUE_SF),
+    	append(VALUE_SF, [VALUE], NEW_VALUE),
+    	put_assoc("impossible", ASSOC, NEW_VALUE, NEW_ASSOC)
+    ;   put_assoc("impossible", ASSOC, VALUE, NEW_ASSOC).
 add_to_assoc_list("causes", VALUE, ASSOC, NEW_ASSOC) :-
     assoc_to_keys(ASSOC, KEYS),
     not(member("causes", KEYS)),
@@ -55,7 +60,7 @@ add_to_assoc_list("releases", VALUE, ASSOC, NEW_ASSOC) :-
 add_if_correct(ACTION, VALUE, ASSOC, DOMAIN) :-
     get_assoc(ACTION, ASSOC, VALUE_SF),
     assoc_to_keys(VALUE, ACTION_KEYS),
-    ACTION_KEYS = [ACTION_KEY|_],
+    ACTION_KEYS = [ACTION_KEY],
     get_assoc(ACTION_KEY, VALUE, VALUE_TO_ADD),
     add_to_assoc_list(ACTION_KEY, VALUE_TO_ADD, VALUE_SF, NEW_ASSOC),
     put_assoc(ACTION, ASSOC, NEW_ASSOC, DOMAIN).
@@ -63,12 +68,13 @@ add_if_correct(ACTION, VALUE, ASSOC, DOMAIN) :-
 add_to_domain(ACTION, VALUE, ASSOC, DOMAIN) :- 
     assoc_to_keys(ASSOC, KEYS),
     member(ACTION, KEYS) 
-    -> add_if_correct(ACTION, VALUE, ASSOC, DOMAIN)
-    ; put_assoc(ACTION, ASSOC, VALUE, DOMAIN).
+    ->  add_if_correct(ACTION, VALUE, ASSOC, DOMAIN)
+    ;   put_assoc(ACTION, ASSOC, VALUE, DOMAIN).
 
 parse_parts([], DOMAIN, DOMAIN).
 parse_parts([H|T], ASSOC, DOMAIN) :-
-    parse_sentence(H, ACTION, VALUE),
+    normalize_space(atom(LINE), H),
+    parse_sentence(LINE, ACTION, VALUE),
     add_to_domain(ACTION, VALUE, ASSOC, DOMAIN_TMP),
     parse_parts(T, DOMAIN_TMP, DOMAIN).
 

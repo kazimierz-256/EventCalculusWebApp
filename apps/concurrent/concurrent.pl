@@ -5,11 +5,11 @@
 	]).
 
 
-:- use_module("/modules/debug_module.pl").
-:- use_module("/modules/logic_tree_parsing.pl").
-:- use_module("/modules/logic_formula_satisfiability.pl").
-:- use_module("/modules/mns.pl").
-:- use_module("/modules/potentially_executable.pl").
+:- use_module("modules/debug_module.pl").
+:- use_module("modules/logic_tree_parsing.pl").
+:- use_module("modules/logic_formula_satisfiability.pl").
+:- use_module("modules/mns.pl").
+:- use_module("modules/potentially_executable.pl").
 
 % Kazik
 
@@ -53,11 +53,6 @@ run_scenario([(_, Action)|T], DOMAIN, Time) :-
     % TODO: make sure state changes are allowed when causes/releases action is executed
     run_scenario(T, DOMAIN, Time+1).
 
-%Taras
-%potentiallyExecutable(Action, Time, Action_Domain)
-%   Action does not occur in impossible at Time
-%   precondition holds
-% 
 
 % domain = {"SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))}}
 get_sample_domain(Sample_Domain) :- 
@@ -67,4 +62,4 @@ get_sample_domain(Sample_Domain) :-
 
 :- get_sample_domain(Domain),
     list_to_assoc(["ALIVE1"-true, "JAMMED1"-false, "FACING12"-true], Sample_Fluent_Assignments),
-    potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, "SHOOT12").
+    potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, "SHOOT12"). 
