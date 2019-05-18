@@ -11,8 +11,6 @@ getAssociationThatSatisfiesFormula(FormulaLogicTree, EnrichedFluentAssociationLi
     empty_assoc(LIST),
     truth(FormulaLogicTree, LIST, EnrichedFluentAssociationList).
 
-%TODO: remake so that truth/falsehood always return something but
-
 truth(and(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
     truth(T1, FluentAssociationList, EnrichedFluentAssociationList1), truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
 truth(or(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 

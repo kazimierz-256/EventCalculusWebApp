@@ -19,7 +19,7 @@ ROTATE31 causes FACING31 if ALIVE3
 ROTATE32 causes FACING32 if ALIVE3
 LOAD1 releases JAMMED1 if ALIVE1
 LOAD2 releases JAMMED2 if ALIVE2
-LOAD3 causes NOT JAMMED3 if ALIVE3`,
+LOAD3 causes not JAMMED3 if ALIVE3`,
         scenario: `({
 (ALIVE1 and ALIVE2 and ALIVE3 and not JAMMED1 and not JAMMED2 and not JAMMED3 and FACING12 and FACING23 and FACING31,0),
 (not JAMMED1 or not JAMMED2,1)

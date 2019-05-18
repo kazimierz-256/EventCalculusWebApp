@@ -15,20 +15,21 @@ fluent([L|Ls]) --> [L], { char_type(L, upper),not(char_type(L, white))}, fluentC
 one_or_more_space() --> [' '], one_or_more_space().
 one_or_more_space() --> [].
 
-cleanWhiteSpace(Ls) --> removeLeadingSpaces(Ls).
-removeLeadingSpaces(Ls) --> [' '], removeLeadingSpaces(Ls).
-removeLeadingSpaces(Ls) --> removeTooMuchWhiteSpace(Ls).
-removeTooMuchWhiteSpace([]) --> removeTrailingSpaces().
-removeTooMuchWhiteSpace([' '|Ls])--> [' '], one_or_more_space(), removeTooMuchWhiteSpace(Ls).
-removeTooMuchWhiteSpace([L|Ls])--> [L], removeTooMuchWhiteSpace(Ls).
-removeTrailingSpaces() --> [' '], removeTrailingSpaces().
-removeTrailingSpaces() --> [].
+% cleanWhiteSpace(Ls) --> removeLeadingSpaces(Ls).
+% removeLeadingSpaces(Ls) --> [' '], removeLeadingSpaces(Ls).
+% removeLeadingSpaces(Ls) --> removeTooMuchWhiteSpace(Ls).
+% removeTooMuchWhiteSpace([]) --> removeTrailingSpaces().
+% removeTooMuchWhiteSpace([' '|Ls])--> [' '], one_or_more_space(), removeTooMuchWhiteSpace(Ls).
+% removeTooMuchWhiteSpace([L|Ls])--> [L], removeTooMuchWhiteSpace(Ls).
+% removeTrailingSpaces() --> [' '], removeTrailingSpaces().
+% removeTrailingSpaces() --> [].
 
 %LOGICTREE
 logic_tree_from_text(STRING, T) :-
-    string_chars(STRING, CHARS),
-    phrase(cleanWhiteSpace(CHARS2), CHARS),
-    phrase(logictree(T), CHARS2).
+    normalize_space(atom(String_Cleaned), STRING),
+    string_chars(String_Cleaned, CHARS),
+    % phrase(cleanWhiteSpace(CHARS2), CHARS),
+    phrase(logictree(T), CHARS).
 
 logictree(T) --> optional_whitespace(),logictreeor(T),optional_whitespace().
 
