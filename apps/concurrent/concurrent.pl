@@ -8,6 +8,7 @@
 :- use_module(debug_module).
 :- use_module(logic_tree_parsing).
 :- use_module(logic_formula_satisfiability).
+:- use_module(mns).
 
 % Kazik
 
@@ -44,6 +45,7 @@ put_into_domain(KEY, VALUE, DOMAIN, NEW_DOMAIN) :-
 get_from_domain(KEY, DOMAIN, VALUE) :-
     get_assoc(KEY, DOMAIN, VALUE).
 
+% TODO rewrite this at the very end
 run_scenario([], _, Time).
 run_scenario([(_, Action)|T], DOMAIN, Time) :-
     get_from_domain(Action, DOMAIN, VALUE),
