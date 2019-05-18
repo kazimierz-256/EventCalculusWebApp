@@ -10,19 +10,26 @@ SHOOT12 causes not ALIVE2 and BLA
 impossible SHOOT12 at 0
 impossible("SHOOT12", 0)
 
-domain = {"SHOOT12" : {"causes": ("not ALIVE2", "ALIVE1 and not JAMMED1 and FACING12"), "impossible": [0]}}
-domain = {"SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12"))), "impossible": [0]}}
+domain = {"SHOOT12" : {"causes": ("not ALIVE2", "ALIVE1 and not JAMMED1 and FACING12")}}
+domain = {"SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))}}
 
 LOAD1 releases JAMMED1 if ALIVE1 and ALIVE2 and not ALIVE3
 % releases("LOAD", "JAMMED1", "ALIVE1 and ALIVE2 and not ALIVE3")
 
+% UWAGA nieistniejących zdań releases, causes, impossible nie ma w dziedzinie
+
 domain = {{
-            "SHOOT12" : {"causes": ("not ALIVE2", "ALIVE1 and not JAMMED1 and FACING12"), "impossible": [0]},
-            "LOAD1" : {"causes": (), "impossible": [] 
+            "SHOOT12" : {"causes": ("not ALIVE2", "ALIVE1 and not JAMMED1 and FACING12")},
+            "LOAD1" : {"causes": ()
             }}}
 domain = {{
-            "SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12"))), "impossible": [0]},
-            "LOAD1" : {"causes": (), "impossible": []
+            "SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))},
+            "LOAD1" : {"causes": ()
+            }}}
+
+impossible LOAD1 at 7
+domain = {{
+            "LOAD1" : {"impossible": 7
             }}}
 
 % Scenario Sc = (OBS, ACS)

@@ -58,5 +58,21 @@ run_scenario([(_, Action)|T], DOMAIN, Time) :-
 %   precondition holds
 % 
 
-%potentiallyExecutable(ACTION, TIME, DOMAIN) :-
-%    1. action does not occur in impossible at given TIME
+% domain = {"SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))}}
+get_sample_domain(Sample_Domain) :- 
+    list_to_assoc(["causes"-(not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))], Causes_List),
+    list_to_assoc(["SHOOT12"-Causes_List], Sample_Domain).
+
+potentiallyExecutableAtomic(Atomic_Action, Time, Action_Domain, Fluent_Assignments) :-
+    % no impossible statement with action in action domain
+    get_assoc(Atomic_Action, Action_Domain, Action_Description),
+    not(
+        get_assoc("impossible", Action_Description, Impossible_Time),
+        Impossible_Time = Time
+        ),
+    (get_assoc("causes", Action_Description, (_, Precondition)) -> logic_formula_satisfied(Precondition, Fluent_Assignments)
+    ; true),
+    get_assoc("causes", Action_Description, (_)),
+    (get_assoc("releases", Action_Description, (_, Precondition)) -> logic_formula_satisfied(Precondition, Fluent_Assignments)
+    ; true),
+    get_assoc("releases", Action_Description, (_)).
