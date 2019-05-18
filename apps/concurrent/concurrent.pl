@@ -1,8 +1,8 @@
 :- module(concurrent, 
     [   rw/3,
-    logic_tree_from_text/2,
-    logic_formula_satisfied/2,
-    getAssociationThatSatisfiesFormula/2
+        logic_tree_from_text/2,
+        logic_formula_satisfied/2,
+        getAssociationThatSatisfiesFormula/2
 	]).
 
 :- use_module(debug_module).
@@ -49,3 +49,8 @@ run_scenario([(_, Action)|T], DOMAIN, Time) :-
     get_from_domain(Action, DOMAIN, VALUE),
     % TODO: make sure state changes are allowed when causes/releases action is executed
     run_scenario(T, DOMAIN, Time+1).
+
+%Taras
+
+%potentiallyExecutable(ACTION, TIME, DOMAIN) :-
+%    1. action does not occur in impossible at given TIME

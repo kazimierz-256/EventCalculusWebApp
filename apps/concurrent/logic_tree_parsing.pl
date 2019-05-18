@@ -1,6 +1,6 @@
 :- module(logic_tree_parsing, 
     [
-    logic_tree_from_text/2
+        logic_tree_from_text/2
 	]).
 
 optional_whitespace() --> [L], {char_type(L, white)}.
