@@ -1,14 +1,15 @@
 :- module(concurrent, 
     [   rw/3,
         logic_tree_from_text/2,
-        logic_formula_satisfied/2,
-        getAssociationThatSatisfiesFormula/2
+        logic_formula_satisfied/2
 	]).
 
-:- use_module(debug_module).
-:- use_module(logic_tree_parsing).
-:- use_module(logic_formula_satisfiability).
-:- use_module(mns).
+
+:- use_module("/modules/debug_module.pl").
+:- use_module("/modules/logic_tree_parsing.pl").
+:- use_module("/modules/logic_formula_satisfiability.pl").
+:- use_module("/modules/mns.pl").
+:- use_module("/modules/potentially_executable.pl").
 
 % Kazik
 
@@ -60,19 +61,10 @@ run_scenario([(_, Action)|T], DOMAIN, Time) :-
 
 % domain = {"SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))}}
 get_sample_domain(Sample_Domain) :- 
-    list_to_assoc(["causes"-(not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))], Causes_List),
+    list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Causes_List),
     list_to_assoc(["SHOOT12"-Causes_List], Sample_Domain).
 
-potentiallyExecutableAtomic(Atomic_Action, Time, Action_Domain, Fluent_Assignments) :-
-    % no impossible statement with action in action domain
-    get_assoc(Atomic_Action, Action_Domain, Action_Description),
-    not(
-        get_assoc("impossible", Action_Description, Impossible_Time),
-        Impossible_Time = Time
-        ),
-    (get_assoc("causes", Action_Description, (_, Precondition)) -> logic_formula_satisfied(Precondition, Fluent_Assignments)
-    ; true),
-    get_assoc("causes", Action_Description, (_)),
-    (get_assoc("releases", Action_Description, (_, Precondition)) -> logic_formula_satisfied(Precondition, Fluent_Assignments)
-    ; true),
-    get_assoc("releases", Action_Description, (_)).
+
+:- get_sample_domain(Domain),
+    list_to_assoc(["ALIVE1"-true, "JAMMED1"-false, "FACING12"-true], Sample_Fluent_Assignments),
+    potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, "SHOOT12").

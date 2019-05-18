@@ -8,11 +8,11 @@ mns(PotentiallyExecutablesList, IsCompoundExecutablePredicate, AllValidMNS) :-
 
 check_whether_compound_is_valid(IncludedActions, ConsideredActions, IsCompoundExecutablePredicate, ValidMNS) :-
     append(IncludedActions, ConsideredActions, CompoundAction),
-    (call(Pred, CompoundAction) -> ValidMNS = [CompoundAction]
+    (call(IsCompoundExecutablePredicate, CompoundAction) -> ValidMNS = [CompoundAction]
      ; check_without_first_considering(IncludedActions, ConsideredActions, IsCompoundExecutablePredicate, ValidMNS)).
 
 check_without_first_considering(IncludedActions, [], IsCompoundExecutablePredicate, ValidMNS) :-
-    call(Pred, IncludedActions) -> ValidMNS = [IncludedActions] ; ValidMNS = [].
+    call(IsCompoundExecutablePredicate, IncludedActions) -> ValidMNS = [IncludedActions] ; ValidMNS = [].
 
 check_without_first_considering(IncludedActions, [Action|Rest], IsCompoundExecutablePredicate, ValidMNS) :-
     append(IncludedActions, Action, ExtendedActions),
