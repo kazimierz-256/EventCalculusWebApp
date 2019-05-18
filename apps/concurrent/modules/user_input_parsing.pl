@@ -73,7 +73,8 @@ add_to_domain(ACTION, VALUE, ASSOC, DOMAIN) :-
 
 parse_parts([], DOMAIN, DOMAIN).
 parse_parts([H|T], ASSOC, DOMAIN) :-
-    parse_sentence(H, ACTION, VALUE),
+    normalize_space(atom(LINE), H),
+    parse_sentence(LINE, ACTION, VALUE),
     add_to_domain(ACTION, VALUE, ASSOC, DOMAIN_TMP),
     parse_parts(T, DOMAIN_TMP, DOMAIN).
 
