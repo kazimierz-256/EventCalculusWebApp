@@ -1,4 +1,4 @@
-:- use_module("../concurrent").
+:- use_module("../modules/logic_tree_parsing.pl").
 
 :- logic_tree_from_text("LOADED", T),
 T="LOADED".

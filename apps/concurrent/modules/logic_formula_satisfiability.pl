@@ -11,6 +11,12 @@ getAssociationThatSatisfiesFormula(FormulaLogicTree, EnrichedFluentAssociationLi
     empty_assoc(LIST),
     truth(FormulaLogicTree, LIST, EnrichedFluentAssociationList).
 
+% TODO Kazimierz
+% Sometime think about iterative assigning and each time check for reassignment for the tree...?
+% 1. Get next variable to define
+% 2. Reduce tree
+% 3. Check if tree is empty, if it is, end defining
+% 4. Repeat step 1.
 truth(and(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
     truth(T1, FluentAssociationList, EnrichedFluentAssociationList1), truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
 
