@@ -15,15 +15,20 @@ getAssociationThatSatisfiesFormula(FormulaLogicTree, EnrichedFluentAssociationLi
 
 truth(and(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
     truth(T1, FluentAssociationList, EnrichedFluentAssociationList1), truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
+
 truth(or(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
     truth(T1, FluentAssociationList, EnrichedFluentAssociationList); truth(T2, FluentAssociationList, EnrichedFluentAssociationList).
+
 truth(implies(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
     falsehood(T1, FluentAssociationList, EnrichedFluentAssociationList); truth(T2, FluentAssociationList, EnrichedFluentAssociationList).
+
 truth(iff(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
     truth(T1, FluentAssociationList, EnrichedFluentAssociationList1) , truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList)
     ; falsehood(T2, FluentAssociationList, EnrichedFluentAssociationList1), falsehood(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
+
 truth(negate(T), FluentAssociationList, EnrichedFluentAssociationList) :- 
     falsehood(T, FluentAssociationList, EnrichedFluentAssociationList).
+
 truth(FLUENT, FluentAssociationList, EnrichedFluentAssociationList) :- 
     string(FLUENT),
     (get_assoc(FLUENT, FluentAssociationList, VALUE) -> (VALUE, EnrichedFluentAssociationList = FluentAssociationList)
