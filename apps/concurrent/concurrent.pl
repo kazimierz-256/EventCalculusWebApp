@@ -51,3 +51,9 @@ run_scenario([(_, Action)|T], DOMAIN, Time) :-
     get_from_domain(Action, DOMAIN, VALUE),
     % TODO: make sure state changes are allowed when causes/releases action is executed
     run_scenario(T, DOMAIN, Time+1).
+
+%Taras
+%potentiallyExecutable(Action, Time, Action_Domain)
+%   Action does not occur in impossible at Time
+%   precondition holds
+% 
