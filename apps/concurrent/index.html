@@ -80,9 +80,45 @@
       </div>
 
       <!-- SCENARIO -->
-      <div class="input-field">
-        <textarea v-model="scenario" id="scenario" class="materialize-textarea"></textarea>
-        <label for="scenario">Scenario</label>
+      <div>
+        <h2>Scenario</h2>
+        <div>
+          <h3>Observations</h3>
+          <ul>
+            <li v-for="(obs, index) in observations">
+                <div>
+                  <h4>Observation #{{index}}
+                    <a v-if="observations.length > 1 && observations.length > index + 1" href="javascript:void(0)" v-on:click="remove(obs, observations)">
+                      <i class="material-icons">delete_forever</i>
+                    </a>
+                  </h4>
+                  <span>Observed {{obs.time}}
+                      <a v-if="obs.time > 0 && observations.length > index + 1" href="javascript:void(0)" v-on:click="moveDown(obs, observations)"><i class="material-icons">remove</i></a>
+                      <a v-if="observations.length > index + 1" href="javascript:void(0)" v-on:click="moveUp(obs, observations)"><i class="material-icons">add</i></a> time units after the beggining of time.</span>
+                  <textarea v-model="obs.data" class="materialize-textarea" v-on:input="adjustCollection(observations)"></textarea>
+                </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Actions</h3>
+          <ul>
+            <li v-for="(act, index) in actions">
+                <div>
+                  <h4>Action #{{index}}
+                      <a v-if="actions.length > 1 && actions.length > index + 1" href="javascript:void(0)" v-on:click="remove(act, actions)">
+                        <i class="material-icons">delete_forever</i>
+                      </a>
+                  </h4>
+                  <span>Happened {{act.time}} 
+                      <a v-if="act.time > 0 && actions.length > index + 1" href="javascript:void(0)" v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></a>
+                      <a v-if="actions.length > index + 1" href="javascript:void(0)" v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></a>
+                       time units after the beggining of time.</span>
+                  <textarea v-model="act.data" class="materialize-textarea" v-on:input="adjustCollection(actions)"></textarea>
+                </div>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <!-- QUERY -->
@@ -117,6 +153,7 @@
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="/pengine/pengines.js"></script>
   <script src="js/ipc.js"></script>
+  <script src="js/scenario.js"></script>
   <script src="js/prescribed_stories.js"></script>
   <script src="js/main.js"></script>
 </body>
