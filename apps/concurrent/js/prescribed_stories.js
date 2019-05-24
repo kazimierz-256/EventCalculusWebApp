@@ -32,5 +32,45 @@ LOAD3 causes not JAMMED3 if ALIVE3`,
             new Entry("SHOOT32", 4)
         ],
         query: `possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`
+    },
+    'Ewakuacja budynku': {
+        action_domain: `Cfrom3to2 causes not Con3 and Con2 if Con3 and not Bon2
+Cfrom2to1 causes not Con2 and Con1 if Con2 and not Bon1
+Bfrom2to1 causes not Bon2 and Bon1 if Bon2 and not Aon1
+EvacuateAfrom1 causes not Aon1 and SafeA if Aon1
+EvacuateBfrom1 causes not Bon1 and SafeB if Bon1
+EvacuateCfrom1 causes not Con1 and SafeC if Con1
+PanicCon3 causes Con3 if Con3
+PanicCon2 causes Con2 if Con2
+PanicCon1 causes Con1 if Con1
+PanicBon2 causes Bon2 if Bon2
+PanicBon1 causes Bon1 if Bon1
+PanicAon1 causes Aon3 if Aon3`,
+        observations: [
+            new Entry("Con3 and Bon2 and Aon1 and not SafeA and not SafeB and not SafeC", 0)
+        ],
+        actions: [
+            new Entry("EvacuateAfrom1,Bfrom2to1,Cfrom3to2", 0),
+            new Entry("Bfrom2to1, Cfrom3to2, PanicBon2", 1),
+            new Entry("Bfrom2to1, EvacuateBfrom1, Cfrom3to2", 2),
+            new Entry("EvacuateBfrom1, Cfrom3to2, Cfrom2to1", 3),
+            new Entry("EvacuateCfrom1, Cfrom2to1", 4),
+            new Entry("EvacuateCfrom1", 5)
+        ],
+        query: `possibly accessible SafeA and SafeB and SafeC 5`
+    },
+    'Myślał indyk o niedzieli': {
+        action_domain: `THINKABOUTSUNDAY causes not MOVING
+ALARM causes MOVING if ALIVE
+SHOOT causes not ALIVE and not MOVING`,
+        observations: [
+            new Entry("ALIVE and MOVING", 0)
+        ],
+        actions: [
+            new Entry("SHOOT,THINKABOUTSUNDAY", 0),
+            new Entry("SHOOT,THINKABOUTSUNDAY,ALARM", 1),
+            new Entry("SHOOT", 2)
+        ],
+        query: `possibly accessible ALIVE at 5`
     }
 };
