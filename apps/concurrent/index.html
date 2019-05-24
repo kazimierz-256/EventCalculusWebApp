@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container" id="wrapper">
 
     <!-- TOP NAVIGATION -->
     <nav>
@@ -53,7 +53,6 @@
 
 
       <!-- DEBUG QUERY -->
-
       <div class="row">
         <div class="card light-green">
           <div class="card-content white-text">
@@ -61,7 +60,7 @@
                 v-on:click="debug_query()">DEBUG</a></span>
             <div class="input-field">
               <textarea v-model="debug" id="debug" class="materialize-textarea white-text">
-      </textarea>
+              </textarea>
               <!-- <label for="debug">Debug query</label> -->
               <span>*results are available from the web console</span>
             </div>
@@ -135,57 +134,56 @@
                       <a class="waves-effect waves-light btn-floating btn-small blue"
                       v-bind:disabled="!(actions.length > index + 1)" href="javascript:void(0)"
                       v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></a>
-                    <a class="waves-effect waves-light btn-floating btn-small blue"
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
                       v-bind:disabled="!(act.time > 0 && actions.length > index + 1)" href="javascript:void(0)"
                       v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></a>
                     <span>At time {{act.time}} this action shall be executed</span>
-                  </span>
-                </div>
-              </li>
-            </ul>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
 
 
 
       
     
 
-      <!-- QUERY -->
-      <div class="card blue-grey lighten-4">
-        <div class="card-content">
-          <span class="card-title">Query to the system</span>
-          <select class="form-control" v-model="query.type_text" v-on:change="changedProperty($event, query)">
-              <option v-for="item in queries" :value="item.type_text" :key="item.id" v-bind:value="item.type_text">
-               {{ item.type_text }}
-              </option>
-          </select></span>
-          <span v-if="shouldActionBeHidden(query)" id="hide">Action: <input v-model="query.action" placeholder="A" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
-          <span v-if="shouldCondBeHidden(query)" id="hide">Condition:<input v-model="query.condition" placeholder="γ" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
-          <span v-if="shouldTimeBeHidden(query)" id="hide">Time:<input v-model="query.time" placeholder="t" type="number" min ="0" id="query" v-on:change="changedProperty($event, query)"></span>
-          <p type="text" class="blue-text">{{query.getQueryFullText()}}</p>
-
-        <label for="query">Your query to the system</label>
-      </div>
-
+          <!-- QUERY -->
+          <div class="card blue-grey lighten-4">
+            <div class="card-content">
+              <span class="card-title">Query to the system</span>
+                <select class="form-control" v-model="query.type_text" v-on:change="changedProperty($event, query)">
+                  <option v-for="item in queries" :value="item.type_text" :key="item.id" v-bind:value="item.type_text">
+                  {{ item.type_text }}
+                  </option>
+                </select>
+              </span>
+              <span v-if="shouldActionBeHidden(query)" id="hide">Action: <input v-model="query.action" placeholder="A" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
+              <span v-if="shouldCondBeHidden(query)" id="hide">Condition:<input v-model="query.condition" placeholder="γ" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
+              <span v-if="shouldTimeBeHidden(query)" id="hide">Time:<input v-model="query.time" placeholder="t" type="number" min ="0" id="query" v-on:change="changedProperty($event, query)"></span>
+              <p type="text" class="blue-text">{{query.getQueryFullText()}}</p>
+              <label for="query">Your query to the system</label>
+            </div>
+          </div>
+        </div>
+      </div>  
+      <!-- LOADER
+      <div v-show="loading" class="preloader-wrapper big active center-align">
+        <div class="spinner-layer spinner-blue-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div> -->
     </div>
-
-    <!-- LOADER
-    <div v-show="loading" class="preloader-wrapper big active center-align">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div> -->
-
-  </div>
 
   <!-- JAVASCRIPT -->
   <script src="js/vue.js"></script>
