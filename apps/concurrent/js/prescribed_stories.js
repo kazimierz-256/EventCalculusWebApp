@@ -31,33 +31,33 @@ LOAD3 causes not JAMMED3 if ALIVE3`,
             new Entry("SHOOT13,SHOOT21,ROTATE32", 3),
             new Entry("SHOOT32", 4)
         ],
-        query: `possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`
+        query: new Query(`5`, `Possibly accessible γ at t`, `ALIVE1 and not ALIVE2 and not ALIVE3`, `5`, ``, `Possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`)
     },
     'Ewakuacja budynku': {
-        action_domain: `Cfrom3to2 causes not Con3 and Con2 if Con3 and not Bon2
-Cfrom2to1 causes not Con2 and Con1 if Con2 and not Bon1
-Bfrom2to1 causes not Bon2 and Bon1 if Bon2 and not Aon1
-EvacuateAfrom1 causes not Aon1 and SafeA if Aon1
-EvacuateBfrom1 causes not Bon1 and SafeB if Bon1
-EvacuateCfrom1 causes not Con1 and SafeC if Con1
-PanicCon3 causes Con3 if Con3
-PanicCon2 causes Con2 if Con2
-PanicCon1 causes Con1 if Con1
-PanicBon2 causes Bon2 if Bon2
-PanicBon1 causes Bon1 if Bon1
-PanicAon1 causes Aon3 if Aon3`,
+        action_domain: `CFROM3TO2 causes not CON3 and CON2 if CON3 and not BON2
+CFROM2TO1 causes not CON2 and CON1 if CON2 and not BON1
+BFROM2TO1 causes not BON2 and BON1 if BON2 and not AON1
+EVACUATEAFROM1 causes not AON1 and SAFEA if AON1
+EVACUATEBFROM1 causes not BON1 and SAFEB if BON1
+EVACUATECFROM1 causes not CON1 and SAFEC if CON1
+PANICCON3 causes CON3 if CON3
+PANICCON2 causes CON2 if CON2
+PANICCON1 causes CON1 if CON1
+PANICBON2 causes BON2 if BON2
+PANICBON1 causes BON1 if BON1
+PANICAON1 causes AON3 if AON3`,
         observations: [
-            new Entry("Con3 and Bon2 and Aon1 and not SafeA and not SafeB and not SafeC", 0)
+            new Entry("CON3 and BON2 and AON1 and not SAFEA and not SAFEB and not SAFEC", 0)
         ],
         actions: [
-            new Entry("EvacuateAfrom1,Bfrom2to1,Cfrom3to2", 0),
-            new Entry("Bfrom2to1, Cfrom3to2, PanicBon2", 1),
-            new Entry("Bfrom2to1, EvacuateBfrom1, Cfrom3to2", 2),
-            new Entry("EvacuateBfrom1, Cfrom3to2, Cfrom2to1", 3),
-            new Entry("EvacuateCfrom1, Cfrom2to1", 4),
-            new Entry("EvacuateCfrom1", 5)
+            new Entry("EVACUATEAFROM1,BFROM2TO1,CFROM3TO2", 0),
+            new Entry("BFROM2TO1,CFROM3TO2,PANICBON2", 1),
+            new Entry("BFROM2TO1,EVACUATEBFROM1,CFROM3TO2", 2),
+            new Entry("EVACUATEBFROM1,CFROM3TO2,CFROM2TO1", 3),
+            new Entry("EVACUATECFROM1,CFROM2TO1", 4),
+            new Entry("EVACUATECFROM1", 5)
         ],
-        query: `possibly accessible SafeA and SafeB and SafeC 5`
+        query: new Query(`5`, `Possibly accessible γ at t`, `SAFEA and SAFEB and SAFEC`, `5`, ``, `possibly accessible SafeA and SafeB and SafeC 5`)
     },
     'Myślał indyk o niedzieli': {
         action_domain: `THINKABOUTSUNDAY causes not MOVING
@@ -71,6 +71,6 @@ SHOOT causes not ALIVE and not MOVING`,
             new Entry("SHOOT,THINKABOUTSUNDAY,ALARM", 1),
             new Entry("SHOOT", 2)
         ],
-        query: `possibly accessible ALIVE at 5`
+        query: new Query(`5`, `Possibly accessible γ at t`, `ALIVE`, `5`, ``, `Possibly accessible ALIVE at 5`)
     }
 };
