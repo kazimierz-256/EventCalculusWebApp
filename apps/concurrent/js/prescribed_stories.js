@@ -32,13 +32,5 @@ LOAD3 causes not JAMMED3 if ALIVE3`,
             new Entry("SHOOT32", 4)
         ],
         query: `possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`
-    },
-    'test': {
-        action_domain: `abc`,
-        query: `ghi`
-    },
-    'indyk': {
-        action_domain: `abc2`,
-        query: `ghi2`
     }
 };

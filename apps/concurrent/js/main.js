@@ -26,6 +26,7 @@ let dropdown = new Vue({
             form.actions = answer.actions;
             form.observations = answer.observations;
             form.query = answer.query;
+            update_method();
         }
     },
     mounted() {
@@ -35,8 +36,7 @@ let dropdown = new Vue({
 
 let general_update = () => {
     M.updateTextFields();
-    M.textareaAutoResize($('#action_domain'));
-    M.textareaAutoResize($('#query'));
+    $('textarea').each(function () { M.textareaAutoResize($(this))});
 }
 let update_method = function () {
     this.answer = undefined;
@@ -49,7 +49,7 @@ const debugText = "domain([], D),\n" +
     "get_from_domain('LOAD', D3, VALUE),\n" +
     "run_scenario([], D3, 0),\n" +
     "run_scenario([(and(not('LOADED'), 'ALIVE'), 'SHOOT'), (true, 'REBIRTH')], D3, 0).";
-    
+
 let modelData = {
     action_domain: ``,
     query: ``,
@@ -110,11 +110,11 @@ let form = new Vue({
     },
     watch: {
         action_domain: update_method,
-        actions: function() {
+        actions: function () {
             this.adjustCollection(this.actions);
             update_method();
         },
-        observations: function() {
+        observations: function () {
             this.adjustCollection(this.observations);
             update_method();
         },
