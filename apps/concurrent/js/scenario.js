@@ -1,3 +1,4 @@
+
 class Entry {
     constructor(data, time) {
         this.data = data;

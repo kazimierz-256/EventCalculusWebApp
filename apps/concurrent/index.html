@@ -133,30 +133,39 @@
                         <i class="material-icons">delete_forever</i>
                       </a>
                       <a class="waves-effect waves-light btn-floating btn-small blue"
-                        v-bind:disabled="!(actions.length > index + 1)" href="javascript:void(0)"
-                        v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></a>
-                      <a class="waves-effect waves-light btn-floating btn-small blue"
-                        v-bind:disabled="!(act.time > 0 && actions.length > index + 1)" href="javascript:void(0)"
-                        v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></a>
-                      <span>At time {{act.time}} this action shall be executed</span>
-                    </span>
-                  </div>
-                </li>
-              </ul>
-            </div>
+                      v-bind:disabled="!(actions.length > index + 1)" href="javascript:void(0)"
+                      v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></a>
+                    <a class="waves-effect waves-light btn-floating btn-small blue"
+                      v-bind:disabled="!(act.time > 0 && actions.length > index + 1)" href="javascript:void(0)"
+                      v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></a>
+                    <span>At time {{act.time}} this action shall be executed</span>
+                  </span>
+                </div>
+              </li>
+            </ul>
           </div>
-
         </div>
-      </div>
+
+
+
+      
+    
 
       <!-- QUERY -->
       <div class="card blue-grey lighten-4">
         <div class="card-content">
           <span class="card-title">Query to the system</span>
-          <div class="input-field">
-            <input placeholder="Enter a query to the system" v-model="query" id="query" type="text" class="validate">
-          </div>
-        </div>
+          <select class="form-control" v-model="query.type_text" v-on:change="changedProperty($event, query)">
+              <option v-for="item in queries" :value="item.type_text" :key="item.id" v-bind:value="item.type_text">
+               {{ item.type_text }}
+              </option>
+          </select></span>
+          <span v-if="shouldActionBeHidden(query)" id="hide">Action: <input v-model="query.action" placeholder="A" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
+          <span v-if="shouldCondBeHidden(query)" id="hide">Condition:<input v-model="query.condition" placeholder="γ" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
+          <span v-if="shouldTimeBeHidden(query)" id="hide">Time:<input v-model="query.time" placeholder="t" type="number" min ="0" id="query" v-on:change="changedProperty($event, query)"></span>
+          <p type="text" class="blue-text">{{query.getQueryFullText()}}</p>
+
+        <label for="query">Your query to the system</label>
       </div>
 
     </div>
@@ -186,6 +195,7 @@
   <script src="/pengine/pengines.js"></script>
   <script src="js/ipc.js"></script>
   <script src="js/scenario.js"></script>
+  <script src="js/query.js"></script>
   <script src="js/prescribed_stories.js"></script>
   <script src="js/main.js"></script>
 </body>

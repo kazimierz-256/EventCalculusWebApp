@@ -25,9 +25,8 @@ let dropdown = new Vue({
             form.action_domain = answer.action_domain;
             form.actions = answer.actions;
             form.observations = answer.observations;
-            form.query = answer.query;
-            update_method();
-        }
+            form.query = new Query(answer.query.id, answer.query.type_text, answer.query.condition, answer.query.time, answer.query.action, answer.query.full_text);
+            }
     },
     mounted() {
         materialize_init();
@@ -49,15 +48,17 @@ const debugText = "domain([], D),\n" +
     "get_from_domain('LOAD', D3, VALUE),\n" +
     "run_scenario([], D3, 0),\n" +
     "run_scenario([(and(not('LOADED'), 'ALIVE'), 'SHOOT'), (true, 'REBIRTH')], D3, 0).";
-
 let modelData = {
     action_domain: ``,
-    query: ``,
     answer: undefined,
+    query: new Query(``,``,``,``,``,``),
     debug: debugText,
     actions: [],
-    observations: []
+    observations: [],
+    queries: query_collection
 };
+
+
 let mainMethodsObject = {
     debug_query: function () {
         // verbose_command("test(9,Y).");
@@ -82,7 +83,7 @@ let mainMethodsObject = {
         verbose_command(`rw(` +
             `'${cleanse(this.action_domain)}',` +
             `'${cleanse(this.getScenarioString())}',` +
-            `'${cleanse(this.query)}').`
+            `'${cleanse(this.getQueryString())}').`
                 .replace(/\n/gm, ""),
             () => {
                 this.answer = true;
@@ -95,10 +96,11 @@ let mainMethodsObject = {
         this.action_domain = ``;
         this.actions = [];
         this.observations = [];
-        this.query = ``;
+        this.query = new Query(``, ``, ``, ``, ``, ``);
     }
 };
 $.extend(mainMethodsObject, ScenarioSectionEventHandlers);
+$.extend(mainMethodsObject, QuerySectionEventHandlers);
 let form = new Vue({
     el: '#form',
     data: modelData,
