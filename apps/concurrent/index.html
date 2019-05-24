@@ -6,7 +6,7 @@
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
-  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/nouislider.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/main.css" media="screen,projection" />
 
@@ -73,22 +73,90 @@
 
 
       <!-- ACTION DOMAIN -->
-      <div class="input-field">
-        <textarea v-model="action_domain" id="action_domain" class="materialize-textarea">
-  </textarea>
-        <label for="action_domain">Action domain</label>
+      <div class="card blue-grey lighten-4">
+        <div class="card-content">
+          <span class="card-title">Action Domain</span>
+          <div class="input-field">
+            <textarea placeholder="Enter a new Action Domain" v-model="action_domain" id="action_domain"
+              class="materialize-textarea">
+          </textarea>
+          </div>
+        </div>
       </div>
 
       <!-- SCENARIO -->
-      <div class="input-field">
-        <textarea v-model="scenario" id="scenario" class="materialize-textarea"></textarea>
-        <label for="scenario">Scenario</label>
+      <div class="card blue-grey lighten-4">
+        <div class="card-content">
+          <span class="card-title">Scenario</span>
+
+          <div class="card blue-grey lighten-5">
+            <div class="card-content">
+              <span class="card-title">Observations</span>
+              <ul>
+                <li v-for="(obs, index) in observations">
+                  <div class="input-field">
+                    <textarea placeholder="Enter a new observation" v-model="obs.data" class="materialize-textarea"
+                      v-on:input="adjustCollection(observations)"></textarea>
+                    <span class="helper-text">
+                      <!-- <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a> -->
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                        v-bind:disabled="!(observations.length > 1 && observations.length > index + 1)"
+                        href="javascript:void(0)" v-on:click="remove(obs, observations)">
+                        <i class="material-icons left">delete_forever</i> delete
+                      </a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                        v-bind:disabled="!(observations.length > index + 1)" href="javascript:void(0)"
+                        v-on:click="moveUp(obs, observations)"><i class="material-icons">add</i></a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                        v-bind:disabled="!(obs.time > 0 && observations.length > index + 1)" href="javascript:void(0)"
+                        v-on:click="moveDown(obs, observations)"><i class="material-icons">remove</i></a>
+                      <span>At time {{obs.time}} this observation shall hold</span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card blue-grey lighten-5">
+            <div class="card-content">
+              <span class="card-title">Actions</span>
+              <ul>
+                <li v-for="(act, index) in actions">
+                  <div class="input-field">
+                    <textarea placeholder="Enter a new compound action" v-model="act.data" class="materialize-textarea"
+                      v-on:input="adjustCollection(actions)"></textarea>
+                    <span class="helper-text">
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                        v-bind:disabled="!(actions.length > 1 && actions.length > index + 1)" href="javascript:void(0)"
+                        v-on:click="remove(act, actions)">
+                        <i class="material-icons">delete_forever</i>
+                      </a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                        v-bind:disabled="!(actions.length > index + 1)" href="javascript:void(0)"
+                        v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                        v-bind:disabled="!(act.time > 0 && actions.length > index + 1)" href="javascript:void(0)"
+                        v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></a>
+                      <span>At time {{act.time}} this action shall be executed</span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <!-- QUERY -->
-      <div class="input-field">
-        <input v-model="query" id="query" type="text" class="validate">
-        <label for="query">Your query to the system</label>
+      <div class="card blue-grey lighten-4">
+        <div class="card-content">
+          <span class="card-title">Query to the system</span>
+          <div class="input-field">
+            <input placeholder="Enter a query to the system" v-model="query" id="query" type="text" class="validate">
+          </div>
+        </div>
       </div>
 
     </div>
@@ -113,10 +181,11 @@
   <!-- JAVASCRIPT -->
   <script src="js/vue.js"></script>
   <script src="js/nouislider.js"></script>
-  <script src="js/materialize.min.js"></script>
+  <script src="js/materialize.js"></script>
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="/pengine/pengines.js"></script>
   <script src="js/ipc.js"></script>
+  <script src="js/scenario.js"></script>
   <script src="js/prescribed_stories.js"></script>
   <script src="js/main.js"></script>
 </body>

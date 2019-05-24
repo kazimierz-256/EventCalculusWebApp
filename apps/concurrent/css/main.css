@@ -9,3 +9,22 @@
 #answer-box, #answer > img{
     height: 12em;
 }
+
+body {
+    margin-bottom: 16em;
+}
+
+.card-content > ul > li {
+    margin-top: 2em;
+}
+
+.card-content > .card {
+    margin-top: 2em;
+}
+
+.helper-text > *:not(:first-child) {
+    margin-left: .3em;
+}
+.helper-text > span:not(:first-child) {
+    margin-left: 1.0em;
+}

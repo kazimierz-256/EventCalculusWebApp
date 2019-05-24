@@ -20,27 +20,17 @@ ROTATE32 causes FACING32 if ALIVE3
 LOAD1 releases JAMMED1 if ALIVE1
 LOAD2 releases JAMMED2 if ALIVE2
 LOAD3 causes not JAMMED3 if ALIVE3`,
-        scenario: `({
-(ALIVE1 and ALIVE2 and ALIVE3 and not JAMMED1 and not JAMMED2 and not JAMMED3 and FACING12 and FACING23 and FACING31,0),
-(not JAMMED1 or not JAMMED2,1)
-},
-{
-({LOAD1,LOAD2,LOAD3},0),
-({SHOOT12,SHOOT23},1),
-({ROTATE13,ROTATE21,SHOOT31},2),
-({SHOOT13,SHOOT21,ROTATE32},3),
-({SHOOT32},4)
-})`,
+        observations: [
+            new Entry("ALIVE1 and ALIVE2 and ALIVE3 and not JAMMED1 and not JAMMED2 and not JAMMED3 and FACING12 and FACING23 and FACING31", 0),
+            new Entry("not JAMMED1 or not JAMMED2", 1)
+        ],
+        actions: [
+            new Entry("LOAD1,LOAD2,LOAD3", 0),
+            new Entry("SHOOT12,SHOOT23", 1),
+            new Entry("ROTATE13,ROTATE21,SHOOT31", 2),
+            new Entry("SHOOT13,SHOOT21,ROTATE32", 3),
+            new Entry("SHOOT32", 4)
+        ],
         query: `possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`
-    },
-    'test': {
-        action_domain: `abc`,
-        scenario: `def`,
-        query: `ghi`
-    },
-    'indyk': {
-        action_domain: `abc2`,
-        scenario: `def2`,
-        query: `ghi2`
     }
 };
