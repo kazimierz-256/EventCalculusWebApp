@@ -1,13 +1,13 @@
 class Query {
     id;
-    type_text; 
+    type_text;
     condition;
     time;
     action;
     full_text;
     constructor(id, type_text, condition, time, action, full_text){
         this.id=id;
-        this.type_text=type_text; 
+        this.type_text=type_text;
         this.condition=condition;
         this.time=time;
         this.action=action;
@@ -51,7 +51,7 @@ rebuildQueryText: function(query){
 changedProperty(event, query){
     this.rebuildQueryText(query)
 },
-getQueryString: function() {
-    return this.getQueryFullText();
+getQueryString: function(query) {
+    return query.getQueryFullText();
 }
 }

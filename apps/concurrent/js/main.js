@@ -83,7 +83,7 @@ let mainMethodsObject = {
         verbose_command(`rw(` +
             `'${cleanse(this.action_domain)}',` +
             `'${cleanse(this.getScenarioString())}',` +
-            `'${cleanse(this.getQueryString())}').`
+            `'${cleanse(this.getQueryString(this.query))}').`
                 .replace(/\n/gm, ""),
             () => {
                 this.answer = true;
