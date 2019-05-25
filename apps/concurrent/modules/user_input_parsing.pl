@@ -84,7 +84,8 @@ parse_domain(TEXT, DOMAIN) :-
     empty_assoc(ASSOC),
     parse_parts(PARTS, ASSOC, DOMAIN).
 
-%actions
+%scenario
+%scenario actions
 
 add_to_actions(ACS, TIME, ASSOC, ACTIONS) :-
     split_string(ACS, ",", "", PARTS),
@@ -104,4 +105,24 @@ parse_actions(TEXT, ACTIONS) :-
     split_string(TEXT, "\n", "", PARTS),
     empty_assoc(ASSOC),
     parse_parts_ac(PARTS, ASSOC, ACTIONS).
+
+%scenario obserwations
+
+%scenatio obs
+
+parse_obs_line(TEXT, OBS, TIME) :-
+    split_string(TEXT, "|", "", [OBS, TIME]).
+
+parse_parts_obs([], OBSERVATIONS, OBSERVATIONS).
+parse_parts_obs([H|T], ASSOC, OBSERVATIONS) :-
+    normalize_space(atom(LINE), H),
+    parse_obs_line(LINE, OBS, TIME),
+   	put_assoc(TIME, ASSOC, OBS, OBSERVATIONS_TMP),
+    parse_parts_obs(T, OBSERVATIONS_TMP, OBSERVATIONS).
+
+parse_obs(TEXT, OBSERVATIONS) :-
+    split_string(TEXT, "\n", "", PARTS),
+    empty_assoc(ASSOC),
+    parse_parts_obs(PARTS, ASSOC, OBSERVATIONS).
+
 

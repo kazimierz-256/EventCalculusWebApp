@@ -68,5 +68,11 @@ var ScenarioSectionEventHandlers = {
                 .map(obs => "(" + obs.data + "," + obs.time + ")")
                 .join(",\n") +
             "}";
+    },
+    getObservations: function() {
+        return this.observations
+            .filter(obs => !obs.isEmpty())
+            .map(obs => obs.data + "|" + obs.time)
+            .join("\n");
     }
 };
