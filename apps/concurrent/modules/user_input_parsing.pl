@@ -34,8 +34,9 @@ get_action_and_val([Action, "releases"|Rest], Action, Value) :-
     atomic_list_concat(If_Parts, ' ', Atom_If), 
     atom_string(Atom_If, If),
     put_assoc("releases", Assoc, (Effect, If), Value ).
-get_action_and_val(["impossible", Action, "at", Time], Action, Value) :-
+get_action_and_val(["impossible", Action, "at", Time_Str], Action, Value) :-
     empty_assoc(Assoc),
+    number_string(Time, Time_Str),
     put_assoc("impossible", Assoc, Time, Value ).
 
 parse_sentence(Text, Action, Value) :-
@@ -93,7 +94,8 @@ add_to_acs(ACS, Time, Assoc, Actions) :-
 	put_assoc(Time, Assoc, Parts, Actions).
 
 parse_acs_line(Text, ACS, Time) :-
-    split_string(Text, "|", "", [ACS, Time]).
+    split_string(Text, "|", "", [ACS, Time_Str]),
+    number_string(Time, Time_Str).
 
 parse_parts_acs([], Actions, Actions).
 parse_parts_acs([H|T], Assoc, Actions) :-
@@ -110,7 +112,8 @@ parse_acs(Text, Actions) :-
 %scenario observations
 
 parse_obs_line(Text, Obs, Time) :-
-    split_string(Text, "|", "", [Obs, Time]).
+    split_string(Text, "|", "", [Obs, Time_Str]),
+    number_string(Time, Time_Str).
 
 parse_parts_obs([], Observations, Observations).
 parse_parts_obs([H|T], Assoc, Observations) :-
