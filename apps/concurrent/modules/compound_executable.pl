@@ -1,6 +1,7 @@
 :- module(compound_executable_atomic, 
     [
-        compound_executable_atomic/4
+        compound_executable_atomic/4,
+        compound_executable_atomic_get_assignment/5
 	]).
 
 
@@ -35,7 +36,8 @@ search_clause(Release_Fluents_Ordered, T) :-
 conjunct(Statement, [], Statement).
 conjunct(Statement, Acc1, and(Statement, Acc1)).
 
-compound_executable_atomic(Compound_Action, Time, Action_Domain, Fluent_Assignments) :-
+
+compound_executable_atomic_get_assignment(Time, Action_Domain, Fluent_Assignments, Compound_Action, Assignment) :-
     dif(Compound_Action, []),
     assoc_to_list(Action_Domain, Action_Domain_List),
     maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Compound_Action),
@@ -58,4 +60,8 @@ compound_executable_atomic(Compound_Action, Time, Action_Domain, Fluent_Assignme
     % tylko z causes
     % todo, fix this, rethink what it means in terms of documentation
     % there exists a valid assignment
-    once(getAssociationThatSatisfiesFormula(Consequence, _)).
+    getAssociationThatSatisfiesFormula(Consequence, Assignment).
+
+
+compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-
+    once(compound_executable_atomic_get_assignment(Time, Action_Domain, Fluent_Assignments, Compound_Action, _)).
