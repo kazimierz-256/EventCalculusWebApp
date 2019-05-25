@@ -10,7 +10,7 @@ get_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_Assignment
     mns(Compound_Action, compound_executable_atomic(Time, Action_Domain, Fluent_Assignments), Action_Decomposition).
     % get MNS sample using compound executable
 
-generate_new_state(Assignment, Fluent_Assignments, Occlusion_List, New_Assignment) :-
+generate_new_assignment(Assignment, Fluent_Assignments, Occlusion_List, New_Assignment) :-
     % for each visible fluent
     % if it is in Assignment, there is no ambiguity
     % otherwise if it is in Occluesion List, there is ambiguity
@@ -59,5 +59,5 @@ get_next_state(Time, Fluent_Assignments, Observations, Action_Domain, New_Assign
     get_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_Assignments, Sample_MNS_Decomposition),
     compound_executable_atomic_get_assignment(Time, Action_Domain, Fluent_Assignments, Sample_MNS_Decomposition, Assignment),
     % from assignment generate new state
-    generate_new_state(Assignment, Fluent_Assignments, Occlusion_List, New_Assignment).
+    generate_new_assignment(Assignment, Fluent_Assignments, Occlusion_List, New_Assignment).
     
