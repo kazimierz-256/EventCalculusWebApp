@@ -57,7 +57,7 @@ PANICAON1 causes AON3 if AON3`,
             new Entry("EVACUATECFROM1,CFROM2TO1", 4),
             new Entry("EVACUATECFROM1", 5)
         ],
-        query: new Query(`5`, `Possibly accessible γ at t`, `SAFEA and SAFEB and SAFEC`, `5`, ``, `possibly accessible SafeA and SafeB and SafeC 5`)
+        query: new Query(`5`, `Possibly accessible γ at t`, `SAFEA and SAFEB and SAFEC`, `5`, ``, `Possibly accessible SafeA and SafeB and SafeC 5`)
     },
     'Myślał indyk o niedzieli': {
         action_domain: `THINKABOUTSUNDAY causes not MOVING
@@ -71,6 +71,30 @@ SHOOT causes not ALIVE and not MOVING`,
             new Entry("SHOOT,THINKABOUTSUNDAY,ALARM", 1),
             new Entry("SHOOT", 2)
         ],
-        query: new Query(`5`, `Possibly accessible γ at t`, `ALIVE`, `5`, ``, `Possibly accessible ALIVE at 5`)
+        query: new Query(`5`, `Possibly accessible γ at t`, `ALIVE`, `3`, ``, `Possibly accessible ALIVE at 3`)
+    },
+    'Promocja w supermarkecie': {
+        action_domain: `BUYTV1 causes HAPPY1 and not TV if NEARTV1 and TV
+BUYTV2 causes HAPPY2 and not TV if NEARTV2 and TV
+BUYCOMPUTER1 causes HAPPY1 and not COMPUTER if NEARCOMPUTER1 and COMPUTER
+BUYCOMPUTER2 causes HAPPY2 and not COMPUTER if NEARCOMPUTER2 and COMPUTER
+BUYCONSOLE1 causes HAPPY1 and not CONSOLE if NEARCONSOLE1 and CONSOLE
+BUYCONSOLE2 causes HAPPY2 and not CONSOLE if NEARCONSOLE2 and CONSOLE
+MOVE1 causes NEARTV1 and not NEARCOMPUTER1 and not NEARCONSOLE1 or not NEARTV1 and NEARCOMPUTER1 and not NEARCONSOLE1 or not NEARTV1 and not NEARCOMPUTER1 and NEARCONSOLE1
+GOTOTV2 causes NEARTV2 and not NEARCOMPUTER2 and not NEARCONSOLE2 
+GOTOCONSOLE2 causes NEARCONSOLE2 and not NEARCOMPUTER2 and not NEARTV2
+GOTOCOMPUTER2 causes NEARCOMPUTER2 and not NEARTV2 and not NEARCONSOLE2
+ADDTV causes TV
+ADDCOMPUTER causes COMPUTER
+ADDCONSOLE causes CONSOLE`,
+        observations: [
+            new Entry("not HAPPY1 and not HAPPY2 and not TV and not COMPUTER and not CONSOLE and NEARTV1 and not NEARCOMPUTER1 and not NEARCONSOLE1 and not NEARTV2 and not NEARCOMPUTER2 and NEARCONSOLE2", 0)
+        ],
+        actions: [
+            new Entry("MOVE1,GOTOCOMPUTER2,ADDTV", 0),
+            new Entry("BUYTV1,BUYCOMPUTER2,MOVE1,GOTOCONSOLE2,ADDCONSOLE", 1),
+            new Entry("BUYTV1,BUYCONSOLE2", 2)
+        ],
+        query: new Query(`2`, `Necessarily executable γ at t`, `MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1`, `1`, ``, `Necessarily executable MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1 at 1`    )
     }
 };

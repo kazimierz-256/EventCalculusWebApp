@@ -56,11 +56,21 @@ run_scenario([(_, Action)|T], DOMAIN, Time) :-
 
 
 % domain = {"SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))}}
-get_sample_domain(Sample_Domain) :- 
-    list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Causes_List),
-    list_to_assoc(["SHOOT12"-Causes_List], Sample_Domain).
+% get_sample_domain(Sample_Domain) :- 
+%     list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Causes_List),
+%     list_to_assoc(["SHOOT12"-Causes_List], Sample_Domain).
+% get_sample_domain_list(Sample_Domain) :- 
+%     list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Causes_List),
+%     Sample_Domain= ["SHOOT12"-Causes_List].
 
 
-:- get_sample_domain(Domain),
-    list_to_assoc(["ALIVE1"-true, "JAMMED1"-false, "FACING12"-true], Sample_Fluent_Assignments),
-    potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, "SHOOT12"). 
+% :- get_sample_domain(Domain),
+%     list_to_assoc(["ALIVE1"-true, "JAMMED1"-false, "FACING12"-true], Sample_Fluent_Assignments),
+%     potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, "SHOOT12"),
+%     writeln("ok").
+
+% :- get_sample_domain_list(Domain),
+%     writeln(Domain),
+%     list_to_assoc(["ALIVE1"-true, "JAMMED1"-false, "FACING12"-true], Sample_Fluent_Assignments),
+%     findall(Potentially_Exec, list_potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, Potentially_Exec), Bag),
+%     write(Bag). 
