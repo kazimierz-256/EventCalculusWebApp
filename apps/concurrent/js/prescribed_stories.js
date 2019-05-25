@@ -31,7 +31,8 @@ LOAD3 causes not JAMMED3 if ALIVE3`,
             new Entry("SHOOT13,SHOOT21,ROTATE32", 3),
             new Entry("SHOOT32", 4)
         ],
-        query: new Query(`5`, `Possibly accessible γ at t`, `ALIVE1 and not ALIVE2 and not ALIVE3`, `5`, ``, `Possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`)
+        query: new Query(`6`, `Possibly accessible γ at t`, `ALIVE1 and not ALIVE2 and not ALIVE3`, `5`, ``, `Possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`, `true`)
+        //query: new Query(`6`, `Possibly accessible γ at t`, `ALIVE3 and JAMMED1`, `5`, ``, `Possibly accessible ALIVE3 and JAMMED1 at 5`, `false`)
     },
     'Ewakuacja budynku': {
         action_domain: `CFROM3TO2 causes not CON3 and CON2 if CON3 and not BON2
@@ -57,7 +58,9 @@ PANICAON1 causes AON3 if AON3`,
             new Entry("EVACUATECFROM1,CFROM2TO1", 4),
             new Entry("EVACUATECFROM1", 5)
         ],
-        query: new Query(`5`, `Possibly accessible γ at t`, `SAFEA and SAFEB and SAFEC`, `5`, ``, `Possibly accessible SafeA and SafeB and SafeC 5`)
+        query: new Query(`6`, `Possibly accessible γ at t`, `SAFEA and SAFEB and SAFEC`, `5`, ``, `Possibly accessible SafeA and SafeB and SafeC at 5`, `true`)
+        //query: new Query(`6`, `Possibly accessible γ at t`, `SAFEA and SAFEB and SAFEC`, `4`, ``, `Possibly accessible SafeA and SafeB and SafeC at 4`, `false`)
+        //query: new Query(`3`, `Necessarily accessible γ at t`, `SAFEA and SAFEB and SAFEC`, `5`, ``, `Necessarily accessible SafeA and SafeB and SafeC at 5`, `false`)
     },
     'Myślał indyk o niedzieli': {
         action_domain: `THINKABOUTSUNDAY causes not MOVING
@@ -71,7 +74,8 @@ SHOOT causes not ALIVE and not MOVING`,
             new Entry("SHOOT,THINKABOUTSUNDAY,ALARM", 1),
             new Entry("SHOOT", 2)
         ],
-        query: new Query(`5`, `Possibly accessible γ at t`, `ALIVE`, `3`, ``, `Possibly accessible ALIVE at 3`)
+        query: new Query(`6`, `Possibly accessible γ at t`, `ALIVE`, `3`, ``, `Possibly accessible ALIVE at 3`, 'true')
+        //query: new Query(`3`, `Necessarily accessible γ at t`, `ALIVE`, `3`, ``, `Necessarily accessible ALIVE at 3`, 'false')
     },
     'Promocja w supermarkecie': {
         action_domain: `BUYTV1 causes HAPPY1 and not TV if NEARTV1 and TV
@@ -95,6 +99,7 @@ ADDCONSOLE causes CONSOLE`,
             new Entry("BUYTV1,BUYCOMPUTER2,MOVE1,GOTOCONSOLE2,ADDCONSOLE", 1),
             new Entry("BUYTV1,BUYCONSOLE2", 2)
         ],
-        query: new Query(`2`, `Necessarily executable γ at t`, `MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1`, `1`, ``, `Necessarily executable MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1 at 1`    )
+        query: new Query(`2`, `Necessarily executable γ at t`, `MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1`, `1`, ``, `Necessarily executable MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1 at 1`, `false`)
+        //query: new Query(`5`, `Possibly executable γ at t`, `MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1`, `1`, ``, `Possibly executable MOVE1,GOTOCONSOLE2,ADDCONSOLE,BUYTV1 at 1`, `true`)
     }
 };

@@ -26,7 +26,8 @@ let dropdown = new Vue({
             form.action_domain = answer.action_domain;
             form.actions = answer.actions;
             form.observations = answer.observations;
-            form.query = new Query(answer.query.id, answer.query.type_text, answer.query.condition, answer.query.time, answer.query.action, answer.query.full_text);
+            form.query = new Query(answer.query.id, answer.query.type_text, answer.query.condition, answer.query.time, answer.query.action, answer.query.full_text, answer.query.correct_answer);
+            form.correct_answer = form.query.correct_answer;
         }
     },
     mounted() {

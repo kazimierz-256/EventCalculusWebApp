@@ -1,11 +1,12 @@
 class Query {
-    constructor(id, type_text, condition, time, action, full_text) {
+    constructor(id, type_text, condition, time, action, full_text, correct_answer) {
         this.id = id;
         this.type_text = type_text;
         this.condition = condition;
         this.time = time;
         this.action = action;
         this.full_text = full_text;
+        this.correct_answer = correct_answer;
     }
     getQueryFullText() { return this.full_text }
 }
