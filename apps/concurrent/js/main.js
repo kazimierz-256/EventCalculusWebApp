@@ -21,12 +21,12 @@ let dropdown = new Vue({
     },
     methods: {
         prefill: function (story_id) {
+            console.log(story_id)
             let answer = prescribed_stories[story_id];
             form.action_domain = answer.action_domain;
             form.actions = answer.actions;
             form.observations = answer.observations;
-            form.query = answer.query;
-            update_method();
+            form.query = new Query(answer.query.id, answer.query.type_text, answer.query.condition, answer.query.time, answer.query.action, answer.query.full_text);
         }
     },
     mounted() {
@@ -36,12 +36,16 @@ let dropdown = new Vue({
 
 let general_update = () => {
     M.updateTextFields();
-    $('textarea').each(function () { M.textareaAutoResize($(this))});
+    $('textarea').each(function () { M.textareaAutoResize($(this)) });
 }
 let update_method = function () {
     this.answer = undefined;
     general_update();
 };
+let query_update_method = function () {
+    console.log(this)
+    update_method();
+}
 const debugText = "domain([], D),\n" +
     "put_into_domain('LOAD', ['LOADED'], D, D1),\n" +
     "put_into_domain('SHOOT', [and(not('LOADED'), not('ALIVE'))], D1, D2),\n" +
@@ -49,15 +53,18 @@ const debugText = "domain([], D),\n" +
     "get_from_domain('LOAD', D3, VALUE),\n" +
     "run_scenario([], D3, 0),\n" +
     "run_scenario([(and(not('LOADED'), 'ALIVE'), 'SHOOT'), (true, 'REBIRTH')], D3, 0).";
-
+let getNewQuery = function () { return  new Query(``, ``, ``, ``, ``, ``); };
 let modelData = {
     action_domain: ``,
-    query: ``,
     answer: undefined,
+    query: getNewQuery(),
     debug: debugText,
     actions: [],
-    observations: []
+    observations: [],
+    queries: query_collection
 };
+
+
 let mainMethodsObject = {
     debug_query: function () {
         // verbose_command("test(9,Y).");
@@ -82,7 +89,7 @@ let mainMethodsObject = {
         verbose_command(`rw(` +
             `'${cleanse(this.action_domain)}',` +
             `'${cleanse(this.getScenarioString())}',` +
-            `'${cleanse(this.query)}').`
+            `'${cleanse(this.getQueryString(this.query))}').`
                 .replace(/\n/gm, ""),
             () => {
                 this.answer = true;
@@ -95,10 +102,28 @@ let mainMethodsObject = {
         this.action_domain = ``;
         this.actions = [];
         this.observations = [];
-        this.query = ``;
+        this.query = getNewQuery();
+        this.answer = undefined;
+    },
+    clear_action_domain: function () {
+        this.answer = undefined;
+        this.action_domain = ``;
+    },
+    clear_observations: function () {
+        this.answer = undefined;
+        this.observations = [];
+    },
+    clear_actions: function () {
+        this.answer = undefined;
+        this.actions = [];
+    },
+    clear_query: function () {
+        this.answer = undefined;
+        this.query = getNewQuery();
     }
 };
 $.extend(mainMethodsObject, ScenarioSectionEventHandlers);
+$.extend(mainMethodsObject, QuerySectionEventHandlers);
 let form = new Vue({
     el: '#form',
     data: modelData,

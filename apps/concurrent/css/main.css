@@ -6,15 +6,20 @@
     margin: 2em 0 0 0;
 }
 
-#answer-box, #answer > img{
-    height: 12em;
+#answer img{
+    /* max-width: 400px; */
+    height: 15em;
+}
+
+#answer > * {
+    padding-top: 2em;
 }
 
 body {
-    margin-bottom: 16em;
+    margin-bottom: 20em;
 }
 
-.card-content > ul > li {
+.card-content > ul.spaced > li {
     margin-top: 2em;
 }
 
@@ -27,4 +32,8 @@ body {
 }
 .helper-text > span:not(:first-child) {
     margin-left: 1.0em;
+}
+.card-title > .btn, .card-title > .btn-large, .card-title > .btn-small {
+    margin-left: 2em;
+    float: inline-end;
 }
