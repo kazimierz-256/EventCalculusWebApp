@@ -26,8 +26,26 @@ get_query_from_text(Query, Text) :-
     string_chars(String_Cleaned, Chars),
     phrase(parse_query(Query), Chars).
 
+run_query(necessarily_executable(Tree)) :-
+    writeln("necessarily_executable scenario").
+
+run_query(possibly_executable(Tree)) :-
+    writeln("possibly executable scenario").
+
+run_query(necessarily_accessible(Tree, Time)) :-
+    writeln("possibly accessible gamma at t").
+
+run_query(necessarily_executable(List, Time)) :-
+    writeln("possibly accessible gamma at t").
+
+run_query(possibly_executable(List, Time)) :-
+    writeln("possibly accessible gamma at t").
+
 :- 
     % get_query_from_text(Query, "necessarily executable"),
     % writeln(Query).
-    get_query_from_text(Query, "possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5"),
-    write(Query).
+    %get_query_from_text(Query, "possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5"),
+
+    get_query_from_text(Query, "necessarily executable SHOOT12, SHOOT31, SHOOT51 at 5"),
+    
+    run_query(Query).

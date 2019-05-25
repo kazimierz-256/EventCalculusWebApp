@@ -94,10 +94,10 @@ warsaw_standoff_domain(Domain) :-
                    "LOAD3"-Load3_Causes_List], Domain).
 
 warsaw_standoff_scenario(Sc) :-
-    %Observations
+    %OBS
     list_to_assoc([0-and("ALIVE1", and("ALIVE2", and("ALIVE3"), and(negate("JAMMED1"), and(negate("JAMMED2"), and(negate("JAMMED3"), and("FACING12", and("FACING23", and("FACING31"))))))))], Observations),
 
-    %Compound Actions
+    %ACS
     list_to_assoc([
                     0-["LOAD1", "LOAD2", "LOAD3"],
                     1-["SHOOT12", "SHOOT23"],
