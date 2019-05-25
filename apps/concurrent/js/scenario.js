@@ -48,19 +48,25 @@ var ScenarioSectionEventHandlers = {
         return "(" + this.getObservationsString() + "," + this.getActionsString() + ")";
     },
     getActionsString: function() {
-        return "{" + 
+        return "{" +
             this.actions
                 .filter(act => !act.isEmpty())
                 .map(act => "({" + act.data + "}," + act.time + ")")
                 .join(",\n") +
-            "}"; 
+            "}";
+    },
+    getActions: function() {
+        return this.actions
+            .filter(act => !act.isEmpty())
+            .map(act => act.data + "|" + act.time)
+            .join("\n");
     },
     getObservationsString: function() {
-        return "{" + 
+        return "{" +
             this.observations
                 .filter(obs => !obs.isEmpty())
                 .map(obs => "(" + obs.data + "," + obs.time + ")")
                 .join(",\n") +
-            "}"; 
+            "}";
     }
 };

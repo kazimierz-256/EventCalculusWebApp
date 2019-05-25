@@ -1,6 +1,7 @@
 :- module(user_input_parsing,
     [
-        parse_domain/2
+        parse_domain/2,
+        parse_actions/2
 	]).
 
 split_list_by_keyword(_, [], L1, L1, L2) :-
@@ -82,3 +83,25 @@ parse_domain(TEXT, DOMAIN) :-
     split_string(TEXT, "\n", "", PARTS),
     empty_assoc(ASSOC),
     parse_parts(PARTS, ASSOC, DOMAIN).
+
+%actions
+
+add_to_actions(ACS, TIME, ASSOC, ACTIONS) :-
+    split_string(ACS, ",", "", PARTS),
+	put_assoc(TIME, ASSOC, PARTS, ACTIONS).
+
+parse_actions_line(TEXT, ACS, TIME) :-
+    split_string(TEXT, "|", "", [ACS, TIME]).
+
+parse_parts_ac([], ACTIONS, ACTIONS).
+parse_parts_ac([H|T], ASSOC, ACTIONS) :-
+    normalize_space(atom(LINE), H),
+    parse_actions_line(LINE, ACS, TIME),
+   	add_to_actions(ACS, TIME, ASSOC, ACTIONS_TMP),
+    parse_parts_ac(T, ACTIONS_TMP, ACTIONS).
+
+parse_actions(TEXT, ACTIONS) :-
+    split_string(TEXT, "\n", "", PARTS),
+    empty_assoc(ASSOC),
+    parse_parts_ac(PARTS, ASSOC, ACTIONS).
+
