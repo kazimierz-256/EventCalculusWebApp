@@ -33,6 +33,8 @@ truth(iff(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :-
 truth(negate(T), FluentAssociationList, EnrichedFluentAssociationList) :- 
     falsehood(T, FluentAssociationList, EnrichedFluentAssociationList).
 
+truth(true, FluentAssociationList, FluentAssociationList).
+
 truth(FLUENT, FluentAssociationList, EnrichedFluentAssociationList) :- 
     string(FLUENT),
     (get_assoc(FLUENT, FluentAssociationList, VALUE) -> (VALUE, EnrichedFluentAssociationList = FluentAssociationList)
@@ -49,6 +51,7 @@ truth(T1, FluentAssociationList, EnrichedFluentAssociationList1) , falsehood(T2,
 ; falsehood(T2, FluentAssociationList, EnrichedFluentAssociationList1), truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
 falsehood(negate(T), FluentAssociationList, EnrichedFluentAssociationList) :- 
     truth(T, FluentAssociationList, EnrichedFluentAssociationList).
+falsehood(false, FluentAssociationList, FluentAssociationList).
 falsehood(FLUENT, FluentAssociationList, EnrichedFluentAssociationList) :- 
     string(FLUENT),
     (get_assoc(FLUENT, FluentAssociationList, VALUE) -> (not(VALUE), EnrichedFluentAssociationList = FluentAssociationList)
