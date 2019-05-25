@@ -25,6 +25,7 @@ get_action_and_val([Action, "causes"|Rest], Action, Value) :-
     atomic_list_concat(If_Parts, ' ', Atom_If), 
     atom_string(Atom_If, If),
     put_assoc("causes", Assoc, (Effect, If), Value ).
+
 get_action_and_val([Action, "releases"|Rest], Action, Value) :-
     empty_assoc(Assoc),
     parse_cause_if(Rest, Effect_Parts, If_Parts),
@@ -34,6 +35,7 @@ get_action_and_val([Action, "releases"|Rest], Action, Value) :-
     atomic_list_concat(If_Parts, ' ', Atom_If), 
     atom_string(Atom_If, If),
     put_assoc("releases", Assoc, (Effect, If), Value ).
+
 get_action_and_val(["impossible", Action, "at", Time_Str], Action, Value) :-
     empty_assoc(Assoc),
     number_string(Time, Time_Str),
@@ -49,11 +51,13 @@ add_to_assoc_list("impossible", Value, Assoc, New_Assoc) :-
     	append(Value_Sf, [Value], New_Value),
     	put_assoc("impossible", Assoc, New_Value, New_Assoc)
     ;   put_assoc("impossible", Assoc, Value, New_Assoc).
+
 add_to_assoc_list("causes", Value, Assoc, New_Assoc) :-
     assoc_to_keys(Assoc, Keys),
     not(member("causes", Keys)),
     not(member("releases", Keys)),
     put_assoc("causes", Assoc, Value, New_Assoc).
+
 add_to_assoc_list("releases", Value, Assoc, New_Assoc) :-
     assoc_to_keys(Assoc, Keys),
     not(member("causes", Keys)),

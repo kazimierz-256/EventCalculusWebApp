@@ -27,6 +27,7 @@ let dropdown = new Vue({
             form.actions = answer.actions;
             form.observations = answer.observations;
             form.query = new Query(answer.query.id, answer.query.type_text, answer.query.condition, answer.query.time, answer.query.action, answer.query.full_text);
+            modelData.debug = "parse_domain(\'"+ answer.action_domain +"\', Domain).";
         }
     },
     mounted() {
@@ -53,6 +54,10 @@ const debugText = "domain([], D),\n" +
     "get_from_domain('LOAD', D3, VALUE),\n" +
     "run_scenario([], D3, 0),\n" +
     "run_scenario([(and(not('LOADED'), 'ALIVE'), 'SHOOT'), (true, 'REBIRTH')], D3, 0).";
+
+//const debugText2 = "parse_domain(" + answer.action_domain + "), Domain)."
+const debugText3 = "parse_domain('SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12', Domain).";
+
 let getNewQuery = function () { return  new Query(``, ``, ``, ``, ``, ``); };
 let modelData = {
     action_domain: ``,

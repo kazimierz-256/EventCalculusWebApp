@@ -10,6 +10,7 @@
 :- use_module("modules/logic_formula_satisfiability.pl").
 :- use_module("modules/mns.pl").
 :- use_module("modules/potentially_executable.pl").
+:- use_module("modules/user_input_parsing.pl").
 
 % Kazik
 
