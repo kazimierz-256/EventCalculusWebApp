@@ -1,7 +1,8 @@
 :- module(user_input_parsing,
     [
         parse_domain/2,
-        parse_actions/2
+        parse_acs/2,
+        parse_obs/2
 	]).
 
 split_list_by_keyword(_, [], L1, L1, L2) :-
@@ -87,24 +88,24 @@ parse_domain(Text, Domain) :-
 %scenario
 %scenario actions
 
-add_to_actions(ACS, Time, Assoc, ActionS) :-
+add_to_acs(ACS, Time, Assoc, ActionS) :-
     split_string(ACS, ",", "", Parts),
 	put_assoc(Time, Assoc, Parts, ActionS).
 
-parse_actions_line(Text, ACS, Time) :-
+parse_acs_line(Text, ACS, Time) :-
     split_string(Text, "|", "", [ACS, Time]).
 
-parse_parts_ac([], ActionS, ActionS).
-parse_parts_ac([H|T], Assoc, ActionS) :-
+parse_parts_acs([], ActionS, ActionS).
+parse_parts_acs([H|T], Assoc, ActionS) :-
     normalize_space(atom(Line), H),
-    parse_actions_line(Line, ACS, Time),
-   	add_to_actions(ACS, Time, Assoc, ActionS_Tmp),
-    parse_parts_ac(T, ActionS_Tmp, ActionS).
+    parse_acs_line(Line, ACS, Time),
+   	add_to_acs(ACS, Time, Assoc, ActionS_Tmp),
+    parse_parts_acs(T, ActionS_Tmp, ActionS).
 
-parse_actions(Text, ActionS) :-
+parse_acs(Text, ActionS) :-
     split_string(Text, "\n", "", Parts),
     empty_assoc(Assoc),
-    parse_parts_ac(Parts, Assoc, ActionS).
+    parse_parts_acs(Parts, Assoc, ActionS).
 
 %scenario observations
 
