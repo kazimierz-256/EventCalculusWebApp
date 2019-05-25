@@ -88,24 +88,24 @@ parse_domain(Text, Domain) :-
 %scenario
 %scenario actions
 
-add_to_acs(ACS, Time, Assoc, ActionS) :-
+add_to_acs(ACS, Time, Assoc, Actions) :-
     split_string(ACS, ",", "", Parts),
-	put_assoc(Time, Assoc, Parts, ActionS).
+	put_assoc(Time, Assoc, Parts, Actions).
 
 parse_acs_line(Text, ACS, Time) :-
     split_string(Text, "|", "", [ACS, Time]).
 
-parse_parts_acs([], ActionS, ActionS).
-parse_parts_acs([H|T], Assoc, ActionS) :-
+parse_parts_acs([], Actions, Actions).
+parse_parts_acs([H|T], Assoc, Actions) :-
     normalize_space(atom(Line), H),
     parse_acs_line(Line, ACS, Time),
-   	add_to_acs(ACS, Time, Assoc, ActionS_Tmp),
-    parse_parts_acs(T, ActionS_Tmp, ActionS).
+   	add_to_acs(ACS, Time, Assoc, Actions_Tmp),
+    parse_parts_acs(T, Actions_Tmp, Actions).
 
-parse_acs(Text, ActionS) :-
+parse_acs(Text, Actions) :-
     split_string(Text, "\n", "", Parts),
     empty_assoc(Assoc),
-    parse_parts_acs(Parts, Assoc, ActionS).
+    parse_parts_acs(Parts, Assoc, Actions).
 
 %scenario observations
 
