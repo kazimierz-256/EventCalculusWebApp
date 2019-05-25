@@ -17,6 +17,11 @@ const query_collection = {
     5: { id: 5, type_text: 'Possibly executable A at t' },
     6: { id: 6, type_text: 'Possibly accessible γ at t' },
 }
+let changeSelection = function(selection, query) {
+    document.getElementById('select').value = (selection);
+    document.getElementById('select').dispatchEvent(new Event('change'));
+    query.type_text = selection;
+}
 var QuerySectionEventHandlers = {
     rebuildQueryText: function (query) {
         if (query.type_text == 'Necessarily executable' || query.type_text == 'Possibly executable')
@@ -36,5 +41,5 @@ var QuerySectionEventHandlers = {
     },
     getQueryString: function (query) {
         return query.getQueryFullText();
-    }
+    },
 }

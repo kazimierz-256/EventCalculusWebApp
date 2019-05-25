@@ -27,6 +27,7 @@ let dropdown = new Vue({
             form.actions = answer.actions;
             form.observations = answer.observations;
             form.query = new Query(answer.query.id, answer.query.type_text, answer.query.condition, answer.query.time, answer.query.action, answer.query.full_text);
+            changeSelection(answer.query.type_text, form.query);
             modelData.debug = "parse_domain(\'"+ answer.action_domain +"\', Domain).";
         }
     },
@@ -34,7 +35,6 @@ let dropdown = new Vue({
         materialize_init();
     }
 });
-
 let general_update = () => {
     M.updateTextFields();
     $('textarea').each(function () { M.textareaAutoResize($(this)) });
@@ -108,6 +108,7 @@ let mainMethodsObject = {
         this.actions = [];
         this.observations = [];
         this.query = getNewQuery();
+        changeSelection(``, this.query);
         this.answer = undefined;
     },
     clear_action_domain: function () {
@@ -125,6 +126,7 @@ let mainMethodsObject = {
     clear_query: function () {
         this.answer = undefined;
         this.query = getNewQuery();
+        changeSelection(``, this.query);
     }
 };
 $.extend(mainMethodsObject, ScenarioSectionEventHandlers);
