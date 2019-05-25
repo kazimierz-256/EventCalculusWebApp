@@ -6,123 +6,121 @@
 
 split_list_by_keyword(_, [], L1, L1, L2) :-
     L2 = [].
-split_list_by_keyword(KEYWORD, [KEYWORD | L2], L1, L1, L2).
-split_list_by_keyword(KEYWORD, [H | T], L1_TEMP, L1, L2) :-
-    H \= KEYWORD,
-    append(L1_TEMP, [H], L1_TT),
-    split_list_by_keyword(KEYWORD, T, L1_TT, L1, L2).
+split_list_by_keyword(Keyword, [Keyword | L2], L1, L1, L2).
+split_list_by_keyword(Keyword, [H | T], L1_Temp, L1, L2) :-
+    H \= Keyword,
+    append(L1_Temp, [H], L1_TT),
+    split_list_by_keyword(Keyword, T, L1_TT, L1, L2).
 
-parse_cause_if(PARTS, L1, L2) :-
-    split_list_by_keyword("if", PARTS, [], L1, L2).
+parse_cause_if(Parts, L1, L2) :-
+    split_list_by_keyword("if", Parts, [], L1, L2).
 
-get_action_and_val([ACTION, "causes"|REST], ACTION, VALUE) :-
-    empty_assoc(ASSOC),
-    parse_cause_if(REST, EFFECT_PARTS, IF_PARTS),
+get_action_and_val([Action, "causes"|Rest], Action, Value) :-
+    empty_assoc(Assoc),
+    parse_cause_if(Rest, Effect_Parts, If_Parts),
     !,
-    atomic_list_concat(EFFECT_PARTS, ' ', ATOM_EF), 
-    atom_string(ATOM_EF, EFFECT),
-    atomic_list_concat(IF_PARTS, ' ', ATOM_IF), 
-    atom_string(ATOM_IF, IF),
-    put_assoc("causes", ASSOC, (EFFECT, IF), VALUE ).
-get_action_and_val([ACTION, "releases"|REST], ACTION, VALUE) :-
-    empty_assoc(ASSOC),
-    parse_cause_if(REST, EFFECT_PARTS, IF_PARTS),
+    atomic_list_concat(Effect_Parts, ' ', Atom_Ef), 
+    atom_string(Atom_Ef, Effect),
+    atomic_list_concat(If_Parts, ' ', Atom_If), 
+    atom_string(Atom_If, If),
+    put_assoc("causes", Assoc, (Effect, If), Value ).
+get_action_and_val([Action, "releases"|Rest], Action, Value) :-
+    empty_assoc(Assoc),
+    parse_cause_if(Rest, Effect_Parts, If_Parts),
     !,
-    atomic_list_concat(EFFECT_PARTS, ' ', ATOM_EF), 
-    atom_string(ATOM_EF, EFFECT),
-    atomic_list_concat(IF_PARTS, ' ', ATOM_IF), 
-    atom_string(ATOM_IF, IF),
-    put_assoc("releases", ASSOC, (EFFECT, IF), VALUE ).
-get_action_and_val(["impossible", ACTION, "at", TIME], ACTION, VALUE) :-
-    empty_assoc(ASSOC),
-    put_assoc("impossible", ASSOC, TIME, VALUE ).
+    atomic_list_concat(Effect_Parts, ' ', Atom_Ef), 
+    atom_string(Atom_Ef, Effect),
+    atomic_list_concat(If_Parts, ' ', Atom_If), 
+    atom_string(Atom_If, If),
+    put_assoc("releases", Assoc, (Effect, If), Value ).
+get_action_and_val(["impossible", Action, "at", Time], Action, Value) :-
+    empty_assoc(Assoc),
+    put_assoc("impossible", Assoc, Time, Value ).
 
-parse_sentence(TEXT, ACTION, VALUE) :-
-    split_string(TEXT, " ", "", PARTS),
-    get_action_and_val(PARTS, ACTION, VALUE).
+parse_sentence(Text, Action, Value) :-
+    split_string(Text, " ", "", Parts),
+    get_action_and_val(Parts, Action, Value).
 
-add_to_assoc_list("impossible", VALUE, ASSOC, NEW_ASSOC) :-
-    member("impossible", ASSOC)
-    ->  get_assoc("impossible", ASSOC, VALUE_SF),
-    	append(VALUE_SF, [VALUE], NEW_VALUE),
-    	put_assoc("impossible", ASSOC, NEW_VALUE, NEW_ASSOC)
-    ;   put_assoc("impossible", ASSOC, VALUE, NEW_ASSOC).
-add_to_assoc_list("causes", VALUE, ASSOC, NEW_ASSOC) :-
-    assoc_to_keys(ASSOC, KEYS),
-    not(member("causes", KEYS)),
-    not(member("releases", KEYS)),
-    put_assoc("causes", ASSOC, VALUE, NEW_ASSOC).
-add_to_assoc_list("releases", VALUE, ASSOC, NEW_ASSOC) :-
-    assoc_to_keys(ASSOC, KEYS),
-    not(member("causes", KEYS)),
-    not(member("releases", KEYS)),
-    put_assoc("causes", ASSOC, VALUE, NEW_ASSOC).
+add_to_assoc_list("impossible", Value, Assoc, New_Assoc) :-
+    member("impossible", Assoc)
+    ->  get_assoc("impossible", Assoc, Value_Sf),
+    	append(Value_Sf, [Value], New_Value),
+    	put_assoc("impossible", Assoc, New_Value, New_Assoc)
+    ;   put_assoc("impossible", Assoc, Value, New_Assoc).
+add_to_assoc_list("causes", Value, Assoc, New_Assoc) :-
+    assoc_to_keys(Assoc, Keys),
+    not(member("causes", Keys)),
+    not(member("releases", Keys)),
+    put_assoc("causes", Assoc, Value, New_Assoc).
+add_to_assoc_list("releases", Value, Assoc, New_Assoc) :-
+    assoc_to_keys(Assoc, Keys),
+    not(member("causes", Keys)),
+    not(member("releases", Keys)),
+    put_assoc("causes", Assoc, Value, New_Assoc).
 
-add_if_correct(ACTION, VALUE, ASSOC, DOMAIN) :-
-    get_assoc(ACTION, ASSOC, VALUE_SF),
-    assoc_to_keys(VALUE, ACTION_KEYS),
-    ACTION_KEYS = [ACTION_KEY],
-    get_assoc(ACTION_KEY, VALUE, VALUE_TO_ADD),
-    add_to_assoc_list(ACTION_KEY, VALUE_TO_ADD, VALUE_SF, NEW_ASSOC),
-    put_assoc(ACTION, ASSOC, NEW_ASSOC, DOMAIN).
+add_if_correct(Action, Value, Assoc, Domain) :-
+    get_assoc(Action, Assoc, Value_Sf),
+    assoc_to_keys(Value, Action_Keys),
+    Action_Keys = [Action_Key],
+    get_assoc(Action_Key, Value, Value_TO_ADD),
+    add_to_assoc_list(Action_Key, Value_TO_ADD, Value_Sf, New_Assoc),
+    put_assoc(Action, Assoc, New_Assoc, Domain).
     
-add_to_domain(ACTION, VALUE, ASSOC, DOMAIN) :- 
-    assoc_to_keys(ASSOC, KEYS),
-    member(ACTION, KEYS) 
-    ->  add_if_correct(ACTION, VALUE, ASSOC, DOMAIN)
-    ;   put_assoc(ACTION, ASSOC, VALUE, DOMAIN).
+add_to_domain(Action, Value, Assoc, Domain) :- 
+    assoc_to_keys(Assoc, Keys),
+    member(Action, Keys) 
+    ->  add_if_correct(Action, Value, Assoc, Domain)
+    ;   put_assoc(Action, Assoc, Value, Domain).
 
-parse_parts([], DOMAIN, DOMAIN).
-parse_parts([H|T], ASSOC, DOMAIN) :-
-    normalize_space(atom(LINE), H),
-    parse_sentence(LINE, ACTION, VALUE),
-    add_to_domain(ACTION, VALUE, ASSOC, DOMAIN_TMP),
-    parse_parts(T, DOMAIN_TMP, DOMAIN).
+parse_parts([], Domain, Domain).
+parse_parts([H|T], Assoc, Domain) :-
+    normalize_space(atom(Line), H),
+    parse_sentence(Line, Action, Value),
+    add_to_domain(Action, Value, Assoc, Domain_Tmp),
+    parse_parts(T, Domain_Tmp, Domain).
 
-parse_domain(TEXT, DOMAIN) :-
-    split_string(TEXT, "\n", "", PARTS),
-    empty_assoc(ASSOC),
-    parse_parts(PARTS, ASSOC, DOMAIN).
+parse_domain(Text, Domain) :-
+    split_string(Text, "\n", "", Parts),
+    empty_assoc(Assoc),
+    parse_parts(Parts, Assoc, Domain).
 
 %scenario
 %scenario actions
 
-add_to_actions(ACS, TIME, ASSOC, ACTIONS) :-
-    split_string(ACS, ",", "", PARTS),
-	put_assoc(TIME, ASSOC, PARTS, ACTIONS).
+add_to_actions(ACS, Time, Assoc, ActionS) :-
+    split_string(ACS, ",", "", Parts),
+	put_assoc(Time, Assoc, Parts, ActionS).
 
-parse_actions_line(TEXT, ACS, TIME) :-
-    split_string(TEXT, "|", "", [ACS, TIME]).
+parse_actions_line(Text, ACS, Time) :-
+    split_string(Text, "|", "", [ACS, Time]).
 
-parse_parts_ac([], ACTIONS, ACTIONS).
-parse_parts_ac([H|T], ASSOC, ACTIONS) :-
-    normalize_space(atom(LINE), H),
-    parse_actions_line(LINE, ACS, TIME),
-   	add_to_actions(ACS, TIME, ASSOC, ACTIONS_TMP),
-    parse_parts_ac(T, ACTIONS_TMP, ACTIONS).
+parse_parts_ac([], ActionS, ActionS).
+parse_parts_ac([H|T], Assoc, ActionS) :-
+    normalize_space(atom(Line), H),
+    parse_actions_line(Line, ACS, Time),
+   	add_to_actions(ACS, Time, Assoc, ActionS_Tmp),
+    parse_parts_ac(T, ActionS_Tmp, ActionS).
 
-parse_actions(TEXT, ACTIONS) :-
-    split_string(TEXT, "\n", "", PARTS),
-    empty_assoc(ASSOC),
-    parse_parts_ac(PARTS, ASSOC, ACTIONS).
+parse_actions(Text, ActionS) :-
+    split_string(Text, "\n", "", Parts),
+    empty_assoc(Assoc),
+    parse_parts_ac(Parts, Assoc, ActionS).
 
-%scenario obserwations
+%scenario observations
 
-%scenatio obs
+parse_obs_line(Text, Obs, Time) :-
+    split_string(Text, "|", "", [Obs, Time]).
 
-parse_obs_line(TEXT, OBS, TIME) :-
-    split_string(TEXT, "|", "", [OBS, TIME]).
+parse_parts_obs([], Observations, Observations).
+parse_parts_obs([H|T], Assoc, Observations) :-
+    normalize_space(atom(Line), H),
+    parse_obs_line(Line, Obs, Time),
+   	put_assoc(Time, Assoc, Obs, Observations_Tmp),
+    parse_parts_obs(T, Observations_Tmp, Observations).
 
-parse_parts_obs([], OBSERVATIONS, OBSERVATIONS).
-parse_parts_obs([H|T], ASSOC, OBSERVATIONS) :-
-    normalize_space(atom(LINE), H),
-    parse_obs_line(LINE, OBS, TIME),
-   	put_assoc(TIME, ASSOC, OBS, OBSERVATIONS_TMP),
-    parse_parts_obs(T, OBSERVATIONS_TMP, OBSERVATIONS).
-
-parse_obs(TEXT, OBSERVATIONS) :-
-    split_string(TEXT, "\n", "", PARTS),
-    empty_assoc(ASSOC),
-    parse_parts_obs(PARTS, ASSOC, OBSERVATIONS).
+parse_obs(Text, Observations) :-
+    split_string(Text, "\n", "", Parts),
+    empty_assoc(Assoc),
+    parse_parts_obs(Parts, Assoc, Observations).
 
 
