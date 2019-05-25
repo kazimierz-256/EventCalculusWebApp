@@ -10,12 +10,12 @@ class Query {
     getQueryFullText() { return this.full_text }
 }
 const query_collection = {
-    1: { id: 1, type_text: 'Necessarily executable' },
-    2: { id: 2, type_text: 'Necessarily executable A at t' },
-    3: { id: 3, type_text: 'Necessarily accessible γ at t' },
-    4: { id: 4, type_text: 'Possibly executable' },
-    5: { id: 5, type_text: 'Possibly executable A at t' },
-    6: { id: 6, type_text: 'Possibly accessible γ at t' },
+    1: { id: 1, type_text: 'Necessarily executable scenario Sc' },
+    2: { id: 2, type_text: 'Necessarily executable A at t when Sc' },
+    3: { id: 3, type_text: 'Necessarily accessible γ at t when Sc' },
+    4: { id: 4, type_text: 'Possibly executable scenario Sc' },
+    5: { id: 5, type_text: 'Possibly executable A at t when Sc' },
+    6: { id: 6, type_text: 'Possibly accessible γ at t when Sc' },
 }
 let changeSelection = function(selection, query) {
     document.getElementById('select').value = (selection);
@@ -24,15 +24,17 @@ let changeSelection = function(selection, query) {
 }
 var QuerySectionEventHandlers = {
     rebuildQueryText: function (query) {
-        if (query.type_text == 'Necessarily executable' || query.type_text == 'Possibly executable')
-            query.full_text = query.type_text;
-        if (query.type_text == 'Necessarily accessible γ at t')
+        if (query.type_text == 'Necessarily executable scenario Sc')
+            query.full_text = 'Necessarily executable'
+        if (query.type_text == 'Possibly executable scenario Sc')
+            query.full_text = 'Possibly executable'
+        if (query.type_text == 'Necessarily accessible γ at t when Sc')
             query.full_text = 'Necessarily accessible ' + query.condition + ' at ' + query.time;
-        if (query.type_text == 'Possibly accessible γ at t')
+        if (query.type_text == 'Possibly accessible γ at t when Sc')
             query.full_text = 'Possibly accessible ' + query.condition + ' at ' + query.time;
-        if (query.type_text == 'Necessarily executable A at t')
+        if (query.type_text == 'Necessarily executable A at t when Sc')
             query.full_text = 'Necessarily executable ' + query.action + ' at ' + query.time;
-        if (query.type_text == 'Possibly executable A at t')
+        if (query.type_text == 'Possibly executable A at t when Sc')
             query.full_text = 'Possibly executable ' + query.action + ' at ' + query.time;
     },
     changedProperty(event, query) {

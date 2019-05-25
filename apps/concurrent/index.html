@@ -141,15 +141,15 @@
             </option>
           </select>
           <span
-            v-if="query.type_text == 'Necessarily executable A at t' || query.type_text == 'Possibly executable A at t'"
+            v-if="query.type_text == 'Necessarily executable A at t when Sc' || query.type_text == 'Possibly executable A at t when Sc'"
             id="hide">Action: <input v-model="query.action" placeholder="A" type="text" id="query"
               v-on:change="changedProperty($event, query)"></span>
           <span
-            v-if="query.type_text == 'Possibly accessible γ at t' || query.type_text == 'Necessarily accessible γ at t'"
+            v-if="query.type_text == 'Possibly accessible γ at t when Sc' || query.type_text == 'Necessarily accessible γ at t when Sc'"
             id="hide">Condition:<input v-model="query.condition" placeholder="γ" type="text" id="query"
               v-on:change="changedProperty($event, query)"></span>
           <span
-            v-if="!(query.type_text == 'Necessarily executable' || query.type_text == 'Possibly executable' || query.type_text == ``)"
+            v-if="!(query.type_text == 'Necessarily executable scenario Sc' || query.type_text == 'Possibly executable scenario Sc' || query.type_text == ``)"
             id="hide">Time:<input v-model="query.time" placeholder="t" type="number" min="0" id="query"
               v-on:change="changedProperty($event, query)"></span>
           <div v-if="query.type_text != ``" class="card blue-grey lighten-5">
