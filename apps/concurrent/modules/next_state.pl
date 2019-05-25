@@ -26,30 +26,11 @@ generate_new_assignment(Assignment, Fluent_Assignments, Occlusion_List, New_Assi
             )
         ), Assignments),
     list_to_assoc(Assignments, New_Assignment).
-    % findall(Fluent-Value, (
-    %     get_assoc(Fluent, Assignment, Value)
-    %     ;
-    %     (
-    %         not(get_assoc(Fluent, Assignment, _)),
-    %         (
-    %             member(Fluent, Occlusion_List),
-    %             (Value = true ; Value = false)
-    %             ;
-    %             not(member(Fluent, Occlusion_List)),
-    %             get_assoc(Fluent, Fluent_Assignments, Value),
-    %             )
-    %         )
-    %     ), Assignments),
-    % list_to_assoc(Assignments, New_Assignment).
     
 
 
 get_next_state(Time, Fluent_Assignments, Observations, Action_Domain, New_Assignment) :-
-    (
-        not(get_assoc(Time, Observations, _))
-        ;
-        (get_assoc(Time, Observations, Observation), logic_formula_satisfied(Observation, Fluent_Assignments))
-    ),
+    (get_assoc(Time, Observations, Observation) -> logic_formula_satisfied(Observation, Fluent_Assignments) ; true),
     % get compound action
     assoc_to_list(Action_Domain, Action_Domain_List),
     findall(Action, list_potentially_executable_atomic(Time, Action_Domain_List, Fluent_Assignments, Action), Compound_Action),
