@@ -15,21 +15,32 @@ generate_new_state(Assignment, Fluent_Assignments, Occlusion_List, New_Assignmen
     % if it is in Assignment, there is no ambiguity
     % otherwise if it is in Occluesion List, there is ambiguity
     % otherwise keep Fluent_Assignments value
+    
     findall(Fluent-Value, (
-        get_assoc(Fluent, Assignment, Value)
-        ;
-        (
-            not(get_assoc(Fluent, Assignment, _)),
+            get_assoc(Fluent, Assignment, Value) -> true
+            ;
             (
-                member(Fluent, Occlusion_List),
-                (Value = true ; Value = false)
-                ;
-                not(member(Fluent, Occlusion_List)),
-                get_assoc(Fluent, Fluent_Assignments, Value),
-                )
+                member(Fluent, Occlusion_List) ->
+                    (Value = true ; Value = false)
+                    ; get_assoc(Fluent, Fluent_Assignments, Value)
             )
         ), Assignments),
     list_to_assoc(Assignments, New_Assignment).
+    % findall(Fluent-Value, (
+    %     get_assoc(Fluent, Assignment, Value)
+    %     ;
+    %     (
+    %         not(get_assoc(Fluent, Assignment, _)),
+    %         (
+    %             member(Fluent, Occlusion_List),
+    %             (Value = true ; Value = false)
+    %             ;
+    %             not(member(Fluent, Occlusion_List)),
+    %             get_assoc(Fluent, Fluent_Assignments, Value),
+    %             )
+    %         )
+    %     ), Assignments),
+    % list_to_assoc(Assignments, New_Assignment).
     
 
 
