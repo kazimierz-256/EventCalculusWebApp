@@ -55,12 +55,14 @@ compound_executable_atomic_get_assignment(Time, Action_Domain, Fluent_Assignment
         Release_Fluents),
     % IF OK, try ordered for efficiency
     % list_to_ord_set(Release_Fluents, Release_Fluents_Ordered),
-    foldl(conjunct, Causes_Conditions, Consequence),
-    no_release_fluent_in_causes(Release_Fluents, Consequence),
-    % tylko z causes
-    % todo, fix this, rethink what it means in terms of documentation
-    % there exists a valid assignment
-    getAssociationThatSatisfiesFormula(Consequence, Assignment).
+    (Causes_Conditions = [] -> 
+        empty_assoc(Assignment)
+        ;
+        foldl(conjunct, Causes_Conditions, Consequence),
+        no_release_fluent_in_causes(Release_Fluents, Consequence),
+        getAssociationThatSatisfiesFormula(Consequence, Assignment).
+    ).
+    
 
 
 compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-

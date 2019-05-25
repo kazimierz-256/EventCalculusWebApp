@@ -5,7 +5,6 @@
 
 % returns some valid mns use findall to find them all
 mns(PotentiallyExecutablesList, IsCompoundExecutablePredicate, Some_Valid_MNS) :-
-    dif(Some_Valid_MNS, []),
     check_whether_compound_is_valid([], PotentiallyExecutablesList, IsCompoundExecutablePredicate, Some_Valid_MNS).
     % is the program still valid when there is no dif?
 
