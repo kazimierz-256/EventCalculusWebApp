@@ -2,7 +2,8 @@
     [
         logic_tree_from_text/2,
         logictree/3,
-        parse_string/3
+        parse_string/3,
+        fluent/3
 	]).
 
 optional_whitespace() --> [L], {char_type(L, white)}.
