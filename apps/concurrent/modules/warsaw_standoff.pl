@@ -1,4 +1,7 @@
-:- module(warsaw_standoff, [main_warsaw/0]).
+:- module(warsaw_standoff, [
+    warsaw_standoff_domain/1,
+    warsaw_standoff_scenario/1
+    ]).
 
 %SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12 +
 
@@ -106,8 +109,8 @@ warsaw_standoff_scenario(Sc) :-
                     4-["SHOOT32"]], Compound_Actions),
     Sc = (Observations, Compound_Actions).
 
-main_warsaw :-  
-    warsaw_standoff_domain(Domain),
-    warsaw_standoff_scenario(Scenario),
-    writeln(Domain),
-    writeln(Scenario).
+% main_warsaw :-  
+%     warsaw_standoff_domain(Domain),
+%     warsaw_standoff_scenario(Scenario),
+%     writeln(Domain),
+%     writeln(Scenario).
