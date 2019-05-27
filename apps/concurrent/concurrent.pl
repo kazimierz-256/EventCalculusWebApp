@@ -41,8 +41,11 @@ prepare_initial_state_time_0(Observations, Initial_State) :-
     %generate all valid assignments
     get_assoc(0, Observations, Initial_Observation)
      ->
+        writeln(Observations),
         get_all_fluents_from_tree(Initial_Observation, Fluents),
+        writeln(Fluents),
         get_sample_fluent_assignment(Fluents, Initial_State),
+        writeln(Initial_State),
         logic_formula_satisfied(Initial_Observation, Initial_State)
     ;   empty_assoc(Initial_State).
 
@@ -72,6 +75,7 @@ run_scenario((Observations, Actions), Domain, necessarily_executable) :-
     Maxtime_OBS = Last_Observaiotn_Time,
     Maxtime = max(Maxtime_ACS, Maxtime_OBS),
     once(prepare_initial_state_time_0(Observations, _)),
+    writeln("udalo sie"),
     not((
         once(
             prepare_initial_state_time_0(Observations, Initial_State),

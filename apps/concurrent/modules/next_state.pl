@@ -51,7 +51,8 @@ vary_fluents([OCL, Occlusion_List], Fluent_Assignments, New_Assignment) :-
 
 % input: Occlusion_List, Fluent_Assignments, Next_Observation
 % output: New_Assignment
-get_valid_assignment(Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment).
+get_valid_assignment(Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment) :-
+    write(Occlusion_List).
 % use a similar technique like below but remember fluents from Next_Observation have the right to vary only if they do
 %   exist neither in occlusion list nor in fluent assignments
 % then check assignment using logic_formula_satisfied
