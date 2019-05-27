@@ -4,10 +4,6 @@
         get_all_fluents_from_tree/2
 	]).
 
-get_all_fluents_from_tree(Tree, Unique_Fluents) :-    
-    findall(Fluent, search_clause(Tree, Fluent), Fluents),
-    sort(Fluents, Unique_Fluents).
-
 search_clause(and(T1, T2), Fluent) :-
     search_clause(T1, Fluent)
     ;
@@ -32,6 +28,11 @@ search_clause(negate(T1), Fluent) :-
     search_clause(T1, Fluent).
 
 search_clause(Fluent, Fluent) :- string(Fluent).
+
+
+get_all_fluents_from_tree(Tree, Unique_Fluents) :-
+    findall(Fluent, search_clause(Tree, Fluent), Fluents),
+    sort(Fluents, Unique_Fluents).
 
 get_occlusion(Action, Action_Domain, Fluent) :-
     get_assoc(Action, Action_Domain, Action_Description),
