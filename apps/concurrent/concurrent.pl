@@ -36,25 +36,25 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
         )
     ).
     
-exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
     Query_Time =:= Time,
     logic_formula_satisfied(Query_Condition, Fluent_Assignments).
 
 exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
-    Time < Maxtime,
+    Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
     Next_Time = Time + 1,
     exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
-exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Initial_State, Observations, Actions, Action_Domain) :-
+exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Query_Time =:= Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, Executed_Action, _),
     sort(Executed_Action, Sorted_Executed_Action),
     not(sublist(Query_Action, Sorted_Executed_Action)).
 
 
-exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Initial_State, Observations, Actions, Action_Domain) :-
-    Time < Maxtime,
+exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+    Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
     Next_Time = Time + 1,
     exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
@@ -66,8 +66,8 @@ exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Flue
     sort(Executed_Action, Sorted_Executed_Action),
     sublist(Query_Action, Sorted_Executed_Action).
     
-exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Initial_State, Observations, Actions, Action_Domain) :-
-    Time < Maxtime,
+exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+    Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
     Next_Time = Time + 1,
     exists_state_at_query_time_executing_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
@@ -186,4 +186,5 @@ get_query(Query) :-
     warsaw_standoff_scenario(Scenario),
 %    get_query_from_text(Query, "necessarily executable SHOOT12, SHOOT31, SHOOT51 at 5"),
     get_query_from_text(Query, "possibly executable"),
+    pengine_output(Query),
     run_scenario(Scenario, Domain, Query).
