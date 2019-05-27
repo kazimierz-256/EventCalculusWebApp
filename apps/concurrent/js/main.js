@@ -94,7 +94,6 @@ let mainMethodsObject = {
         `parse_acs('`+ this.getActions() +`', Acs),` +
         `parse_obs('`+ this.getObservations() +`', Obs),` +
         `get_query_from_text(Query, '`+ this.query.full_text +`'),` +
-        `pengine_output(Query),`+
         `run_scenario((Obs,Acs), Domain, Query).`
         .replace(/\n/gm, "");
         console.log(command)
