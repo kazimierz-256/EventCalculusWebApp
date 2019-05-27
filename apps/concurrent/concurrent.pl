@@ -16,12 +16,6 @@
 :- use_module("modules/warsaw_standoff.pl").
 :- use_module("modules/occlusion.pl").
 
-get_sample_fluent_assignment([], Assoc) :- empty_assoc(Assoc).
-get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
-    get_sample_fluent_assignment(Fluents, Assoc),
-    (F_Value = true ; F_Value = false),
-    put_assoc(F, A, F_Value, Assoc_Including_F).
-
 exists_valid_state_at_time(Maxtime, Maxtime, _, _, _, _).
 
 exists_valid_state_at_time(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :- 
