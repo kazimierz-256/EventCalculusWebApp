@@ -93,7 +93,7 @@ let mainMethodsObject = {
         verbose_command(`warsaw_standoff_domain(Domain),` +
             ` warsaw_standoff_scenario(Scenario),` +
             `get_query_from_text(Query, 'possibly executable'),` +
-            `run_scenario(Domain, Scenario, Query).`
+            `run_scenario(Scenario, Domain, Query).`
                 .replace(/\n/gm, ""),
             () => {
                 this.answer = true;
