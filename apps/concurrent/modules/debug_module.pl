@@ -9,5 +9,5 @@ print_all_values(DOMAIN) :-
 
 print_vals(_, [], _).
 print_vals(DOMAIN, [H|T]) :-
-    get_from_domain(H, DOMAIN, VALUE),
+    get_from_domain(H, DOMAIN, _),
     print_vals(DOMAIN, T).

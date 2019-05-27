@@ -2,7 +2,7 @@
     [
         get_occlusion/3,
         get_all_fluents_from_tree/2
-	]).
+    ]).
 
 get_all_fluents_from_tree(Tree, Unique_Fluents) :-    
     findall(Fluent, search_clause(Tree, Fluent), Fluents),

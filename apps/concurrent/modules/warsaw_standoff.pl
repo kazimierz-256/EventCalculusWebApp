@@ -36,7 +36,7 @@
 warsaw_standoff_domain(Domain) :-
     %SHOOT12
     list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Shoot12_Causes_List),
-    
+
     %SHOOT13
     list_to_assoc(["causes"-(negate("ALIVE3"), and("ALIVE1", and(negate("JAMMED1"), "FACING13")))], Shoot13_Causes_List),
 
@@ -98,7 +98,15 @@ warsaw_standoff_domain(Domain) :-
 
 warsaw_standoff_scenario(Sc) :-
     %OBS
-    list_to_assoc([0-and("ALIVE1", and("ALIVE2", and("ALIVE3"), and(negate("JAMMED1"), and(negate("JAMMED2"), and(negate("JAMMED3"), and("FACING12", and("FACING23", and("FACING31"))))))))], Observations),
+    list_to_assoc([0-and("ALIVE1",
+        and("ALIVE2",
+            and("ALIVE3",
+                and(negate("JAMMED1"),
+                and(negate("JAMMED2"),
+                and(negate("JAMMED3"),
+                and("FACING12",
+                    and("FACING23",
+                        "FACING31"))))))))], Observations),
 
     %ACS
     list_to_assoc([
