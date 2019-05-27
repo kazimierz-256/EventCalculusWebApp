@@ -27,7 +27,7 @@ get_nonempty_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_A
 %   others must remain intact as in Fluent_Assignments
 %   the conjunction of all consequences of MNS_Executed_Action (extract Consequence from compound_executable_atomic_get_assignment?)
 %   Observation from next time must hold so if there are new fluents (they were smthing at the beginning but only now we know)
-vary_fluents([], Fluent_Assignments, [], Fluent_Assignments):-
+vary_fluents([], Fluent_Assignments, [], Fluent_Assignments).
 vary_fluents([], Fluent_Assignments, [Observation | Next_Observation], New_Assignment) :-
     vary_fluents([], Fluent_Assignments, Next_Observation, Less_New_Assignment),
     (put_assoc(Observation, Less_New_Assignment, true, New_Assignment) ; put_assoc(Observation, Less_New_Assignment, false, New_Assignment)).
@@ -41,7 +41,7 @@ vary_fluents([OCL | Occlusion_List], Fluent_Assignments, Next_Observation, New_A
     (
         vary_fluents(Occlusion_List, Fluent_Assignments, Next_Observation, Less_New_Assignment),
         (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, false, New_Assignment))
-    )).
+    ).
 
 
 
@@ -101,7 +101,6 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
                 )
             )
         )
-    )
     ; 
     (
         MNS_Executed_Action = [],
