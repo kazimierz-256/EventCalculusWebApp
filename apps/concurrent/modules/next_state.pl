@@ -53,15 +53,14 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
         % generate all possible assignments
         % use the following predicate get_sample_fluent_assignment
         % should determine all fluents taking part in: 
-        %   Fluent_Assignments,
-        %   next time observation if any,
-        %   all consequences of actions (causes) if any,
-        %   occlusion list
+        %   Fluent_Assignments
+        %   next time observation if any
+        %   occlusion list (already found)
         % must satisfy:
-        %  the conjunction of all consequences of MNS_Executed_Action
-        %  the only variables that change 2^n ways are those from Unique_Occlusion_List
-        %  others remain intact as in Fluent_Assignments
-        %  Observation from next time must hold so if there are new fluents, then change them also in 2^n ways (they were smthing at the beginning but now we know)
+        %  the only variables that change in 2^n ways are those from Unique_Occlusion_List and those in upcoming observation that are new, they're absent in Fluent assignments and occlusion
+        %  others must remain intact as in Fluent_Assignments
+        %  the conjunction of all consequences of MNS_Executed_Action (extract Consequence from compound_executable_atomic_get_assignment?)
+        %  Observation from next time must hold so if there are new fluents (they were smthing at the beginning but only now we know)
         Next_Time = Time + 1,
         (get_assoc(Next_Time, Observations, Next_Observation) ->
             get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment).
