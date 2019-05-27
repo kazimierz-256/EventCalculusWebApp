@@ -3,7 +3,7 @@
 %   - debug.pl for local debugging
 %   - daemon.pl to run pengines as a Unix service
 
-:- use_module(library(pengines)).
+:- use_module(pengines_unsandboxed).
 :- use_module(library(http/http_error)).
 :- use_module(server).
 :- use_module(storage).

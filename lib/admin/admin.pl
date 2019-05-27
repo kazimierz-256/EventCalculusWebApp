@@ -5,7 +5,7 @@
 :- use_module(library(http/http_parameters)).
 :- use_module(library(pairs)).
 :- use_module(library(settings)).
-:- use_module(library(pengines)).
+:- use_module("../../pengines_unsandboxed.pl").
 
 
 :- http_handler(root(admin/show_settings), show_settings, []).

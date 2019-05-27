@@ -34,7 +34,7 @@
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_json)).
 :- use_module(library(http/http_stream)).
-:- use_module(library(pengines)).
+:- use_module("../../pengines_unsandboxed.pl").
 
 :- http_handler(root(statistics), statistics, []).
 
