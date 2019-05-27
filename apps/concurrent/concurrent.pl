@@ -11,66 +11,92 @@
 :- use_module("modules/mns.pl").
 :- use_module("modules/potentially_executable.pl").
 :- use_module("modules/user_input_parsing.pl").
+:- use_module("modules/query_parsing.pl").
+:- use_module("modules/next_state.pl").
+:- use_module("modules/warsaw_standoff.pl").
+:- use_module("modules/occlusion.pl").
 
-% Kazik
+get_sample_fluent_assignment([], Assoc) :- empty_assoc(Assoc).
+get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
+    get_sample_fluent_assignment(Fluents, Assoc),
+    (F_Value = true ; F_Value = false),
+    put_assoc(F, A, F_Value, Assoc_Including_F).
 
-rw(ACTION_DOMAIN, SCENARIO, QUERY):-
-    ACTION_DOMAIN=SCENARIO, SCENARIO=QUERY.
+exists_valid_state_at_time(Maxtime, Maxtime, _, _, _, _).
 
-% possiblyExecutableScenario(+ACTION_DOMAIN, +SCENARIO, -VALID_MODEL) :- 
-% 	getMaximumDefinedTime(SCENARIO, MAXTIME),
-% 	model(ACTION_DOMAIN, SCENARIO, MAXTIME, VALID_MODEL, false).
+exists_valid_state_at_time(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :- 
+    Time < Maxtime,
+    get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
+    Next_Time = Time + 1,
+    exists_valid_state_at_time(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
 
-% model(+ACTION_DOMAIN, +SCENARIO, 0, -[INITIAL_STATE]) :- .
+exists_state_without_future(Maxtime, Time, Initial_State, Observations, Actions, Action_Domain) :-
+    Time < Maxtime,
+    (
+        not(get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, _))
+        ;
+        (
+            get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
+            Next_Time = Time + 1,
+            exists_state_without_future(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain)
+        )
+    ).
+    
 
-% model(+ACTION_DOMAIN, +SCENARIO, +T, +ONLY_EXECUTABLE_MODELS, -NEW_MODEL) :-
-% 	model(ACTION_DOMAIN, SCENARIO, T-1, ONLY_EXECUTABLE_MODELS, PREVIOUS_MODEL),
-% 	(ONLY_EXECUTABLE_MODELS = true ->
-% 	nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS)
-% 	; nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS) ; PREVIOUS_MODEL).
-
-% nextValidModel(ACTION_DOMAIN, SCENARIO, T, NEW_MODEL, ONLY_EXECUTABLE_MODELS).
-
-% assignementSatisfyingConstraint(CONSTRAINT_LOGIC_TREE, ASSIGNMENT) :-
-% 	extractFluents(CONSTRAINT_LOGIC_TREE, FLUENTS),
-
-% state(TIME, FLUENT_ASSIGNMENTS)
-
-% Ola
-
-domain(LIST, DOMAIN) :-
-    list_to_assoc(LIST, DOMAIN).
-
-put_into_domain(KEY, VALUE, DOMAIN, NEW_DOMAIN) :-
-   	put_assoc(KEY, DOMAIN, VALUE, NEW_DOMAIN).
-
-get_from_domain(KEY, DOMAIN, VALUE) :-
-    get_assoc(KEY, DOMAIN, VALUE).
-
-% TODO rewrite this at the very end
-run_scenario([], _, Time).
-run_scenario([(_, Action)|T], DOMAIN, Time) :-
-    get_from_domain(Action, DOMAIN, VALUE),
-    % TODO: make sure state changes are allowed when causes/releases action is executed
-    run_scenario(T, DOMAIN, Time + 1).
-
-
-% domain = {"SHOOT12" : {"causes": (not("ALIVE2"), and("ALIVE1", and(not("JAMMED1"), "FACING12")))}}
-% get_sample_domain(Sample_Domain) :- 
-%     list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Causes_List),
-%     list_to_assoc(["SHOOT12"-Causes_List], Sample_Domain).
-% get_sample_domain_list(Sample_Domain) :- 
-%     list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Causes_List),
-%     Sample_Domain= ["SHOOT12"-Causes_List].
+prepare_initial_state_time_0(Observations, Initial_State) :-
+    %generate all valid assignments
+    get_assoc(0, Observations, Initial_Observation) ->
+    (
+        get_all_fluents_from_tree(Initial_Observation, Fluents),
+        get_sample_fluent_assignment(Fluents, Initial_State),
+        logic_formula_satisfied(Initial_Observation, Initial_State).
+    )
+    ;
+    empty_assoc(Initial_State).
 
 
-% :- get_sample_domain(Domain),
-%     list_to_assoc(["ALIVE1"-true, "JAMMED1"-false, "FACING12"-true], Sample_Fluent_Assignments),
-%     potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, "SHOOT12"),
-%     writeln("ok").
+run_scenario((Observations, Actions), Domain, possibly_executable) :-
+    writeln("possibly executable scenario"),
+    %TODO should we care about observations later than (1+last planned action moment)
+    max_assoc(Actions, Last_Action_Time, _),
+    Maxtime = Last_Action_Time + 1,
+    once(
+        (
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_valid_state_at_time(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    ).
 
-% :- get_sample_domain_list(Domain),
-%     writeln(Domain),
-%     list_to_assoc(["ALIVE1"-true, "JAMMED1"-false, "FACING12"-true], Sample_Fluent_Assignments),
-%     findall(Potentially_Exec, list_potentially_executable_atomic(4, Domain, Sample_Fluent_Assignments, Potentially_Exec), Bag),
-%     write(Bag). 
+
+run_scenario((Observations, Actions), Domain, necessarily_executable) :-
+    writeln("necessarily executable scenario"),
+    %TODO should we care about observations later than (1+last planned action moment)
+    max_assoc(Actions, Last_Action_Time, _),
+    Maxtime = Last_Action_Time + 1,
+    once(prepare_initial_state_time_0(Observations, _)),
+    not((
+        once(
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    )).
+
+
+
+run_query(possibly_executable()) :-
+    writeln("possibly executable scenario").
+
+run_query(necessarily_accessible(Tree, Time)) :-
+    writeln("possibly accessible gamma at t").
+
+run_query(necessarily_executable(List, Time)) :-
+    writeln("possibly accessible gamma at t").
+
+run_query(possibly_executable(List, Time)) :-
+    writeln("possibly accessible gamma at t").
+
+
+:-  warsaw_standoff_domain(Domain),
+    warsaw_standoff_scenario(Scenario),
+    get_query_from_text(Query, "necessarily executable SHOOT12, SHOOT31, SHOOT51 at 5"),
+    run_scenario(Scenario, Domain, Query).
