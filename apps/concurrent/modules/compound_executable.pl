@@ -1,8 +1,8 @@
 :- module(compound_executable,
     [
-        compound_executable_atomic_get_assignment/4
+        compound_executable_atomic/4
 	]).
-
+:- use_module(potentially_executable).
 
 % NOT ORDERED
 no_release_fluent_in_causes(Release_Fluents_Ordered, Condition) :-
@@ -36,7 +36,7 @@ conjunct(Statement, [], Statement).
 conjunct(Statement, Acc1, and(Statement, Acc1)).
 
 
-compound_executable_atomic_get_assignment(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-
+compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-
     dif(Compound_Action, []),
     assoc_to_list(Action_Domain, Action_Domain_List),
     maplist(potentially_executable_atomic(Time, Action_Domain_List, Fluent_Assignments), Compound_Action),
