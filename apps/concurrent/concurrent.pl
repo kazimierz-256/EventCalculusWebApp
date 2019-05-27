@@ -48,12 +48,15 @@ prepare_initial_state_time_0(Observations, Initial_State) :-
     ;
     empty_assoc(Initial_State).
 
-
+% outputs nothing, succeeds iff the scenario is possibly executable
 run_scenario((Observations, Actions), Domain, possibly_executable) :-
     writeln("possibly executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
-    Maxtime = Last_Action_Time + 1,
+    Maxtime_ACS = Last_Action_Time + 1,
+    max_assoc(Observations, Last_Observaiotn_Time, _),
+    Maxtime_OBS = Last_Observaiotn_Time,
+    Maxtime = max(Maxtime_ACS, Maxtime_OBS),
     once(
         (
             prepare_initial_state_time_0(Observations, Initial_State),
@@ -61,12 +64,15 @@ run_scenario((Observations, Actions), Domain, possibly_executable) :-
         )
     ).
 
-
+% outputs nothing, succeeds iff the scenario is necessarily executable
 run_scenario((Observations, Actions), Domain, necessarily_executable) :-
     writeln("necessarily executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
-    Maxtime = Last_Action_Time + 1,
+    Maxtime_ACS = Last_Action_Time + 1,
+    max_assoc(Observations, Last_Observaiotn_Time, _),
+    Maxtime_OBS = Last_Observaiotn_Time,
+    Maxtime = max(Maxtime_ACS, Maxtime_OBS),
     once(prepare_initial_state_time_0(Observations, _)),
     not((
         once(
