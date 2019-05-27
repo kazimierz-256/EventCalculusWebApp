@@ -11,8 +11,8 @@
     height: 15em;
 }
 
-#answer > * {
-    padding-top: 2em;
+#answer {
+    padding-top: 1em;
 }
 
 body {
