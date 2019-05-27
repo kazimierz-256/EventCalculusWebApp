@@ -31,7 +31,6 @@ one_or_more_space() --> [].
 logic_tree_from_text(STRING, T) :-
     normalize_space(string(String_Cleaned), STRING),
     string_chars(String_Cleaned, CHARS),
-    % phrase(cleanWhiteSpace(CHARS2), CHARS),
     phrase(logictree(T), CHARS).
 
 logictree(T) --> optional_whitespace(),logictreeor(T),optional_whitespace().

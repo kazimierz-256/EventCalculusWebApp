@@ -15,13 +15,13 @@ parse_query(possibly_executable) --> parse_string("possibly executable").
 parse_query(necessarily_accessible(Tree, Time)) -->
     parse_string("necessarily accessible "), logictree(Tree), parse_string(" at "), integer(Time).
 parse_query(possibly_accessible(Tree, Time)) -->
-    parse_string("possibly accessible "), logictree(Tree), parse_string(" at "), integer(Time). 
+    parse_string("possibly accessible "), logictree(Tree), parse_string(" at "), integer(Time).
 parse_query(necessarily_executable(Action, Time)) -->
     parse_string("necessarily executable "), csv_to_list(Action), parse_string(" at "), integer(Time).
 parse_query(possibly_executable(Action, Time)) -->
     parse_string("possibly executable "), csv_to_list(Action), parse_string(" at "), integer(Time).
 
-get_query_from_text(Query, Text) :- 
+get_query_from_text(Query, Text) :-
     normalize_space(string(String_Cleaned), Text),
     string_chars(String_Cleaned, Chars),
     phrase(parse_query(Query), Chars).

@@ -28,7 +28,7 @@ let dropdown = new Vue({
             form.observations = answer.observations;
             form.query = new Query(answer.query.id, answer.query.type_text, answer.query.condition, answer.query.time, answer.query.action, answer.query.full_text);
             changeSelection(answer.query.type_text, form.query);
-            modelData.debug = "parse_domain(\'"+ answer.action_domain +"\', Domain).";
+            modelData.debug = "parse_domain(\'" + answer.action_domain + "\', Domain).";
         }
     },
     mounted() {
@@ -58,7 +58,7 @@ const debugText = "domain([], D),\n" +
 //const debugText2 = "parse_domain(" + answer.action_domain + "), Domain)."
 const debugText3 = "parse_domain('SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12', Domain).";
 
-let getNewQuery = function () { return  new Query(``, ``, ``, ``, ``, ``); };
+let getNewQuery = function () { return new Query(``, ``, ``, ``, ``, ``); };
 let modelData = {
     action_domain: ``,
     answer: undefined,
@@ -89,12 +89,14 @@ let mainMethodsObject = {
         );
     },
     retrieve_answer: function () {
-        // verbose_command("test(9,Y).");
         let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
-        verbose_command(`rw(` +
-            `'${cleanse(this.action_domain)}',` +
-            `'${cleanse(this.getScenarioString())}',` +
-            `'${cleanse(this.getQueryString(this.query))}').`
+        verbose_command(
+            `parse_domain('` + this.action_domain+ `', Domain),` +
+            `parse_acs('`+ this.getActions() +`', Acs),` +
+            `parse_obs('`+ this.getObservations() +`', Obs),` +
+            `get_query_from_text(Query, '`+ this.query.full_text +`'),` +
+            `pengine_output(Query),`+
+            `run_scenario((Obs,Acs), Domain, Query).`
                 .replace(/\n/gm, ""),
             () => {
                 this.answer = true;
@@ -157,7 +159,7 @@ let form = new Vue({
 
 // PROLOG
 let verbose_command = (command, result_method, onfailure) => {
-    getAllSolutions('concurrent', command, undefined, results => {
+    getPengineAwaitable('concurrent', command, undefined, results => {
         // console.log(command);
         // console.log(results);
         if (result_method)
@@ -169,6 +171,5 @@ let verbose_command = (command, result_method, onfailure) => {
     }, undefined, undefined, (par) => {
         M.toast({ html: par.data, classes: 'rounded' });
         console.error(par);
-    }
-    );
+    }, undefined);
 }
