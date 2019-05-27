@@ -67,6 +67,9 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
         % assoc_to_list(Action_Domain, Action_Domain_List),
         writeln('Actions:'),
 
+        writeln(Time),
+        writeln(Action_Domain),
+        writeln(Fluent_Assignments),
         writeln(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments)),
 
         findall(

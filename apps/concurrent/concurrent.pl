@@ -55,7 +55,7 @@ prepare_initial_state_time_0(Observations, Initial_State) :-
     ;   empty_assoc(Initial_State).
 
 % outputs nothing, succeeds iff the scenario is possibly executable
-run_scenario((Observations, Actions), Domain, possibly_executable) :-
+run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
     writeln("possibly executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
@@ -71,7 +71,7 @@ run_scenario((Observations, Actions), Domain, possibly_executable) :-
     ).
 
 % outputs nothing, succeeds iff the scenario is necessarily executable
-run_scenario((Observations, Actions), Domain, necessarily_executable) :-
+run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
     writeln("necessarily executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
@@ -80,6 +80,7 @@ run_scenario((Observations, Actions), Domain, necessarily_executable) :-
     Maxtime_OBS = Last_Observaiotn_Time,
     Maxtime = max(Maxtime_ACS, Maxtime_OBS),
     once(prepare_initial_state_time_0(Observations, _)),
+    writeln(Observations),
     not(once(
         (
             prepare_initial_state_time_0(Observations, Initial_State),
@@ -117,6 +118,7 @@ run_query(possibly_executable(List, Time)) :-
 
 
 :-  warsaw_standoff_domain(Domain),
+write(Domain),
     warsaw_standoff_scenario(Scenario),
 %    get_query_from_text(Query, "necessarily executable SHOOT12, SHOOT31, SHOOT51 at 5"),
     get_query_from_text(Query, "necessarily executable"),

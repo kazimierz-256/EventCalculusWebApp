@@ -36,7 +36,7 @@
 warsaw_standoff_domain(Domain) :-
     %SHOOT12
     list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Shoot12_Causes_List),
-    
+
     %SHOOT13
     list_to_assoc(["causes"-(negate("ALIVE3"), and("ALIVE1", and(negate("JAMMED1"), "FACING13")))], Shoot13_Causes_List),
 
