@@ -30,6 +30,7 @@ exists_state_without_future(Maxtime, Time, Initial_State, Observations, Actions,
         not(get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, _))
         ;
         (
+            write("exists_state"),
             get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
             Next_Time = Time + 1,
             exists_state_without_future(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain)
@@ -79,7 +80,6 @@ run_scenario((Observations, Actions), Domain, necessarily_executable) :-
     Maxtime_OBS = Last_Observaiotn_Time,
     Maxtime = max(Maxtime_ACS, Maxtime_OBS),
     once(prepare_initial_state_time_0(Observations, _)),
-    writeln("udalo sie"),
     not(once(
         (
             prepare_initial_state_time_0(Observations, Initial_State),
