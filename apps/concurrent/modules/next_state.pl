@@ -1,7 +1,6 @@
 :- module(next_state, 
     [
-        get_next_state/7,
-        get_sample_fluent_assignment/2
+        get_next_state/7
 	]).
 :- use_module(mns).
 :- use_module(compound_executable).
@@ -15,28 +14,7 @@ get_nonempty_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_A
     dif(Action_Decomposition, []).
     % get MNS sample using compound executable
 
-get_sample_fluent_assignment([], Assoc) :- empty_assoc(Assoc).
-get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
-    get_sample_fluent_assignment(Fluents, Assoc),
-    (F_Value = true ; F_Value = false),
-    put_assoc(F, Assoc, F_Value, Assoc_Including_F).
 
-vary_fluents([], Fluent_Assignments, Fluent_Assignments).
-vary_fluents([OCL, Occlusion_List], Fluent_Assignments, New_Assignment) :-
-    get_assoc(OCL, Fluent_Assignments, _) ->
-    (   del_assoc(OCL, Fluent_Assignments, _, Less_Fluent),
-        vary_fluents(Occlusion_List, Less_Fluent, Less_New_Assignment),
-        (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, true, New_Assignment))
-    )
-    ;
-    (
-        vary_fluents(Occlusion_List, Fluent_Assignments, Less_New_Assignment),
-        (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, true, New_Assignment))
-    )
-    .
-
-
-% THIS HERE IS TOTALLY NOT READY, shoud implement new assignment based on multiple conditions
 % generate all possible assignments
 % use the following predicate get_sample_fluent_assignment
 % should determine all fluents taking part in: 
@@ -49,21 +27,39 @@ vary_fluents([OCL, Occlusion_List], Fluent_Assignments, New_Assignment) :-
 %   others must remain intact as in Fluent_Assignments
 %   the conjunction of all consequences of MNS_Executed_Action (extract Consequence from compound_executable_atomic_get_assignment?)
 %   Observation from next time must hold so if there are new fluents (they were smthing at the beginning but only now we know)
+vary_fluents([], Fluent_Assignments, [], Fluent_Assignments).
+vary_fluents([], Fluent_Assignments, [Observation | Next_Observation], New_Assignment) :-
+    vary_fluents([], Fluent_Assignments, Next_Observation, Less_New_Assignment),
+    (put_assoc(Observation, Less_New_Assignment, true, New_Assignment) ; put_assoc(Observation, Less_New_Assignment, false, New_Assignment)).
+vary_fluents([OCL, Occlusion_List], Fluent_Assignments, Next_Observation, New_Assignment) :-
+    get_assoc(OCL, Fluent_Assignments, _) ->
+    (   del_assoc(OCL, Fluent_Assignments, _, Less_Fluent),
+        vary_fluents(Occlusion_List, Less_Fluent, Next_Observation, Less_New_Assignment),
+        (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, false, New_Assignment))
+    )
+    ;
+    (
+        vary_fluents(Occlusion_List, Fluent_Assignments, Next_Observation, Less_New_Assignment),
+        (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, false, New_Assignment))
+    ).
+
+
 
 % input: Occlusion_List, Fluent_Assignments, Next_Observation
 % output: New_Assignment
 get_valid_assignment(Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment) :-
-    write(Occlusion_List).
-% use a similar technique like below but remember fluents from Next_Observation have the right to vary only if they do
-%   exist neither in occlusion list nor in fluent assignments
-% then check assignment using logic_formula_satisfied
-
+    findall(Fluent, (search_clause(Next_Observation, Fluent), not(get_assoc(Fluent, Fluent_Assignments, _)), not(member(Fluent, Occlusion_List, _))), Fluents),
+    sort(Fluents, Unique_Fluents),
+    vary_fluents(Occlusion_List, Fluent_Assignments, Unique_Fluents, New_Assignment),
+    logic_formula_satisfied(Next_Observation, New_Assignment).
 
 % input: Occlusion_List, Fluent_Assignments
 % output: New_Assignment
 get_valid_assignment(Occlusion_List, Fluent_Assignments, New_Assignment) :-
-    vary_fluents(Occlusion_List, Fluent_Assignments, New_Assignment).
+    vary_fluents(Occlusion_List, Fluent_Assignments, [], New_Assignment).
 
+conjunct(Statement, [], Statement).
+conjunct(Statement, Acc1, and(Statement, Acc1)).
 
 get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, MNS_Executed_Action, New_Assignment) :-
     get_assoc(Time, Actions, ACS_Compound_Action) -> 
@@ -79,10 +75,27 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
         sort(Occlusion_List, Unique_Occlusion_List),
         
         Next_Time = Time + 1,
+        
+        %prepare causes postconditions
+        findall(Causes_Condition,
+        (
+            get_assoc(Action, Action_Domain, Action_Description),
+            get_assoc("causes", Action_Description, (Causes_Condition, _))
+        ),
+        Causes_Conditions),
+
         (get_assoc(Next_Time, Observations, Next_Observation) ->
             get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment)
         ;
             get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment)
+        ),
+        (
+            Causes_Conditions = [] -> true
+        ; 
+            (
+                foldl(conjunct, Causes_Conditions, Consequence),
+                logic_formula_satisfied(Consequence, New_Assignment)
+            )
         )
     )
     ; 

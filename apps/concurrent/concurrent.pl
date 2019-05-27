@@ -37,6 +37,12 @@ exists_state_without_future(Maxtime, Time, Initial_State, Observations, Actions,
     ).
     
 
+get_sample_fluent_assignment([], Assoc) :- empty_assoc(Assoc).
+get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
+    get_sample_fluent_assignment(Fluents, Assoc),
+    (F_Value = true ; F_Value = false),
+    put_assoc(F, Assoc, F_Value, Assoc_Including_F).
+
 prepare_initial_state_time_0(Observations, Initial_State) :-
     %generate all valid assignments
     get_assoc(0, Observations, Initial_Observation)
