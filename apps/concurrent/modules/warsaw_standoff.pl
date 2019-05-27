@@ -98,7 +98,7 @@ warsaw_standoff_domain(Domain) :-
 
 warsaw_standoff_scenario(Sc) :-
     %OBS
-    list_to_assoc([0-and("ALIVE1", and("ALIVE2", and("ALIVE3"), and(negate("JAMMED1"), and(negate("JAMMED2"), and(negate("JAMMED3"), and("FACING12", and("FACING23", and("FACING31"))))))))], Observations),
+    list_to_assoc([0-and("ALIVE1", and("ALIVE2", and("ALIVE3", and(negate("JAMMED1"), and(negate("JAMMED2"), and(negate("JAMMED3"), and("FACING12", and("FACING23", and("FACING31")))))))))], Observations),
 
     %ACS
     list_to_assoc([

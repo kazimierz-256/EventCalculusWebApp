@@ -41,9 +41,7 @@ prepare_initial_state_time_0(Observations, Initial_State) :-
     %generate all valid assignments
     get_assoc(0, Observations, Initial_Observation)
      ->
-        writeln(Observations),
         get_all_fluents_from_tree(Initial_Observation, Fluents),
-        writeln(Fluents),
         get_sample_fluent_assignment(Fluents, Initial_State),
         writeln(Initial_State),
         logic_formula_satisfied(Initial_Observation, Initial_State)
