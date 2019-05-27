@@ -5,7 +5,6 @@
 	]).
 
 
-:- use_module("modules/debug_module.pl").
 :- use_module("modules/logic_tree_parsing.pl").
 :- use_module("modules/logic_formula_satisfiability.pl").
 :- use_module("modules/mns.pl").
@@ -114,6 +113,9 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
 %
 %run_query(possibly_executable(List, Time)) :-
 %    writeln("possibly accessible gamma at t").
+
+get_query(Query) :-
+    get_query_from_text(Query, "possibly executable").
 
 
 :-  warsaw_standoff_domain(Domain),

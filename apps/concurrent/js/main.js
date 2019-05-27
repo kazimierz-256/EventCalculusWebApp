@@ -89,12 +89,11 @@ let mainMethodsObject = {
         );
     },
     retrieve_answer: function () {
-        // verbose_command("test(9,Y).");
         let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
-        verbose_command(`rw(` +
-            `'${cleanse(this.action_domain)}',` +
-            `'${cleanse(this.getScenarioString())}',` +
-            `'${cleanse(this.getQueryString(this.query))}').`
+        verbose_command(`warsaw_standoff_domain(Domain),` +
+            ` warsaw_standoff_scenario(Scenario),` +
+            `get_query_from_text(Query, 'possibly executable'),` +
+            `run_scenario(Domain, Scenario, Query).`
                 .replace(/\n/gm, ""),
             () => {
                 this.answer = true;
