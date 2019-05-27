@@ -1,5 +1,5 @@
 :- module(concurrent, 
-    [   rw/3,
+    [
         logic_tree_from_text/2,
         logic_formula_satisfied/2
 	]).
@@ -39,14 +39,12 @@ exists_state_without_future(Maxtime, Time, Initial_State, Observations, Actions,
 
 prepare_initial_state_time_0(Observations, Initial_State) :-
     %generate all valid assignments
-    get_assoc(0, Observations, Initial_Observation) ->
-    (
+    get_assoc(0, Observations, Initial_Observation)
+     ->
         get_all_fluents_from_tree(Initial_Observation, Fluents),
         get_sample_fluent_assignment(Fluents, Initial_State),
-        logic_formula_satisfied(Initial_Observation, Initial_State).
-    )
-    ;
-    empty_assoc(Initial_State).
+        logic_formula_satisfied(Initial_Observation, Initial_State)
+    ;   empty_assoc(Initial_State).
 
 % outputs nothing, succeeds iff the scenario is possibly executable
 run_scenario((Observations, Actions), Domain, possibly_executable) :-
@@ -81,6 +79,19 @@ run_scenario((Observations, Actions), Domain, necessarily_executable) :-
         )
     )).
 
+run_scenario((Observations, Actions), Domain, necessarily_executable(Query_Actions, Time)) :-
+    writeln("necessarily executable A at t when scenario"),
+    %TODO should we care about observations later than (1+last planned action moment)
+    max_assoc(Actions, Last_Action_Time, _),
+    Maxtime = Last_Action_Time + 1,
+    once(prepare_initial_state_time_0(Observations, _)),
+    not((
+        once(
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    )).
+
 
 
 run_query(possibly_executable()) :-
@@ -98,5 +109,6 @@ run_query(possibly_executable(List, Time)) :-
 
 :-  warsaw_standoff_domain(Domain),
     warsaw_standoff_scenario(Scenario),
-    get_query_from_text(Query, "necessarily executable SHOOT12, SHOOT31, SHOOT51 at 5"),
+%    get_query_from_text(Query, "necessarily executable SHOOT12, SHOOT31, SHOOT51 at 5"),
+    get_query_from_text(Query, "necessarily executable"),
     run_scenario(Scenario, Domain, Query).

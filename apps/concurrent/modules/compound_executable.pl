@@ -1,6 +1,6 @@
-:- module(compound_executable_atomic, 
+:- module(compound_executable,
     [
-        compound_executable_atomic/4,
+        compound_executable_atomic_get_assignment/4
 	]).
 
 
@@ -39,7 +39,7 @@ conjunct(Statement, Acc1, and(Statement, Acc1)).
 compound_executable_atomic_get_assignment(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-
     dif(Compound_Action, []),
     assoc_to_list(Action_Domain, Action_Domain_List),
-    maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Compound_Action),
+    maplist(potentially_executable_atomic(Time, Action_Domain_List, Fluent_Assignments), Compound_Action),
     findall(Causes_Condition,
         (
             get_assoc(Action, Action_Domain, Action_Description),
@@ -54,10 +54,9 @@ compound_executable_atomic_get_assignment(Time, Action_Domain, Fluent_Assignment
         Release_Fluents),
     % IF OK, try ordered for efficiency
     % list_to_ord_set(Release_Fluents, Release_Fluents_Ordered),
-    (Causes_Conditions = [] -> 
-        true
-        ;
-        foldl(conjunct, Causes_Conditions, Consequence),
-        no_release_fluent_in_causes(Release_Fluents, Consequence),
-        once(getAssociationThatSatisfiesFormula(Consequence, _)).
+    (Causes_Conditions = []
+        ->  true
+        ;   foldl(conjunct, Causes_Conditions, Consequence),
+            no_release_fluent_in_causes(Release_Fluents, Consequence),
+            once(getAssociationThatSatisfiesFormula(Consequence, _))
     ).
