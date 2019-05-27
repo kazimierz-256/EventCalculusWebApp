@@ -66,7 +66,7 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
     once(
         (
             prepare_initial_state_time_0(Observations, Initial_State),
-            exists_valid_state_at_time(Maxtime, 0, Initial_State, Observations, Actions, Domain)
+            exists_valid_state_at_time(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     ).
 
@@ -84,7 +84,7 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
     not(once(
         (
             prepare_initial_state_time_0(Observations, Initial_State),
-            exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Domain)
+            exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )).
 
