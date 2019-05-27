@@ -16,7 +16,7 @@
 :- use_module("modules/warsaw_standoff.pl").
 :- use_module("modules/occlusion.pl").
 
-exists_valid_state_at_time(Maxtime, Maxtime, _, _, _, _).
+exists_valid_state_at_time(Maxtime, Maxtime1, _, _, _, _) :- Maxtime =:= Maxtime1.
 
 exists_valid_state_at_time(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :- 
     Time < Maxtime,
