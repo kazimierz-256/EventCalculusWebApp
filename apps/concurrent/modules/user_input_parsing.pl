@@ -5,6 +5,8 @@
         parse_obs/2
 	]).
 
+:- use_module("logic_tree_parsing.pl").
+
 split_list_by_keyword(_, [], L1, L1, L2) :-
     L2 = [].
 split_list_by_keyword(Keyword, [Keyword | L2], L1, L1, L2).
@@ -24,7 +26,9 @@ get_action_and_val([Action, "causes"|Rest], Action, Value) :-
     atom_string(Atom_Ef, Effect),
     atomic_list_concat(If_Parts, ' ', Atom_If), 
     atom_string(Atom_If, If),
-    put_assoc("causes", Assoc, (Effect, If), Value ).
+    logic_tree_from_text(Effect, Effect_T),
+    logic_tree_from_text(If, If_T),
+    put_assoc("causes", Assoc, (Effect_T, If_T), Value ).
 
 get_action_and_val([Action, "releases"|Rest], Action, Value) :-
     empty_assoc(Assoc),
@@ -34,7 +38,9 @@ get_action_and_val([Action, "releases"|Rest], Action, Value) :-
     atom_string(Atom_Ef, Effect),
     atomic_list_concat(If_Parts, ' ', Atom_If), 
     atom_string(Atom_If, If),
-    put_assoc("releases", Assoc, (Effect, If), Value ).
+    logic_tree_from_text(Effect, Effect_T),
+    logic_tree_from_text(If, If_T),
+    put_assoc("releases", Assoc, (Effect_T, If_T), Value ).
 
 get_action_and_val(["impossible", Action, "at", Time_Str], Action, Value) :-
     empty_assoc(Assoc),
@@ -121,9 +127,11 @@ parse_obs_line(Text, Obs, Time) :-
 
 parse_parts_obs([], Observations, Observations).
 parse_parts_obs([H|T], Assoc, Observations) :-
-    normalize_space(atom(Line), H),
+    normalize_space(string(Line), H),
     parse_obs_line(Line, Obs, Time),
-   	put_assoc(Time, Assoc, Obs, Observations_Tmp),
+    pengine_output(Obs),
+    logic_tree_from_text(Obs, T),
+   	put_assoc(Time, Assoc, T, Observations_Tmp),
     parse_parts_obs(T, Observations_Tmp, Observations).
 
 parse_obs(Text, Observations) :-

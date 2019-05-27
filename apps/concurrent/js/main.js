@@ -90,10 +90,14 @@ let mainMethodsObject = {
     },
     retrieve_answer: function () {
         let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
-        verbose_command(`warsaw_standoff_domain(Domain),` +
-            ` warsaw_standoff_scenario(Scenario),` +
+        verbose_command(`parse_domain('` + this.action_domain+ `', Domain),` +
+            `parse_acs('`+ this.getActions() +`', Acs),` +
+            `parse_obs('`+ this.getObservations() +`', Obs),` +
             `get_query_from_text(Query, 'possibly executable'),` +
-            `run_scenario(Domain, Scenario, Query).`
+            `pengine_output(Domain),`+
+            `pengine_output(Acs),`+
+            `pengine_output(Obs),`+
+            `run_scenario((Obs,Acs), Domain, Query).`
                 .replace(/\n/gm, ""),
             () => {
                 this.answer = true;
