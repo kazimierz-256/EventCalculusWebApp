@@ -5,7 +5,7 @@
 	]).
 
 get_all_fluents_from_tree(Tree, Unique_Fluents) :-    
-    findall(Fluent, search_clause(Tree), Fluents),
+    findall(Fluent, search_clause(Tree, Fluent), Fluents),
     sort(Fluents, Unique_Fluents).
 
 search_clause(and(T1, T2), Fluent) :-
