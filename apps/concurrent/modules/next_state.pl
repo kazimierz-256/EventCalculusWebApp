@@ -28,14 +28,11 @@ get_nonempty_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_A
 %   the conjunction of all consequences of MNS_Executed_Action (extract Consequence from compound_executable_atomic_get_assignment?)
 %   Observation from next time must hold so if there are new fluents (they were smthing at the beginning but only now we know)
 vary_fluents([], Fluent_Assignments, [], Fluent_Assignments):-
-    write(Fluent_Assignments).
 vary_fluents([], Fluent_Assignments, [Observation | Next_Observation], New_Assignment) :-
-    write(Fluent_Assignments),
     vary_fluents([], Fluent_Assignments, Next_Observation, Less_New_Assignment),
     (put_assoc(Observation, Less_New_Assignment, true, New_Assignment) ; put_assoc(Observation, Less_New_Assignment, false, New_Assignment)).
 vary_fluents([OCL | Occlusion_List], Fluent_Assignments, Next_Observation, New_Assignment) :-
-    write(Fluent_Assignments),
-    (get_assoc(OCL, Fluent_Assignments, _) ->
+    get_assoc(OCL, Fluent_Assignments, _) ->
     (   del_assoc(OCL, Fluent_Assignments, _, Less_Fluent),
         vary_fluents(Occlusion_List, Less_Fluent, Next_Observation, Less_New_Assignment),
         (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, false, New_Assignment))
@@ -87,8 +84,6 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
             Causes_Conditions),
             
         (get_assoc(Next_Time, Observations, Next_Observation) ->
-            % write(Time),
-            write(Next_Time),
             get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment),
             (
                 Causes_Conditions = [] -> true
@@ -99,15 +94,8 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
                 )
             )
         ;
-        get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment),
-        (
-                write(Time),
-            write(Causes_Conditions),
-            Causes_Conditions = [] -> 
-                write(Time)
-            ;
+            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment),
             (
-                    write(Time),
                     foldl(conjunct, Causes_Conditions, Consequence),
                     logic_formula_satisfied(Consequence, New_Assignment)
                 )
