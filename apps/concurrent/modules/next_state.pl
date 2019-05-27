@@ -65,13 +65,6 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
     get_assoc(Time, Actions, ACS_Compound_Action) -> 
     (
         % assoc_to_list(Action_Domain, Action_Domain_List),
-        writeln('Actions:'),
-
-        writeln(Time),
-        writeln(Action_Domain),
-        writeln(Fluent_Assignments),
-        writeln(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments)),
-
         findall(
             Action,
             (member(Action, ACS_Compound_Action), potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments, Action)),
@@ -82,7 +75,6 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
         sort(Occlusion_List, Unique_Occlusion_List),
         
         Next_Time = Time + 1,
-        
         %prepare causes postconditions
         findall(Causes_Condition,
         (

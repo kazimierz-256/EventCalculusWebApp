@@ -38,8 +38,7 @@ conjunct(Statement, Acc1, and(Statement, Acc1)).
 
 compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-
     dif(Compound_Action, []),
-    assoc_to_list(Action_Domain, Action_Domain_List),
-    maplist(potentially_executable_atomic(Time, Action_Domain_List, Fluent_Assignments), Compound_Action),
+    maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Compound_Action),
     findall(Causes_Condition,
         (
             get_assoc(Action, Action_Domain, Action_Description),
