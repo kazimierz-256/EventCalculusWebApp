@@ -94,14 +94,18 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
                 )
             )
         ;
-            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment),
+        get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment),
+        (
+            Causes_Conditions = [] -> true
+            ;
             (
                     foldl(conjunct, Causes_Conditions, Consequence),
                     logic_formula_satisfied(Consequence, New_Assignment)
                 )
             )
         )
-    ; 
+    )
+    ;
     (
         MNS_Executed_Action = [],
         Next_Time = Time + 1,
@@ -112,4 +116,3 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
             New_Assignment = Fluent_Assignments
         )
     ).
-    
