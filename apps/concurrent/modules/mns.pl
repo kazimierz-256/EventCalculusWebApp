@@ -1,6 +1,6 @@
 :- module(mns, 
     [
-        mns/3
+        mns/5
 	]).
 
 :- use_module(compound_executable).
