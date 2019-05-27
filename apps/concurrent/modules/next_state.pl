@@ -20,26 +20,6 @@ get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
     (F_Value = true ; F_Value = false),
     put_assoc(F, Assoc, F_Value, Assoc_Including_F).
 
-
-% THIS HERE IS TOTALLY NOT READY, shoud implement new assignment based on multiple conditions
-% generate all possible assignments
-% use the following predicate get_sample_fluent_assignment
-% should determine all fluents taking part in: 
-%   Fluent_Assignments
-%   next time observation if any
-%   occlusion list (already found)
-% must satisfy:
-%  the only variables that change in 2^n ways are those from Unique_Occlusion_List and those in upcoming observation that are new, they're absent in Fluent assignments and occlusion
-%  others must remain intact as in Fluent_Assignments
-%  the conjunction of all consequences of MNS_Executed_Action (extract Consequence from compound_executable_atomic_get_assignment?)
-%  Observation from next time must hold so if there are new fluents (they were smthing at the beginning but only now we know)
-
-% input: Occlusion_List, Fluent_Assignments, Next_Observation
-% output: New_Assignment
-get_valid_assignment(Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment).
-% use a similar technique like below but remember fluents from Next_Observation have the right to vary only if they do exist neither in occlusion list nor in fluent assignments
-% then check assignment using logic_formula_satisfied
-
 vary_fluents([], Fluent_Assignments, Fluent_Assignments).
 vary_fluents([OCL, Occlusion_List], Fluent_Assignments, New_Assignment) :-
     get_assoc(OCL, Fluent_Assignments, _) ->
@@ -53,6 +33,28 @@ vary_fluents([OCL, Occlusion_List], Fluent_Assignments, New_Assignment) :-
         (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, true, New_Assignment))
     )
     .
+
+
+% THIS HERE IS TOTALLY NOT READY, shoud implement new assignment based on multiple conditions
+% generate all possible assignments
+% use the following predicate get_sample_fluent_assignment
+% should determine all fluents taking part in: 
+%   Fluent_Assignments
+%   next time observation if any
+%   occlusion list (already found)
+% must satisfy:
+%   the only variables that change in 2^n ways are those from Unique_Occlusion_List and those in upcoming observation
+%       that are new, they're absent in Fluent assignments and occlusion
+%   others must remain intact as in Fluent_Assignments
+%   the conjunction of all consequences of MNS_Executed_Action (extract Consequence from compound_executable_atomic_get_assignment?)
+%   Observation from next time must hold so if there are new fluents (they were smthing at the beginning but only now we know)
+
+% input: Occlusion_List, Fluent_Assignments, Next_Observation
+% output: New_Assignment
+get_valid_assignment(Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment).
+% use a similar technique like below but remember fluents from Next_Observation have the right to vary only if they do
+%   exist neither in occlusion list nor in fluent assignments
+% then check assignment using logic_formula_satisfied
 
 
 % input: Occlusion_List, Fluent_Assignments
