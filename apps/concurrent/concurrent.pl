@@ -35,7 +35,10 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
             exists_state_without_future(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain)
         )
     ).
-    
+
+sublist([], R1).
+sublist([L|L1], [R,R1]) :- L=R, sublist(L1, R1).
+
 exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
     Query_Time =:= Time,
     logic_formula_satisfied(Query_Condition, Fluent_Assignments).
@@ -44,7 +47,7 @@ exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Tim
     Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
     Next_Time = Time + 1,
-    exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
+    exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
 exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Query_Time =:= Time,
