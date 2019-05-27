@@ -10,7 +10,7 @@
 %compound_executable_atomic(Compound_Action, Time, Action_Domain, Fluent_Assignments)
 
 get_nonempty_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_Assignments, Action_Decomposition) :-
-    mns(Compound_Action, compound_executable_atomic(Time, Action_Domain, Fluent_Assignments), Action_Decomposition),
+    mns(Compound_Action, Time, Action_Domain, Fluent_Assignments, Action_Decomposition),
     dif(Action_Decomposition, []).
     % get MNS sample using compound executable
 

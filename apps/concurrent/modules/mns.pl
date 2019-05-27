@@ -3,24 +3,27 @@
         mns/3
 	]).
 
+:- use_module(compound_executable).
+
+
 % returns some valid mns use findall to find them all
-mns(PotentiallyExecutablesList, IsCompoundExecutablePredicate, Some_Valid_MNS) :-
-    check_whether_compound_is_valid([], PotentiallyExecutablesList, IsCompoundExecutablePredicate, Some_Valid_MNS).
+mns(PotentiallyExecutablesList, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-
+    check_whether_compound_is_valid([], PotentiallyExecutablesList, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS).
     % is the program still valid when there is no dif?
 
-check_whether_compound_is_valid(IncludedActions, ConsideredActions, IsCompoundExecutablePredicate, [CompoundAction]) :-
+check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, [CompoundAction]) :-
     append(IncludedActions, ConsideredActions, CompoundAction),
-    call(IsCompoundExecutablePredicate, CompoundAction).
+    compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction).
 
-check_whether_compound_is_valid(IncludedActions, ConsideredActions, IsCompoundExecutablePredicate, Some_Valid_MNS) :-
+check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-
     append(IncludedActions, ConsideredActions, CompoundAction),
-    not(call(IsCompoundExecutablePredicate, CompoundAction)),
-    check_without_first_considering(IncludedActions, ConsideredActions, IsCompoundExecutablePredicate, Some_Valid_MNS).
+    not(compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction)),
+    check_without_first_considering(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS).
 
-check_without_first_considering(IncludedActions, [], IsCompoundExecutablePredicate, [IncludedActions]) :-
-    call(IsCompoundExecutablePredicate, IncludedActions).
+check_without_first_considering(IncludedActions, [], Time, Action_Domain, Fluent_Assignments, [IncludedActions]) :-
+    compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, IncludedActions).
 
-check_without_first_considering(IncludedActions, [Action|Rest], IsCompoundExecutablePredicate, Some_Valid_MNS) :-
+check_without_first_considering(IncludedActions, [Action|Rest], Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-
     append(IncludedActions, Action, ExtendedActions),
-    (check_whether_compound_is_valid(ExtendedActions, Rest, IsCompoundExecutablePredicate, Some_Valid_MNS)
-    ; check_without_first_considering(IncludedActions, Rest, IsCompoundExecutablePredicate, Some_Valid_MNS)).
+    (check_whether_compound_is_valid(ExtendedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)
+    ; check_without_first_considering(IncludedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)).
