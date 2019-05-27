@@ -6,6 +6,7 @@
 :- use_module(mns).
 :- use_module(compound_executable).
 :- use_module(occlusion).
+:- use_module(potentially_executable).
 
 %compound_executable_atomic(Compound_Action, Time, Action_Domain, Fluent_Assignments)
 

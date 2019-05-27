@@ -43,8 +43,8 @@ prepare_initial_state_time_0(Observations, Initial_State) :-
      ->
         get_all_fluents_from_tree(Initial_Observation, Fluents),
         get_sample_fluent_assignment(Fluents, Initial_State),
-        writeln(Initial_State),
-        logic_formula_satisfied(Initial_Observation, Initial_State)
+        % getAssociationThatSatisfiesFormula(Initial_Observation, Initial_State),
+        logic_formula_satisfied(Initial_Observation, Initial_State),
     ;   empty_assoc(Initial_State).
 
 % outputs nothing, succeeds iff the scenario is possibly executable
@@ -72,27 +72,29 @@ run_scenario((Observations, Actions), Domain, necessarily_executable) :-
     max_assoc(Observations, Last_Observaiotn_Time, _),
     Maxtime_OBS = Last_Observaiotn_Time,
     Maxtime = max(Maxtime_ACS, Maxtime_OBS),
+    assoc_to_list(Observations, ObsList),
     once(prepare_initial_state_time_0(Observations, _)),
     writeln("udalo sie"),
-    not((
-        once(
+    not(once(
+        (
             prepare_initial_state_time_0(Observations, Initial_State),
             exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )).
 
-run_scenario((Observations, Actions), Domain, necessarily_executable(Query_Actions, Time)) :-
-    writeln("necessarily executable A at t when scenario"),
-    %TODO should we care about observations later than (1+last planned action moment)
-    max_assoc(Actions, Last_Action_Time, _),
-    Maxtime = Last_Action_Time + 1,
-    once(prepare_initial_state_time_0(Observations, _)),
-    not((
-        once(
-            prepare_initial_state_time_0(Observations, Initial_State),
-            exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
-        )
-    )).
+% not yet ready, thought out
+% run_scenario((Observations, Actions), Domain, necessarily_executable(Query_Actions, Time)) :-
+%     writeln("necessarily executable A at t when scenario"),
+%     %TODO should we care about observations later than (1+last planned action moment)
+%     max_assoc(Actions, Last_Action_Time, _),
+%     Maxtime = Last_Action_Time + 1,
+%     once(prepare_initial_state_time_0(Observations, _)),
+%     not((
+%         once(
+%             prepare_initial_state_time_0(Observations, Initial_State),
+%             exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
+%         )
+%     )).
 
 
 
