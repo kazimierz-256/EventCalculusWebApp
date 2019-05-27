@@ -29,7 +29,7 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
         not(get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, _))
         ;
         (
-            write("exists_state"),
+            % write("exists_state"),
             get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
             Next_Time = Time + 1,
             exists_state_without_future(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain)

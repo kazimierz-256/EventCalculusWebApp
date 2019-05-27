@@ -25,17 +25,17 @@ let changeSelection = function(selection, query) {
 var QuerySectionEventHandlers = {
     rebuildQueryText: function (query) {
         if (query.type_text == 'Necessarily executable scenario Sc')
-            query.full_text = 'Necessarily executable'
+            query.full_text = 'necessarily executable'
         if (query.type_text == 'Possibly executable scenario Sc')
-            query.full_text = 'Possibly executable'
+            query.full_text = 'possibly executable'
         if (query.type_text == 'Necessarily accessible γ at t when Sc')
-            query.full_text = 'Necessarily accessible ' + query.condition + ' at ' + query.time;
+            query.full_text = 'necessarily accessible ' + query.condition + ' at ' + query.time;
         if (query.type_text == 'Possibly accessible γ at t when Sc')
-            query.full_text = 'Possibly accessible ' + query.condition + ' at ' + query.time;
+            query.full_text = 'possibly accessible ' + query.condition + ' at ' + query.time;
         if (query.type_text == 'Necessarily executable A at t when Sc')
-            query.full_text = 'Necessarily executable ' + query.action + ' at ' + query.time;
+            query.full_text = 'necessarily executable ' + query.action + ' at ' + query.time;
         if (query.type_text == 'Possibly executable A at t when Sc')
-            query.full_text = 'Possibly executable ' + query.action + ' at ' + query.time;
+            query.full_text = 'possibly executable ' + query.action + ' at ' + query.time;
     },
     changedProperty(event, query) {
         this.rebuildQueryText(query);

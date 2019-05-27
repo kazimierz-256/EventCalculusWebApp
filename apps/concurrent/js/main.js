@@ -90,14 +90,16 @@ let mainMethodsObject = {
     },
     retrieve_answer: function () {
         let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
+        let command = `parse_domain('` + this.action_domain+ `', Domain),` +
+        `parse_acs('`+ this.getActions() +`', Acs),` +
+        `parse_obs('`+ this.getObservations() +`', Obs),` +
+        `get_query_from_text(Query, '`+ this.query.full_text +`'),` +
+        `pengine_output(Query),`+
+        `run_scenario((Obs,Acs), Domain, Query).`
+        .replace(/\n/gm, "");
+        console.log(command)
         verbose_command(
-            `parse_domain('` + this.action_domain+ `', Domain),` +
-            `parse_acs('`+ this.getActions() +`', Acs),` +
-            `parse_obs('`+ this.getObservations() +`', Obs),` +
-            `get_query_from_text(Query, '`+ this.query.full_text +`'),` +
-            `pengine_output(Query),`+
-            `run_scenario((Obs,Acs), Domain, Query).`
-                .replace(/\n/gm, ""),
+            command,
             () => {
                 this.answer = true;
             }, () => {
