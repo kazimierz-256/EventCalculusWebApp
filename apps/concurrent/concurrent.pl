@@ -89,7 +89,7 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
         )
     )).
 
-% not yet ready, thought out
+% TODO
 % run_scenario((Observations, Actions), Domain, necessarily_executable(Query_Actions, Time)) :-
 %     writeln("necessarily executable A at t when scenario"),
 %     %TODO should we care about observations later than (1+last planned action moment)
@@ -104,18 +104,18 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
 %     )).
 
 
-
-run_query(possibly_executable()) :-
-    writeln("possibly executable scenario").
-
-run_query(necessarily_accessible(Tree, Time)) :-
-    writeln("possibly accessible gamma at t").
-
-run_query(necessarily_executable(List, Time)) :-
-    writeln("possibly accessible gamma at t").
-
-run_query(possibly_executable(List, Time)) :-
-    writeln("possibly accessible gamma at t").
+% TODO
+%run_query(possibly_executable()) :-
+%    writeln("possibly executable scenario").
+%
+%run_query(necessarily_accessible(Tree, Time)) :-
+%    writeln("possibly accessible gamma at t").
+%
+%run_query(necessarily_executable(List, Time)) :-
+%    writeln("possibly accessible gamma at t").
+%
+%run_query(possibly_executable(List, Time)) :-
+%    writeln("possibly accessible gamma at t").
 
 
 :-  warsaw_standoff_domain(Domain),
