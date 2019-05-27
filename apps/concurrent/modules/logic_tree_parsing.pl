@@ -30,10 +30,8 @@ one_or_more_space() --> [].
 %LOGICTREE
 logic_tree_from_text(STRING, T) :-
     normalize_space(string(String_Cleaned), STRING),
-    pengine_output(String_Cleaned),
     string_chars(String_Cleaned, CHARS),
-    phrase(logictree(T), CHARS),
-        pengine_output("ola").
+    phrase(logictree(T), CHARS).
 
 logictree(T) --> optional_whitespace(),logictreeor(T),optional_whitespace().
 

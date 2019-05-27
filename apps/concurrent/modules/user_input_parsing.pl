@@ -129,9 +129,8 @@ parse_parts_obs([], Observations, Observations).
 parse_parts_obs([H|T], Assoc, Observations) :-
     normalize_space(string(Line), H),
     parse_obs_line(Line, Obs, Time),
-    pengine_output(Obs),
-    logic_tree_from_text(Obs, T),
-   	put_assoc(Time, Assoc, T, Observations_Tmp),
+    logic_tree_from_text(Obs, Obs_T),
+   	put_assoc(Time, Assoc, Obs_T, Observations_Tmp),
     parse_parts_obs(T, Observations_Tmp, Observations).
 
 parse_obs(Text, Observations) :-
