@@ -118,8 +118,7 @@ run_query(possibly_executable(List, Time)) :-
 
 
 :-  warsaw_standoff_domain(Domain),
-write(Domain),
     warsaw_standoff_scenario(Scenario),
 %    get_query_from_text(Query, "necessarily executable SHOOT12, SHOOT31, SHOOT51 at 5"),
-    get_query_from_text(Query, "necessarily executable"),
+    get_query_from_text(Query, "possibly executable"),
     run_scenario(Scenario, Domain, Query).
