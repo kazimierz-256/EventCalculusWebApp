@@ -52,7 +52,7 @@ vary_fluents([OCL, Occlusion_List], Fluent_Assignments, New_Assignment) :-
         vary_fluents(Occlusion_List, Fluent_Assignments, Less_New_Assignment),
         (put_assoc(OCL, Less_New_Assignment, true, New_Assignment) ; put_assoc(OCL, Less_New_Assignment, true, New_Assignment))
     )
-    ).
+    .
 
 
 % input: Occlusion_List, Fluent_Assignments
@@ -76,9 +76,9 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
         
         Next_Time = Time + 1,
         (get_assoc(Next_Time, Observations, Next_Observation) ->
-            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment).
+            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment)
         ;
-            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment).
+            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment)
         )
     )
     ; 
