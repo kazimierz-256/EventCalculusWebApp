@@ -77,23 +77,33 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
         Next_Time = Time + 1,
         %prepare causes postconditions
         findall(Causes_Condition,
-        (
-            get_assoc(Action, Action_Domain, Action_Description),
-            get_assoc("causes", Action_Description, (Causes_Condition, _))
-        ),
-        Causes_Conditions),
-
-        (get_assoc(Next_Time, Observations, Next_Observation) ->
-            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment)
-        ;
-            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment)
-        ),
-        (
-            Causes_Conditions = [] -> true
-        ; 
             (
-                foldl(conjunct, Causes_Conditions, Consequence),
-                logic_formula_satisfied(Consequence, New_Assignment)
+                get_assoc(Action, Action_Domain, Action_Description),
+            get_assoc("causes", Action_Description, (Causes_Condition, _))
+            ),
+            Causes_Conditions),
+            
+        (get_assoc(Next_Time, Observations, Next_Observation) ->
+            % write(Time),
+            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment),
+            (
+                Causes_Conditions = [] -> true
+                ; 
+                (
+                    foldl(conjunct, Causes_Conditions, Consequence),
+                    logic_formula_satisfied(Consequence, New_Assignment)
+                )
+            )
+        ;
+            % write(Time),
+            get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment),
+            (
+                Causes_Conditions = [] -> true
+                ; 
+                (
+                    foldl(conjunct, Causes_Conditions, Consequence),
+                    logic_formula_satisfied(Consequence, New_Assignment)
+                )
             )
         )
     )

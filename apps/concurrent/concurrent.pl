@@ -21,6 +21,7 @@ exists_valid_state_at_time(Maxtime, Maxtime, _, _, _, _).
 exists_valid_state_at_time(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :- 
     Time < Maxtime,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
+    writeln(Time),
     Next_Time = Time + 1,
     exists_valid_state_at_time(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
 
