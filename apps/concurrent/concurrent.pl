@@ -24,7 +24,7 @@ exists_valid_state_at_time(Maxtime, Time, Fluent_Assignments, Observations, Acti
     Next_Time = Time + 1,
     exists_valid_state_at_time(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
 
-exists_state_without_future(Maxtime, Time, Initial_State, Observations, Actions, Action_Domain) :-
+exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Maxtime,
     (
         not(get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, _))
@@ -66,7 +66,7 @@ run_scenario((Observations, Actions), Domain, possibly_executable) :-
     once(
         (
             prepare_initial_state_time_0(Observations, Initial_State),
-            exists_valid_state_at_time(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
+            exists_valid_state_at_time(Maxtime, 0, Initial_State, Observations, Actions, Domain)
         )
     ).
 
@@ -83,7 +83,7 @@ run_scenario((Observations, Actions), Domain, necessarily_executable) :-
     not(once(
         (
             prepare_initial_state_time_0(Observations, Initial_State),
-            exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
+            exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Domain)
         )
     )).
 
