@@ -59,14 +59,17 @@ const debugText = "domain([], D),\n" +
 const debugText3 = "parse_domain('SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12', Domain).";
 
 let getNewQuery = function () { return new Query(``, ``, ``, ``, ``, ``); };
+let gif_count = 3;
 let modelData = {
     action_domain: ``,
     answer: undefined,
+    gif_id: 0,
     query: getNewQuery(),
     debug: debugText,
     actions: [],
     observations: [],
-    queries: query_collection
+    queries: query_collection,
+    pengine_running: false
 };
 
 
@@ -75,34 +78,52 @@ let mainMethodsObject = {
         // verbose_command("test(9,Y).");
         let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
         let debug_query = cleanse(this.debug).replace(/\n/gm, "");
+        this.pengine_running = true;
         verbose_command(debug_query,
             (result) => {
                 console.log(`%cDebug query:%c ${debug_query}`, `font-weight:bold`, ``)
                 console.log(`%cResult of query`, `font-weight:bold`);
                 console.log(result);
                 this.answer = true;
+                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.pengine_running = false;
             }, () => {
                 console.log(`%cDebug query:%c ${debug_query}`, `font-weight:bold`, ``)
                 console.log(`%cResult failed`, `font-weight:bold`);
                 this.answer = false;
+                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.pengine_running = false;
             }
         );
     },
+    abort_pengine: function () {
+        if (pengine) {
+            pengine.abort();
+            this.pengine_running = false;
+            this.answer = undefined;
+        }
+
+    },
     retrieve_answer: function () {
         let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
-        let command = `parse_domain('` + this.action_domain+ `', Domain),` +
-        `parse_acs('`+ this.getActions() +`', Acs),` +
-        `parse_obs('`+ this.getObservations() +`', Obs),` +
-        `get_query_from_text(Query, '`+ this.query.full_text +`'),` +
-        `run_scenario((Obs,Acs), Domain, Query).`
-        .replace(/\n/gm, "");
+        let command = `parse_domain('` + this.action_domain + `', Domain),` +
+            `parse_acs('` + this.getActions() + `', Acs),` +
+            `parse_obs('` + this.getObservations() + `', Obs),pengine_output('New interpretation'),` +
+            `get_query_from_text(Query, '` + this.query.full_text + `'),` +
+            `run_scenario((Obs,Acs), Domain, Query).`
+                .replace(/\n/gm, "");
         console.log(command)
+        this.pengine_running = true;
         verbose_command(
             command,
             () => {
                 this.answer = true;
+                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.pengine_running = false;
             }, () => {
                 this.answer = false;
+                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.pengine_running = false;
             }
         );
     },
@@ -159,16 +180,21 @@ let form = new Vue({
 });
 
 // PROLOG
+let pengine = undefined;
 let verbose_command = (command, result_method, onfailure) => {
-    getPengineAwaitable('concurrent', command, undefined, results => {
+    pengine = getPengineAwaitable('concurrent', command, undefined, results => {
         // console.log(command);
         // console.log(results);
+
         if (result_method)
             result_method(results);
+        pengine.stop();
+        // pengine.destroy();
     }, () => {
         // console.log(command);
         if (onfailure)
             onfailure();
+        pengine.stop();
     }, undefined, undefined, (par) => {
         M.toast({ html: par.data, classes: 'rounded' });
         console.error(par);

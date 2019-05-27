@@ -202,11 +202,17 @@
 
           <a class="btn light-blue waves-effect waves-light" v-bind:disabled="answer!=undefined"
             v-on:click="retrieve_answer()">Retrieve answer</a>
+            <a class="btn red waves-effect waves-light" v-bind:disabled="!pengine_running"
+              v-on:click="abort_pengine()">Abort computation</a>
 
           <div id="answer">
             <div v-if="answer!=undefined">
-              <img class="z-depth-1" src="gif/yep.gif" v-if="answer">
-              <img class="z-depth-1" src="gif/nope.gif" v-else>
+              <img class="z-depth-1" src="gif/yep1.gif" v-if="answer && gif_id==0">
+              <img class="z-depth-1" src="gif/yep2.gif" v-if="answer && gif_id==1">
+              <img class="z-depth-1" src="gif/yep3.gif" v-if="answer && gif_id==2">
+              <img class="z-depth-1" src="gif/nope1.gif" v-if="!answer && gif_id==0">
+              <img class="z-depth-1" src="gif/nope2.gif" v-if="!answer && gif_id==1">
+              <img class="z-depth-1" src="gif/nope3.gif" v-if="!answer && gif_id==2">
             </div>
             <div v-else>Please submit a new query to the system.</div>
           </div>
