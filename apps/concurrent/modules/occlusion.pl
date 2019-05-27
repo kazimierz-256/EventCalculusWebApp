@@ -1,11 +1,12 @@
 :- module(occlusion, 
     [
-        get_occlusion/3
+        get_occlusion/3,
+        get_all_fluents_from_tree/2
 	]).
 
-
-get_some_fluent(Tree, Fluent) :-
-    search_clause(Tree, Fluent).
+get_all_fluents_from_tree(Tree, Unique_Fluents) :-    
+    findall(Fluent, search_clause(Tree), Fluents),
+    sort(Fluents, Unique_Fluents).
 
 search_clause(and(T1, T2), Fluent) :-
     search_clause(T1, Fluent)
@@ -36,7 +37,7 @@ get_occlusion(Action, Action_Domain, Fluent) :-
     get_assoc(Action, Action_Domain, Action_Description),
     (
         get_assoc("causes", Action_Description, (Causes_Condition, _)),
-        get_some_fluent(Causes_Condition, Fluent)
+        search_clause(Causes_Condition, Fluent)
         ;
         get_assoc("releases", Action_Description, (Fluent, _))
     ).
