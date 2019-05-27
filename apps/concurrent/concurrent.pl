@@ -36,6 +36,45 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
         )
     ).
     
+exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
+    Query_Time =:= Time,
+    logic_formula_satisfied(Query_Condition, Fluent_Assignments).
+
+exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+    Time < Query_Time,
+    get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
+    Next_Time = Time + 1,
+    exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
+
+exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+    Query_Time =:= Time,
+    get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, Executed_Action, _),
+    sort(Executed_Action, Sorted_Executed_Action),
+    not(sublist(Query_Action, Sorted_Executed_Action)).
+
+
+exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+    Time < Query_Time,
+    get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
+    Next_Time = Time + 1,
+    exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
+
+
+exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+    Query_Time =:= Time,
+    get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, Executed_Action, _),
+    sort(Executed_Action, Sorted_Executed_Action),
+    sublist(Query_Action, Sorted_Executed_Action).
+    
+exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+    Time < Query_Time,
+    get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
+    Next_Time = Time + 1,
+    exists_state_at_query_time_executing_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
+
+
+
+
 
 get_sample_fluent_assignment([], Assoc) :- empty_assoc(Assoc).
 get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
@@ -85,3 +124,56 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
             exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )).
+
+
+run_scenario((Observations, Actions), Action_Domain, necessarily_accessible(Query_Condition, Query_Time)) :-
+    writeln("necessarily accessible gamma at t"),
+    once(prepare_initial_state_time_0(Observations, _)),
+    not(once(
+        (
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_without_future(Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    )),
+    not(once(
+        (
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    )).
+
+
+run_scenario((Observations, Actions), Action_Domain, possibly_accessible(Query_Condition, Query_Time)) :-
+    writeln("possibly accessible gamma at t"),
+    once(
+        (
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    ).
+
+
+run_scenario((Observations, Actions), Action_Domain, necessarily_executable(Query_Action, Query_Time)) :-
+    writeln("necessarily executable A at t"),
+    once(prepare_initial_state_time_0(Observations, _)),
+    not(once(
+        (
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_without_future(Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    )),
+    not(once(
+        (
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    )).
+
+run_scenario((Observations, Actions), Action_Domain, possibly_executable(Query_Action, Query_Time)) :-
+    writeln("possibly executable A at t"),
+    once(
+        (
+            prepare_initial_state_time_0(Observations, Initial_State),
+            exists_state_at_query_time_executing_action(Query_Action, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
+        )
+    ).
