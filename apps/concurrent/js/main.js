@@ -108,7 +108,7 @@ let mainMethodsObject = {
         let command =
             `parse_domain('` + this.action_domain + `', Domain),` +
             `parse_acs('` + this.getActions() + `', Acs),` +
-            `parse_obs('` + this.getObservations() + `', Obs),assoc_to_list(Obs, Ol),pengine_output(Ol),` +
+            `parse_obs('` + this.getObservations() + `', Obs),` +
             `get_query_from_text(Query, '` + this.query.full_text + `'),` +
             `run_scenario((Obs,Acs), Domain, Query).`
                 .replace(/\n/gm, "");
@@ -183,18 +183,14 @@ let form = new Vue({
 let pengine = undefined;
 let verbose_command = (command, result_method, onfailure) => {
     pengine = getPengineAwaitable('concurrent', command, undefined, results => {
-        // console.log(command);
-        // console.log(results);
-
         if (result_method)
             result_method(results);
-        pengine.stop();
-        // pengine.destroy();
+        if(results.more)
+            pengine.stop();
     }, () => {
-        // console.log(command);
         if (onfailure)
             onfailure();
-        pengine.stop();
+
     }, undefined, undefined, (par) => {
         M.toast({ html: par.data, classes: 'rounded' });
         console.error(par);
