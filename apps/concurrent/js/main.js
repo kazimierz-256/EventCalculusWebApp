@@ -74,6 +74,28 @@ let modelData = {
 
 
 let mainMethodsObject = {
+    debug_query: function () {
+        // verbose_command("test(9,Y).");
+        let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
+        let debug_query = cleanse(this.debug).replace(/\n/gm, "");
+        this.pengine_running = true;
+        verbose_command(debug_query,
+            (result) => {
+                console.log(`%cDebug query:%c ${debug_query}`, `font-weight:bold`, ``)
+                console.log(`%cResult of query`, `font-weight:bold`);
+                console.log(result);
+                this.answer = true;
+                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.pengine_running = false;
+            }, () => {
+                console.log(`%cDebug query:%c ${debug_query}`, `font-weight:bold`, ``)
+                console.log(`%cResult failed`, `font-weight:bold`);
+                this.answer = false;
+                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.pengine_running = false;
+            }
+        );
+    },
     abort_pengine: function () {
         if (pengine) {
             pengine.abort();
