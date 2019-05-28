@@ -36,8 +36,6 @@ logic_tree_from_text(STRING, T) :-
     string_chars(String_Cleaned, CHARS),
     phrase(logictree(T), CHARS).
 
-logic_tree_from_text("", true).
-
 logictree(T) --> optional_whitespace(),logictreeor(T),optional_whitespace().
 
 logictreeor(or(A,B)) --> logictreeand(A),parse_string(" or "),logictreeor(B).
