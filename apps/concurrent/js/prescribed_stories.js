@@ -47,7 +47,7 @@ PANICBON2 causes BON2 if BON2
 PANICBON1 causes BON1 if BON1
 PANICAON1 causes AON3 if AON3`,
         observations: [
-            new Entry("CON3 and BON2 and AON1 and not SAFEA and not SAFEB and not SAFEC", 0)
+            new Entry("CON3 and not CON2 and not CON1 and BON2 and not BON1 and AON1 and not SAFEA and not SAFEB and not SAFEC", 0)
         ],
         actions: [
             new Entry("EVACUATEAFROM1,BFROM2TO1,CFROM3TO2", 0),
