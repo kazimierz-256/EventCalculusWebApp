@@ -49,6 +49,13 @@ exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Tim
     Next_Time = Time + 1,
     exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
+% exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+%     Query_Time =:= Time,
+%     (maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Query_Action)
+%     ->
+%     not(compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Action))
+%     ;true).
+
 exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Query_Time =:= Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, Executed_Action, _),
@@ -62,6 +69,10 @@ exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Tim
     Next_Time = Time + 1,
     exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
+% exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
+%     Query_Time =:= Time,
+%     maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Query_Action),
+%     compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Action).
 
 exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Query_Time =:= Time,
