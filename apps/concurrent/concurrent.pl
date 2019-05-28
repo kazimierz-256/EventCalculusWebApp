@@ -58,7 +58,7 @@ exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, T
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
     Next_Time = Time + 1,
     exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
-    
+
 
 exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Query_Time =:= Time,
