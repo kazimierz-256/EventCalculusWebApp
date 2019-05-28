@@ -185,7 +185,8 @@ let verbose_command = (command, result_method, onfailure) => {
     pengine = getPengineAwaitable('concurrent', command, undefined, results => {
         if (result_method)
             result_method(results);
-        pengine.stop();
+        if(results.more)
+            pengine.stop();
     }, () => {
         if (onfailure)
             onfailure();
