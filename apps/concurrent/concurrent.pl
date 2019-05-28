@@ -14,6 +14,7 @@
 :- use_module("modules/next_state.pl").
 :- use_module("modules/warsaw_standoff.pl").
 :- use_module("modules/occlusion.pl").
+:- use_module("modules/compound_executable.pl").
 
 exists_valid_state_at_time(Maxtime, Maxtime1, _, _, _, _) :- Maxtime =:= Maxtime1.
 
