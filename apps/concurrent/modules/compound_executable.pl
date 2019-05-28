@@ -3,7 +3,7 @@
         compound_executable_atomic/4
 	]).
 :- use_module(potentially_executable).
-
+:- use_module(logic_formula_satisfiability).
 % NOT ORDERED
 no_release_fluent_in_causes(Release_Fluents_Ordered, Condition) :-
     search_clause(Release_Fluents_Ordered, Condition).
@@ -20,7 +20,7 @@ search_clause(Release_Fluents_Ordered, iff(T1, T2)) :-
     search_clause(Release_Fluents_Ordered, T1),
     search_clause(Release_Fluents_Ordered, T2).
 
-search_clause(Release_Fluents_Ordered, if(T1, T2)) :-
+search_clause(Release_Fluents_Ordered, implies(T1, T2)) :-
     search_clause(Release_Fluents_Ordered, T1),
     search_clause(Release_Fluents_Ordered, T2).
 
@@ -28,6 +28,8 @@ search_clause(Release_Fluents_Ordered, negate(T1)) :-
     search_clause(Release_Fluents_Ordered, T1).
 
 % NOT ORDERED
+search_clause(_, true).
+search_clause(_, false).
 search_clause(Release_Fluents_Ordered, T) :-
     string(T),
     not(member(T, Release_Fluents_Ordered)).
@@ -41,13 +43,13 @@ compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Act
     maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Compound_Action),
     findall(Causes_Condition,
         (
-            get_assoc(Action, Action_Domain, Action_Description),
+            gen_assoc(_, Action_Domain, Action_Description),
             get_assoc("causes", Action_Description, (Causes_Condition, _))
         ),
         Causes_Conditions),
     findall(Release_Fluent,
         (
-            get_assoc(Action, Action_Domain, Action_Description),
+            gen_assoc(_, Action_Domain, Action_Description),
             get_assoc("releases", Action_Description, (Release_Fluent, _))
         ),
         Release_Fluents),
@@ -55,7 +57,8 @@ compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Act
     % list_to_ord_set(Release_Fluents, Release_Fluents_Ordered),
     (Causes_Conditions = []
         ->  true
-        ;   foldl(conjunct, Causes_Conditions, Consequence),
+
+    ;       foldl(conjunct, Causes_Conditions, true, Consequence),
             no_release_fluent_in_causes(Release_Fluents, Consequence),
             once(getAssociationThatSatisfiesFormula(Consequence, _))
     ).

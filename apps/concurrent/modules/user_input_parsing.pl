@@ -45,7 +45,7 @@ get_action_and_val([Action, "releases"|Rest], Action, Value) :-
 get_action_and_val(["impossible", Action, "at", Time_Str], Action, Value) :-
     empty_assoc(Assoc),
     number_string(Time, Time_Str),
-    put_assoc("impossible", Assoc, Time, Value ).
+    put_assoc("impossible", Assoc, [Time], Value ).
 
 parse_sentence(Text, Action, Value) :-
     split_string(Text, " ", "", Parts),

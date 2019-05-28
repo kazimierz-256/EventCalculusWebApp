@@ -17,3 +17,6 @@ T=or("LOADED",and("JAMMED",negate("DEAD"))).
 
 :- logic_tree_from_text("", T),
 T=true.
+
+:- logic_tree_from_text("LOADED or JAMMED implies (HAPPY implies DEAD)", T),
+T=or("LOADED",implies("JAMMED",implies("HAPPY","DEAD"))).

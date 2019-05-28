@@ -1,9 +1,9 @@
 :- module(concurrent, 
     [
         logic_tree_from_text/2,
-        logic_formula_satisfied/2
+        logic_formula_satisfied/2,
+        run_scenario/3
 	]).
-
 
 :- use_module("modules/logic_tree_parsing.pl").
 :- use_module("modules/logic_formula_satisfiability.pl").
@@ -16,13 +16,15 @@
 :- use_module("modules/occlusion.pl").
 :- use_module("modules/compound_executable.pl").
 
+
 exists_valid_state_at_time(Maxtime, Maxtime1, _, _, _, _) :- Maxtime =:= Maxtime1.
 
 exists_valid_state_at_time(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :- 
     Time < Maxtime,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
-    Next_Time = Time + 1,
+    Next_Time is Time + 1,
     exists_valid_state_at_time(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
+
 
 exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Maxtime,
@@ -32,13 +34,15 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
         (
             % write("exists_state"),
             get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
-            Next_Time = Time + 1,
+            Next_Time is Time + 1,
             exists_state_without_future(Maxtime, Next_Time, New_Assignment, Observations, Actions, Action_Domain)
         )
     ).
 
+
 sublist([], _).
 sublist([L|L1], [R,R1]) :- L=R, sublist(L1, R1).
+
 
 exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
     Query_Time =:= Time,
@@ -47,8 +51,9 @@ exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Tim
 exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
-    Next_Time = Time + 1,
+    Next_Time is Time + 1,
     exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
+
 
 exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
     Query_Time =:= Time,
@@ -57,49 +62,37 @@ exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, T
 exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
-    Next_Time = Time + 1,
+    write("time: "),
+    writeln(Time),
+    write("new assignment: "),
+    writeln(New_Assignment),
+    Next_Time is Time + 1,
     exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
 
 exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, _, _, Action_Domain) :-
     Query_Time =:= Time,
-    (maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Query_Action)
-    ->
-    not(compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Query_Action))
-    ;true).
-
-% exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
-%     Query_Time =:= Time,
-%     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, Executed_Action, _),
-%     sort(Executed_Action, Sorted_Executed_Action),
-%     not(sublist(Query_Action, Sorted_Executed_Action)).
-
+    maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Query_Action)
+    ->  not(compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Query_Action))
+    ;   true.
 
 exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
-    Next_Time = Time + 1,
+    Next_Time is Time + 1,
     exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
+
 
 exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, _, _, Action_Domain) :-
     Query_Time =:= Time,
     maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Query_Action),
     compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Query_Action).
 
-% exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
-%     Query_Time =:= Time,
-%     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, Executed_Action, _),
-%     sort(Executed_Action, Sorted_Executed_Action),
-%     sublist(Query_Action, Sorted_Executed_Action).
-
 exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
-    Next_Time = Time + 1,
+    Next_Time is Time + 1,
     exists_state_at_query_time_executing_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
-
-
-
 
 
 get_sample_fluent_assignment([], Assoc) :- empty_assoc(Assoc).
@@ -130,9 +123,10 @@ prepare_initial_state_time_0(Observations, Action_Domain, Initial_State) :-
         logic_formula_satisfied(Initial_Observation, Initial_State)
     ; true).
 
+
 % outputs nothing, succeeds iff the scenario is possibly executable
 run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
-    pengine_output("possibly executable scenario"),
+    writeln("possibly executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
     Maxtime_ACS = Last_Action_Time + 1,
@@ -163,7 +157,6 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
         )
     )).
 
-
 run_scenario((Observations, Actions), Action_Domain, necessarily_accessible(Query_Condition, Query_Time)) :-
     writeln("necessarily accessible gamma at t"),
     once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
@@ -180,7 +173,6 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_accessible(Quer
         )
     )).
 
-
 run_scenario((Observations, Actions), Action_Domain, possibly_accessible(Query_Condition, Query_Time)) :-
     writeln("possibly accessible gamma at t"),
     once(
@@ -189,7 +181,6 @@ run_scenario((Observations, Actions), Action_Domain, possibly_accessible(Query_C
             exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     ).
-
 
 run_scenario((Observations, Actions), Action_Domain, necessarily_executable(Query_Action, Query_Time)) :-
     writeln("necessarily executable A at t"),
@@ -215,23 +206,3 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable(Query_A
             exists_state_at_query_time_executing_action(Query_Action, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     ).
-
-:- 
-    %DOMAIN
-    list_to_assoc(["causes"-("HAPPY", "SAD")], Make_Happy_Assoc),
-
-    list_to_assoc(["MAKEHAPPY"-Make_Happy_Assoc], Domain),
-
-    %OBS
-    % list_to_assoc([], Observations),
-    empty_assoc(Observations),
-    %ACS
-    %list_to_assoc([
-    %    0-["MAKEHAPPY"]
-    %   ], ACS).
-
-    findall(Initial_State, (
-        prepare_initial_state_time_0(Observations, Domain, Initial_State), assoc_to_list(Initial_State, Asso), writeln(Asso)
-    )
-        , _).
-    

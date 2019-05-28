@@ -6,6 +6,7 @@
 :- use_module(compound_executable).
 :- use_module(occlusion).
 :- use_module(potentially_executable).
+:- use_module(logic_formula_satisfiability).
 
 %compound_executable_atomic(Compound_Action, Time, Action_Domain, Fluent_Assignments)
 
@@ -62,54 +63,54 @@ conjunct(Statement, [], Statement).
 conjunct(Statement, Acc1, and(Statement, Acc1)).
 
 get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, MNS_Executed_Action, New_Assignment) :-
-    get_assoc(Time, Actions, ACS_Compound_Action) -> 
+    get_assoc(Time, Actions, ACS_Compound_Action)
+    ->
     (
-        % assoc_to_list(Action_Domain, Action_Domain_List),
         findall(
             Action,
             (member(Action, ACS_Compound_Action), potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments, Action)),
             Compound_Action),
-        dif(Compound_Action, []),
-        get_nonempty_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_Assignments, MNS_Executed_Action),
+            dif(Compound_Action, []),
+            get_nonempty_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_Assignments, MNS_Executed_Action),
         findall(Fluent, (member(Action, Compound_Action), get_occlusion(Action, Action_Domain, Fluent)), Occlusion_List),
         sort(Occlusion_List, Unique_Occlusion_List),
-        
-        Next_Time = Time + 1,
+        Next_Time is Time + 1,
         %prepare causes postconditions
-        findall(Causes_Condition,
-            (
-                get_assoc(Action, Action_Domain, Action_Description),
-            get_assoc("causes", Action_Description, (Causes_Condition, _))
-            ),
+        findall(
+            Causes_Condition,
+            (gen_assoc(_, Action_Domain, Action_Description), get_assoc("causes", Action_Description, (Causes_Condition, _))),
             Causes_Conditions),
             
-        (get_assoc(Next_Time, Observations, Next_Observation) ->
+        (get_assoc(Next_Time, Observations, Next_Observation)
+        ->
             get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, Next_Observation, New_Assignment),
             (
-                Causes_Conditions = [] -> true
+                Causes_Conditions = []
+                -> true
                 ; 
                 (
-                    foldl(conjunct, Causes_Conditions, Consequence),
+                    foldl(conjunct, Causes_Conditions, true, Consequence),
                     logic_formula_satisfied(Consequence, New_Assignment)
                 )
             )
         ;
         get_valid_assignment(Unique_Occlusion_List, Fluent_Assignments, New_Assignment),
         (
-            Causes_Conditions = [] -> true
+            Causes_Conditions = []
+            -> true
             ;
             (
-                    foldl(conjunct, Causes_Conditions, Consequence),
-                    logic_formula_satisfied(Consequence, New_Assignment)
-                )
+                foldl(conjunct, Causes_Conditions, true, Consequence),
+                logic_formula_satisfied(Consequence, New_Assignment)
             )
-        )
+        ))
     )
     ;
     (
         MNS_Executed_Action = [],
-        Next_Time = Time + 1,
-        (get_assoc(Next_Time, Observations, Next_Observation) ->
+        Next_Time is Time + 1,
+        (get_assoc(Next_Time, Observations, Next_Observation)
+        ->
             logic_formula_satisfied(Next_Observation, Fluent_Assignments),
             New_Assignment = Fluent_Assignments
         ;

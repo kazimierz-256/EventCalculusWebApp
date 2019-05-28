@@ -12,8 +12,8 @@ optional_whitespace() --> [].
 parse_string(String) --> {string_chars(String, List)}, List.
 
 fluentConsecutive([])     --> [].
-fluentConsecutive([L|Ls]) --> [L], {(char_type(L, upper) ; char_type(L, digit)),not(char_type(L, white))}, fluentConsecutive(Ls).
-fluent([L|Ls]) --> [L], { char_type(L, upper),not(char_type(L, white))}, fluentConsecutive(Ls).
+fluentConsecutive([L|Ls]) --> [L], {(char_type(L, alnum)),not(char_type(L, white))}, fluentConsecutive(Ls).
+fluent([L|Ls]) --> [L], { char_type(L, alpha),not(char_type(L, white))}, fluentConsecutive(Ls).
 
 one_or_more_space() --> [' '], one_or_more_space().
 one_or_more_space() --> [].
