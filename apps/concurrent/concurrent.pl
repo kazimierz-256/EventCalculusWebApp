@@ -110,10 +110,10 @@ get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
 
 prepare_initial_state_time_0(Observations, Action_Domain, Initial_State) :-
     findall(Fluent, (
-            get_assoc(_, Observations, Observation),
+            gen_assoc(_, Observations, Observation),
             get_sample_fluent_from_tree(Observation, Fluent)
         ;
-            get_assoc(_, Action_Domain, Action_Description),
+            gen_assoc(_, Action_Domain, Action_Description),
             (
                 get_assoc("causes", Action_Description, (Causes_Condition, Precondition)),
                 (get_sample_fluent_from_tree(Causes_Condition, Fluent); get_sample_fluent_from_tree(Precondition, Fluent))
@@ -218,18 +218,20 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable(Query_A
 
 :- 
     %DOMAIN
-    list_to_assoc(["causes"-"HAPPY"], Make_Happy_Assoc),
+    list_to_assoc(["causes"-("HAPPY", "SAD")], Make_Happy_Assoc),
 
     list_to_assoc(["MAKEHAPPY"-Make_Happy_Assoc], Domain),
 
     %OBS
-    list_to_assoc([], Observations),
-
+    % list_to_assoc([], Observations),
+    empty_assoc(Observations),
     %ACS
     %list_to_assoc([
     %    0-["MAKEHAPPY"]
     %   ], ACS).
 
-    findall(Initial_State, prepare_initial_state_time_0(Observations, Domain, Initial_State), List),
-    writeln(List).
+    findall(Initial_State, (
+        prepare_initial_state_time_0(Observations, Domain, Initial_State), assoc_to_list(Initial_State, Asso), writeln(Asso)
+    )
+        , _).
     
