@@ -83,7 +83,7 @@ PANICAON1 causes AON3 if AON3`,
     'Myślał indyk o niedzieli': {
         action_domain: `THINKABOUTSUNDAY causes not MOVING
 ALARM causes MOVING if ALIVE
-SHOOT causes not ALIVE and not MOVING`,
+SHOOT causes not ALIVE and not MOVING if not MOVING`,
         observations: [
             new Entry("ALIVE and MOVING", 0)
         ],
