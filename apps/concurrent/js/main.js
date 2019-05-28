@@ -108,11 +108,11 @@ let mainMethodsObject = {
         let command =
             `parse_domain('` + this.action_domain + `', Domain),` +
             `parse_acs('` + this.getActions() + `', Acs),` +
-            `parse_obs('` + this.getObservations() + `', Obs),pengine_output('New interpretation'),` +
+            `parse_obs('` + this.getObservations() + `', Obs),assoc_to_list(Obs, Ol),pengine_output(Ol),` +
             `get_query_from_text(Query, '` + this.query.full_text + `'),` +
             `run_scenario((Obs,Acs), Domain, Query).`
                 .replace(/\n/gm, "");
-        console.log(command)
+        // console.log(command)
         this.pengine_running = true;
         verbose_command(
             command,

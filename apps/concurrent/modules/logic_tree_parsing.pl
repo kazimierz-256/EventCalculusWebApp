@@ -47,7 +47,7 @@ logictreeimplies(A) --> logictreeiff(A).
 logictreeiff(iff(A,B)) --> logictreeterm(A),parse_string(" iff "),logictreeiff(B).
 logictreeiff(A) --> logictreeterm(A).
 
-logictreeterm(negate(T)) --> parse_string("not "),logictree(T).
+logictreeterm(negate(T)) --> parse_string("not "),logictreeterm(T).
 logictreeterm(negate(T)) --> parse_string("not("),optional_whitespace(),logictree(T),optional_whitespace(),[')'].
 logictreeterm(T) --> optional_whitespace(),['('],optional_whitespace(),logictree(T),optional_whitespace(),[')'],optional_whitespace().
 logictreeterm(S) --> fluent(F),{string_chars(S, F)}.
