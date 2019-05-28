@@ -97,7 +97,7 @@ prepare_initial_state_time_0(Observations, Initial_State) :-
 
 % outputs nothing, succeeds iff the scenario is possibly executable
 run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
-    writeln("possibly executable scenario"),
+    pengine_output("possibly executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
     Maxtime_ACS = Last_Action_Time + 1,
