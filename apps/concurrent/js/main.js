@@ -108,7 +108,7 @@ let mainMethodsObject = {
         let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
         let command = `parse_domain('` + this.action_domain + `', Domain),` +
             `parse_acs('` + this.getActions() + `', Acs),` +
-            `parse_obs('` + this.getObservations() + `', Obs),assoc_to_list(Obs, Ol),pengine_output(Ol),` +
+            `parse_obs('` + this.getObservations() + `', Obs),` +
             `get_query_from_text(Query, '` + this.query.full_text + `'),` +
             `run_scenario((Obs,Acs), Domain, Query).`
                 .replace(/\n/gm, "");
