@@ -215,3 +215,21 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable(Query_A
             exists_state_at_query_time_executing_action(Query_Action, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     ).
+
+:- 
+    %DOMAIN
+    list_to_assoc(["causes"-"HAPPY"], Make_Happy_Assoc),
+
+    list_to_assoc(["MAKEHAPPY"-Make_Happy_Assoc], Domain),
+
+    %OBS
+    list_to_assoc([], Observations),
+
+    %ACS
+    %list_to_assoc([
+    %    0-["MAKEHAPPY"]
+    %   ], ACS).
+
+    findall(Initial_State, prepare_initial_state_time_0(Observations, Domain, Initial_State), List),
+    writeln(List).
+    
