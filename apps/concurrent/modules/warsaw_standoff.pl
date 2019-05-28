@@ -86,6 +86,15 @@ warsaw_standoff_domain(Domain) :-
     list_to_assoc(["causes"-(negate("JAMMED3"), "ALIVE3")], Load3_Causes_List), 
 
 
+    %*************IDLE
+
+    %IDLE1
+    list_to_assoc([], Idle1_Releases_List), 
+
+    %IDLE2
+    list_to_assoc([], Idle2_Releases_List), 
+
+
     %CREATING DOMAIN
     list_to_assoc(["SHOOT12"-Shoot12_Causes_List, "SHOOT13"-Shoot13_Causes_List,
                    "SHOOT21"-Shoot21_Causes_List, "SHOOT23"-Shoot23_Causes_List,
@@ -94,6 +103,7 @@ warsaw_standoff_domain(Domain) :-
                    "ROTATE21"-Rotate21_Causes_List, "ROTATE23"-Rotate23_Causes_List,
                    "ROTATE31"-Rotate31_Causes_List, "ROTATE32"-Rotate32_Causes_List,
                    "LOAD1"-Load1_Releases_List, "LOAD2"-Load2_Releases_List,
+                   "IDLE1"-Idle1_Releases_List, "IDLE2"-Idle2_Releases_List,
                    "LOAD3"-Load3_Causes_List], Domain).
 
 warsaw_standoff_scenario(Sc) :-
@@ -106,7 +116,8 @@ warsaw_standoff_scenario(Sc) :-
                 and(negate("JAMMED3"),
                 and("FACING12",
                     and("FACING23",
-                        "FACING31"))))))))], Observations),
+                        and("FACING31", and(negate("FACING13"),and(negate("FACING21"), negate("FACING32"))))
+                            )))))))), 1-or(negate("JAMMED1"), negate("JAMMED2"))], Observations),
 
     %ACS
     list_to_assoc([
@@ -114,7 +125,7 @@ warsaw_standoff_scenario(Sc) :-
                     1-["SHOOT12", "SHOOT23"],
                     2-["ROTATE13", "ROTATE21", "SHOOT31"],
                     3-["SHOOT13", "SHOOT21", "ROTATE32"],
-                    4-["SHOOT32"]], Compound_Actions),
+                    4-["SHOOT32","IDLE1","IDLE2"]], Compound_Actions),
     Sc = (Observations, Compound_Actions).
 
 % main_warsaw :-  

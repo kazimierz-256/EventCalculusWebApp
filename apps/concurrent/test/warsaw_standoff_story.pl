@@ -6,19 +6,29 @@
 % WARSAW STANDOFF
 %%%%%%%%%%%%%%%%%
 
+:-  warsaw_standoff_domain(Domain),
+    warsaw_standoff_scenario(Scenario),
+    get_query_from_text(Query, 'necessarily executable'),
+    run_scenario(Scenario, Domain, Query).
+
+% %% TODO fix: fails
 % :-  warsaw_standoff_domain(Domain),
-%     warsaw_standoff_scenario(Scenario),
-%     get_query_from_text(Query, 'possibly executable'),
-%     run_scenario(Scenario, Domain, Query).
+% warsaw_standoff_scenario(Scenario),
+% get_query_from_text(Query, 'possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5'),
+% run_scenario(Scenario, Domain, Query).
 
-%% TODO fix: fails
-%:-  warsaw_standoff_domain(Domain),
-%    warsaw_standoff_scenario(Scenario),
-%    get_query_from_text(Query, 'possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5'),
-%    run_scenario(Scenario, Domain, Query).
+:-  warsaw_standoff_domain(Domain),
+   warsaw_standoff_scenario(Scenario),
+   get_query_from_text(Query, 'possibly accessible JAMMED1 and JAMMED2 at 1'),
+   not(run_scenario(Scenario, Domain, Query)).
 
-%% TODO fix: fails
-%:-  warsaw_standoff_domain(Domain),
-%    warsaw_standoff_scenario(Scenario),
-%    get_query_from_text(Query, 'possibly accessible ALIVE3 and JAMMED1 at 5'),
-%    not(run_scenario(Scenario, Domain, Query)).
+:-  warsaw_standoff_domain(Domain),
+   warsaw_standoff_scenario(Scenario),
+   get_query_from_text(Query, 'possibly accessible ALIVE2 at 5'),
+   run_scenario(Scenario, Domain, Query).
+
+% TODO fix: fails
+:-  warsaw_standoff_domain(Domain),
+   warsaw_standoff_scenario(Scenario),
+   get_query_from_text(Query, 'possibly accessible ALIVE3 and JAMMED1 at 5'),
+   not(run_scenario(Scenario, Domain, Query)).
