@@ -1,5 +1,15 @@
 let prescribed_stories =
 {
+    'happy': {
+        action_domain: `M causes HAPPY`,
+        observations: [
+            new Entry("HAPPY", 0)
+        ],
+        actions: [  
+            new Entry("M", 0)
+        ],
+        query: new Query(`1`, `Possibly accesible γ at t when Sc`, `HAPPY`, `1`, ``, `Possibly accessible HAPPY at 1`)
+    },
     'simplest': {
         action_domain: `SHOOT causes not ALIVE
 impossible SHOOT at 0`,
