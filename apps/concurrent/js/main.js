@@ -112,7 +112,7 @@ let mainMethodsObject = {
             `get_query_from_text(Query, '` + this.query.full_text + `'),` +
             `run_scenario((Obs,Acs), Domain, Query).`
                 .replace(/\n/gm, "");
-        // console.log(command)
+        console.log(command)
         this.pengine_running = true;
         verbose_command(
             command,
