@@ -11,7 +11,7 @@ mns(PotentiallyExecutablesList, Time, Action_Domain, Fluent_Assignments, Some_Va
     check_whether_compound_is_valid([], PotentiallyExecutablesList, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS).
     % is the program still valid when there is no dif?
 
-check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, [CompoundAction]) :-
+check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, CompoundAction) :-
     append(IncludedActions, ConsideredActions, CompoundAction),
     compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction).
 
@@ -20,7 +20,7 @@ check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action
     not(compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction)),
     check_without_first_considering(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS).
 
-check_without_first_considering(IncludedActions, [], Time, Action_Domain, Fluent_Assignments, [IncludedActions]) :-
+check_without_first_considering(IncludedActions, [], Time, Action_Domain, Fluent_Assignments, IncludedActions) :-
     compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, IncludedActions).
 
 check_without_first_considering(IncludedActions, [Action|Rest], Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-

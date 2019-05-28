@@ -30,7 +30,7 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
     Time < Maxtime,
     (
         not(get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, _))
-        ;
+    ;
         (
             % write("exists_state"),
             get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
@@ -52,6 +52,7 @@ exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Tim
     Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
     Next_Time is Time + 1,
+    % writeln(Next_Time),
     exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
 
@@ -62,10 +63,10 @@ exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, T
 exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Query_Time,
     get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, _, New_Assignment),
-    write("time: "),
-    writeln(Time),
-    write("new assignment: "),
-    writeln(New_Assignment),
+    % write("time: "),
+    % writeln(Time),
+    % write("new assignment: "),
+    % writeln(New_Assignment),
     Next_Time is Time + 1,
     exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
