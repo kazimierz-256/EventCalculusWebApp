@@ -12,10 +12,10 @@
     run_scenario(Scenario, Domain, Query).
 
 % %% TODO fix: fails
-% :-  warsaw_standoff_domain(Domain),
-% warsaw_standoff_scenario(Scenario),
-% get_query_from_text(Query, 'possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5'),
-% run_scenario(Scenario, Domain, Query).
+:-  warsaw_standoff_domain(Domain),
+warsaw_standoff_scenario(Scenario),
+get_query_from_text(Query, 'possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5'),
+run_scenario(Scenario, Domain, Query).
 
 :-  warsaw_standoff_domain(Domain),
    warsaw_standoff_scenario(Scenario),
