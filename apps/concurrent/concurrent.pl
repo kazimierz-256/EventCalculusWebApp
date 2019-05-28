@@ -36,7 +36,7 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
         )
     ).
 
-sublist([], R1).
+sublist([], _).
 sublist([L|L1], [R,R1]) :- L=R, sublist(L1, R1).
 
 exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
@@ -108,7 +108,7 @@ prepare_initial_state_time_0(Observations, Initial_State) :-
 
 % outputs nothing, succeeds iff the scenario is possibly executable
 run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
-    writeln("possibly executable scenario"),
+    pengine_output("possibly executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
     Maxtime_ACS = Last_Action_Time + 1,
