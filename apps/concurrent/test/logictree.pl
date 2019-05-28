@@ -14,3 +14,6 @@ T=or("LOADED",and("JAMMED","DEAD")).
 
 :- logic_tree_from_text("LOADED or JAMMED and (not DEAD)", T),
 T=or("LOADED",and("JAMMED",negate("DEAD"))).
+
+:- logic_tree_from_text("", T),
+T=true.

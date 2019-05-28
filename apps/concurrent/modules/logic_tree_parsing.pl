@@ -28,6 +28,9 @@ one_or_more_space() --> [].
 % removeTrailingSpaces() --> [].
 
 %LOGICTREE
+logic_tree_from_text(STRING, true) :-
+    normalize_space(string(String_Cleaned), STRING),
+    string_chars(String_Cleaned, []).
 logic_tree_from_text(STRING, T) :-
     normalize_space(string(String_Cleaned), STRING),
     string_chars(String_Cleaned, CHARS),
