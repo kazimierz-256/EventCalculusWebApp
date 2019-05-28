@@ -36,7 +36,7 @@ exists_state_without_future(Maxtime, Time, Fluent_Assignments, Observations, Act
         )
     ).
 
-sublist([], R1).
+sublist([], _).
 sublist([L|L1], [R,R1]) :- L=R, sublist(L1, R1).
 
 exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-

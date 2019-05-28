@@ -105,8 +105,8 @@ let mainMethodsObject = {
 
     },
     retrieve_answer: function () {
-        let cleanse = str => str.replace(/(?:\r\n|\r|\n)/g, ' ');
-        let command = `parse_domain('` + this.action_domain + `', Domain),` +
+        let command =
+            `parse_domain('` + this.action_domain + `', Domain),` +
             `parse_acs('` + this.getActions() + `', Acs),` +
             `parse_obs('` + this.getObservations() + `', Obs),pengine_output('New interpretation'),` +
             `get_query_from_text(Query, '` + this.query.full_text + `'),` +
