@@ -1,8 +1,12 @@
 :- module(occlusion, 
     [
         get_occlusion/3,
-        get_all_fluents_from_tree/2
+        get_all_fluents_from_tree/2,
+        get_sample_fluent_from_tree/2
     ]).
+
+get_sample_fluent_from_tree(Tree, Fluent) :-    
+    search_clause(Tree, Fluent).
 
 get_all_fluents_from_tree(Tree, Unique_Fluents) :-    
     findall(Fluent, search_clause(Tree, Fluent), Fluents),

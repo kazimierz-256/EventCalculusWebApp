@@ -108,15 +108,27 @@ get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
     (F_Value = true ; F_Value = false),
     put_assoc(F, Assoc, F_Value, Assoc_Including_F).
 
-prepare_initial_state_time_0(Observations, Initial_State) :-
-    %generate all valid assignments
-    get_assoc(0, Observations, Initial_Observation)
-     ->
-        get_all_fluents_from_tree(Initial_Observation, Fluents),
-        get_sample_fluent_assignment(Fluents, Initial_State),
-        % getAssociationThatSatisfiesFormula(Initial_Observation, Initial_State),
+prepare_initial_state_time_0(Observations, Action_Domain, Initial_State) :-
+    findall(Fluent, (
+            gen_assoc(_, Observations, Observation),
+            get_sample_fluent_from_tree(Observation, Fluent)
+        ;
+            gen_assoc(_, Action_Domain, Action_Description),
+            (
+                get_assoc("causes", Action_Description, (Causes_Condition, Precondition)),
+                (get_sample_fluent_from_tree(Causes_Condition, Fluent); get_sample_fluent_from_tree(Precondition, Fluent))
+            ;
+                get_assoc("releases", Action_Description, (Release_Fluent, Precondition)),
+                (Fluent = Release_Fluent; get_sample_fluent_from_tree(Precondition, Fluent))
+            
+            )
+        ), Fluents),
+    sort(Fluents, Unique_Fluents),
+    get_sample_fluent_assignment(Unique_Fluents, Initial_State),
+    (get_assoc(0, Observations, Initial_Observation)
+    ->
         logic_formula_satisfied(Initial_Observation, Initial_State)
-    ;   empty_assoc(Initial_State).
+    ; true).
 
 % outputs nothing, succeeds iff the scenario is possibly executable
 run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
@@ -129,7 +141,7 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
     Maxtime = max(Maxtime_ACS, Maxtime_OBS),
     once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_valid_state_at_time(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     ).
@@ -143,10 +155,10 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
     max_assoc(Observations, Last_Observaiotn_Time, _),
     Maxtime_OBS = Last_Observaiotn_Time,
     Maxtime = max(Maxtime_ACS, Maxtime_OBS),
-    once(prepare_initial_state_time_0(Observations, _)),
+    once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
     not(once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_state_without_future(Maxtime, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )).
@@ -154,16 +166,16 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
 
 run_scenario((Observations, Actions), Action_Domain, necessarily_accessible(Query_Condition, Query_Time)) :-
     writeln("necessarily accessible gamma at t"),
-    once(prepare_initial_state_time_0(Observations, _)),
+    once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
     not(once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_state_without_future(Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )),
     not(once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )).
@@ -173,7 +185,7 @@ run_scenario((Observations, Actions), Action_Domain, possibly_accessible(Query_C
     writeln("possibly accessible gamma at t"),
     once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     ).
@@ -181,16 +193,16 @@ run_scenario((Observations, Actions), Action_Domain, possibly_accessible(Query_C
 
 run_scenario((Observations, Actions), Action_Domain, necessarily_executable(Query_Action, Query_Time)) :-
     writeln("necessarily executable A at t"),
-    once(prepare_initial_state_time_0(Observations, _)),
+    once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
     not(once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_state_without_future(Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )),
     not(once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     )).
@@ -199,7 +211,27 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable(Query_A
     writeln("possibly executable A at t"),
     once(
         (
-            prepare_initial_state_time_0(Observations, Initial_State),
+            prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
             exists_state_at_query_time_executing_action(Query_Action, Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
         )
     ).
+
+:- 
+    %DOMAIN
+    list_to_assoc(["causes"-("HAPPY", "SAD")], Make_Happy_Assoc),
+
+    list_to_assoc(["MAKEHAPPY"-Make_Happy_Assoc], Domain),
+
+    %OBS
+    % list_to_assoc([], Observations),
+    empty_assoc(Observations),
+    %ACS
+    %list_to_assoc([
+    %    0-["MAKEHAPPY"]
+    %   ], ACS).
+
+    findall(Initial_State, (
+        prepare_initial_state_time_0(Observations, Domain, Initial_State), assoc_to_list(Initial_State, Asso), writeln(Asso)
+    )
+        , _).
+    
