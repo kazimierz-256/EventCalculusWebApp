@@ -183,18 +183,13 @@ let form = new Vue({
 let pengine = undefined;
 let verbose_command = (command, result_method, onfailure) => {
     pengine = getPengineAwaitable('concurrent', command, undefined, results => {
-        // console.log(command);
-        // console.log(results);
-
         if (result_method)
             result_method(results);
         pengine.stop();
-        // pengine.destroy();
     }, () => {
-        // console.log(command);
         if (onfailure)
             onfailure();
-        pengine.stop();
+
     }, undefined, undefined, (par) => {
         M.toast({ html: par.data, classes: 'rounded' });
         console.error(par);
