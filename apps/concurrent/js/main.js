@@ -59,7 +59,8 @@ const debugText = "domain([], D),\n" +
 const debugText3 = "parse_domain('SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12', Domain).";
 
 let getNewQuery = function () { return new Query(``, ``, ``, ``, ``, ``); };
-let gif_count = 3;
+let gif_positive_count = 3;
+let gif_negative_count = 7;
 let modelData = {
     action_domain: ``,
     answer: undefined,
@@ -85,13 +86,13 @@ let mainMethodsObject = {
                 console.log(`%cResult of query`, `font-weight:bold`);
                 console.log(result);
                 this.answer = true;
-                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.gif_id = Math.floor(Math.random() * gif_positive_count);
                 this.pengine_running = false;
             }, () => {
                 console.log(`%cDebug query:%c ${debug_query}`, `font-weight:bold`, ``)
                 console.log(`%cResult failed`, `font-weight:bold`);
                 this.answer = false;
-                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.gif_id = Math.floor(Math.random() * gif_negative_count);
                 this.pengine_running = false;
             }
         );
@@ -119,11 +120,11 @@ let mainMethodsObject = {
             command,
             () => {
                 this.answer = true;
-                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.gif_id = Math.floor(Math.random() * gif_positive_count);
                 this.pengine_running = false;
             }, () => {
                 this.answer = false;
-                this.gif_id = Math.floor(Math.random() * gif_count);
+                this.gif_id = Math.floor(Math.random() * gif_negative_count);
                 this.pengine_running = false;
             }
         );
