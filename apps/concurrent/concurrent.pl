@@ -17,7 +17,7 @@
 :- use_module("modules/compound_executable.pl").
 
 
-exists_valid_state_at_time(Maxtime, Maxtime1, _, _, _, _) :- Maxtime =:= Maxtime1.
+exists_valid_state_at_time(Maxtime, Maxtime, _, _, _, _).
 
 exists_valid_state_at_time(Maxtime, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :- 
     Time < Maxtime,
@@ -44,8 +44,7 @@ sublist([], _).
 sublist([L|L1], [R,R1]) :- L=R, sublist(L1, R1).
 
 
-exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
-    Query_Time =:= Time,
+exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Query_Time, Fluent_Assignments, _, _, _) :-
     logic_formula_satisfied(Query_Condition, Fluent_Assignments).
 
 exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
@@ -56,8 +55,7 @@ exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Tim
     exists_state_at_query_time_supporting_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
 
-exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, _, _, _) :-
-    Query_Time =:= Time,
+exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Query_Time, Fluent_Assignments, _, _, _) :-
     not(logic_formula_satisfied(Query_Condition, Fluent_Assignments)).
 
 exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
@@ -71,8 +69,7 @@ exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, T
     exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain). 
 
 
-exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, _, _, Action_Domain) :-
-    Query_Time =:= Time,
+exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Query_Time, Fluent_Assignments, _, _, Action_Domain) :-
     (maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Query_Action)
     ->  not(compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Query_Action))
     ;   true).
@@ -84,8 +81,7 @@ exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Tim
     exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
 
 
-exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, _, _, Action_Domain) :-
-    Query_Time =:= Time,
+exists_state_at_query_time_executing_action(Query_Action, Query_Time, Query_Time, Fluent_Assignments, _, _, Action_Domain) :-
     maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Query_Action),
     compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Query_Action).
 
@@ -130,10 +126,10 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
     writeln("possibly executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
-    Maxtime_ACS = Last_Action_Time + 1,
+    Maxtime_ACS is Last_Action_Time + 1,
     max_assoc(Observations, Last_Observaiotn_Time, _),
-    Maxtime_OBS = Last_Observaiotn_Time,
-    Maxtime = max(Maxtime_ACS, Maxtime_OBS),
+    Maxtime_OBS is Last_Observaiotn_Time,
+    Maxtime is max(Maxtime_ACS, Maxtime_OBS),
     once(
         (
             prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
@@ -146,10 +142,10 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
     writeln("necessarily executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
     max_assoc(Actions, Last_Action_Time, _),
-    Maxtime_ACS = Last_Action_Time + 1,
+    Maxtime_ACS is Last_Action_Time + 1,
     max_assoc(Observations, Last_Observaiotn_Time, _),
-    Maxtime_OBS = Last_Observaiotn_Time,
-    Maxtime = max(Maxtime_ACS, Maxtime_OBS),
+    Maxtime_OBS is Last_Observaiotn_Time,
+    Maxtime is max(Maxtime_ACS, Maxtime_OBS),
     once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
     not(once(
         (
