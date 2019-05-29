@@ -2,7 +2,7 @@
 :- use_module("../modules/query_parsing.pl").
 :- use_module("../concurrent.pl").
 
-possibly_executable_a_causes_f_or_not_f :-
+possibly_executable :-
     parse_domain("A causes f or not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
@@ -10,7 +10,7 @@ possibly_executable_a_causes_f_or_not_f :-
     get_query_from_text(Query, 'possibly executable'),
     run_scenario(Scenario, Domain, Query).
 
-necessarily_executable_a_causes_f_or_not_f :-
+necessarily_executable :-
     parse_domain("A causes f or not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
@@ -18,7 +18,7 @@ necessarily_executable_a_causes_f_or_not_f :-
     get_query_from_text(Query, 'necessarily executable'),
     run_scenario(Scenario, Domain, Query).
 
-possibly_executable_a_at_5 :-
+possibly_accessible_f_at_5 :-
     parse_domain("A causes f or not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
@@ -26,7 +26,7 @@ possibly_executable_a_at_5 :-
     get_query_from_text(Query, 'possibly accessible f at 5'),
     run_scenario(Scenario, Domain, Query).
 
-possibly_executable_a_at_5_neg :-
+possibly_accessible_not_f_at_5 :-
     parse_domain("A causes f or not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
@@ -34,7 +34,7 @@ possibly_executable_a_at_5_neg :-
     get_query_from_text(Query, 'possibly accessible not f at 5'),
     run_scenario(Scenario, Domain, Query).
 
-necessarily_executable_a_at_5 :-
+necessarily_accessible_A_at_5 :-
     parse_domain("A causes f or not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
@@ -42,8 +42,8 @@ necessarily_executable_a_at_5 :-
     get_query_from_text(Query, 'necessarily accessible A at 5'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:- possibly_executable_a_causes_f_or_not_f.
-:- necessarily_executable_a_causes_f_or_not_f.
-:- possibly_executable_a_at_5.
-:- possibly_executable_a_at_5_neg.
-:- necessarily_executable_a_at_5.
+:- possibly_executable.
+:- necessarily_executable.
+:- possibly_accessible_f_at_5.
+:- possibly_accessible_not_f_at_5.
+:- necessarily_accessible_A_at_5.
