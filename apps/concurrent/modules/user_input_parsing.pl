@@ -99,9 +99,12 @@ parse_domain(Text, Domain) :-
 %scenario
 %scenario actions
 
+normalize_map(In, Out) :- normalize_space(string(Out),In).
+
 add_to_acs(ACS, Time, Assoc, Actions) :-
     split_string(ACS, ",", "", Parts),
-	put_assoc(Time, Assoc, Parts, Actions).
+    maplist(normalize_map, Parts, Parts_Normalized),
+	put_assoc(Time, Assoc, Parts_Normalized, Actions).
 
 parse_acs_line(Text, ACS, Time) :-
     split_string(Text, "|", "", [ACS, Time_Str]),
