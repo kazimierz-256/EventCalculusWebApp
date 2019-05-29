@@ -42,6 +42,6 @@ test(run_scenario) :-
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
     get_query_from_text(Query, 'necessarily accessible A at 5'),
-    not(run_scenario(Scenario, Domain, Query)).
+    \+ run_scenario(Scenario, Domain, Query).
 
 :- end_tests(concurrent).
