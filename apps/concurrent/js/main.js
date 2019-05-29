@@ -106,10 +106,10 @@ let mainMethodsObject = {
     },
     retrieve_answer: function () {
         let command =
-            `parse_domain('` + this.action_domain + `', Domain),` +
+            `once((parse_domain('` + this.action_domain + `', Domain),` +
             `parse_acs('` + this.getActions() + `', Acs),` +
             `parse_obs('` + this.getObservations() + `', Obs),` +
-            `get_query_from_text(Query, '` + this.query.full_text + `'),` +
+            `get_query_from_text(Query, '` + this.query.full_text + `'))),` +
             `pengine_output('` + this.query.full_text + `'),` +
             `run_scenario((Obs,Acs), Domain, Query).`
                 .replace(/\n/gm, "");
