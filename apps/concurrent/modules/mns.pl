@@ -11,19 +11,19 @@ mns(PotentiallyExecutablesList, Time, Action_Domain, Fluent_Assignments, Some_Va
     check_whether_compound_is_valid([], PotentiallyExecutablesList, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS).
     % is the program still valid when there is no dif?
 
-check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, CompoundAction) :-
-    append(IncludedActions, ConsideredActions, CompoundAction),
-    compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction).
+% check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, CompoundAction) :-
+%     append(IncludedActions, ConsideredActions, CompoundAction),
+%     compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction).
 
 check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-
     append(IncludedActions, ConsideredActions, CompoundAction),
-    not(compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction)),
-    check_without_first_considering(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS).
-
-check_without_first_considering(IncludedActions, [], Time, Action_Domain, Fluent_Assignments, IncludedActions) :-
-    compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, IncludedActions).
+    (compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction) ->
+        Some_Valid_MNS = CompoundAction
+    ;
+        check_without_first_considering(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)
+    ).
 
 check_without_first_considering(IncludedActions, [Action|Rest], Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-
     append(IncludedActions, Action, ExtendedActions),
-    (check_whether_compound_is_valid(ExtendedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)
-    ; check_without_first_considering(IncludedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)).
+    (check_without_first_considering(ExtendedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)
+    ; check_whether_compound_is_valid(IncludedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)).

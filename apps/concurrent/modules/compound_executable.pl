@@ -43,22 +43,24 @@ compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Act
     maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Compound_Action),
     findall(Causes_Condition,
         (
-            gen_assoc(_, Action_Domain, Action_Description),
+            member(Action, Compound_Action),
+            get_assoc(Action, Action_Domain, Action_Description),
             get_assoc("causes", Action_Description, (Causes_Condition, _))
         ),
         Causes_Conditions),
-    findall(Release_Fluent,
-        (
-            gen_assoc(_, Action_Domain, Action_Description),
-            get_assoc("releases", Action_Description, (Release_Fluent, _))
-        ),
-        Release_Fluents),
+        findall(Release_Fluent,
+            (
+                member(Action, Compound_Action),
+                get_assoc(Action, Action_Domain, Action_Description),
+                get_assoc("releases", Action_Description, (Release_Fluent, _))
+            ),
+            Release_Fluents),
     % IF OK, try ordered for efficiency
     % list_to_ord_set(Release_Fluents, Release_Fluents_Ordered),
     (Causes_Conditions = []
         ->  true
 
-    ;       foldl(conjunct, Causes_Conditions, true, Consequence),
-            no_release_fluent_in_causes(Release_Fluents, Consequence),
-            once(getAssociationThatSatisfiesFormula(Consequence, _))
-    ).
+        ;       foldl(conjunct, Causes_Conditions, true, Consequence),
+                no_release_fluent_in_causes(Release_Fluents, Consequence),
+                once(getAssociationThatSatisfiesFormula(Consequence, _))
+        ).
