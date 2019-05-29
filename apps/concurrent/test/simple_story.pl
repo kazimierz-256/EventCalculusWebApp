@@ -24,107 +24,151 @@ simplest_scenario(Sc) :-
 % SIMPLEST
 %%%%%%%%%%
 
-:-  simplest_domain(Domain),
+possibly_executable :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly executable'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+
+necessarily_executable :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily executable'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+possibly_accessible_ALIVE_at_0 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible ALIVE at 0'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+possibly_accessible_ALIVE_at_1 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible ALIVE at 1'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+possibly_accessible_ALIVE_at_5 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible ALIVE at 5'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+possibly_accessible_not_ALIVE_at_0 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible not ALIVE at 0'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+possibly_accessible_not_ALIVE_at_1 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible not ALIVE at 1'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+possibly_accessible_not_ALIVE_at_5 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible not ALIVE at 5'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+necessarily_accessible_ALIVE_at_0 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible ALIVE at 0'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+necessarily_accessible_ALIVE_at_1 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible ALIVE at 1'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+necessarily_accessible_ALIVE_at_5 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible ALIVE at 5'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+necessarily_accessible_not_ALIVE_at_0 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible not ALIVE at 0'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+necessarily_accessible_not_ALIVE_at_1 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible not ALIVE at 1'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+necessarily_accessible_not_ALIVE_at_2 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible not ALIVE at 2'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+necessarily_accessible_not_ALIVE_at_5 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible not ALIVE at 5'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+possibly_executable_SHOOT_at_0 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly executable SHOOT at 0'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+possibly_executable_SHOOT_at_1 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly executable SHOOT at 1'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+possibly_executable_SHOOT_at_5 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'possibly executable SHOOT at 5'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+necessarily_executable_SHOOT_at_0 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily executable SHOOT at 0'),
     not(run_scenario(Scenario, Domain, Query)).
 
-:-  simplest_domain(Domain),
+necessarily_executable_SHOOT_at_1 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily executable SHOOT at 1'),
     run_scenario(Scenario, Domain, Query).
 
-:-  simplest_domain(Domain),
+necessarily_executable_SHOOT_at_5 :-
+    simplest_domain(Domain),
     simplest_scenario(Scenario),
     get_query_from_text(Query, 'necessarily executable SHOOT at 5'),
     run_scenario(Scenario, Domain, Query).
+
+:- possibly_executable.
+:- necessarily_executable.
+:- possibly_accessible_ALIVE_at_0.
+:- possibly_accessible_ALIVE_at_1.
+:- possibly_accessible_ALIVE_at_5.
+:- possibly_accessible_not_ALIVE_at_0.
+:- possibly_accessible_not_ALIVE_at_1.
+:- possibly_accessible_not_ALIVE_at_5.
+:- necessarily_accessible_ALIVE_at_0.
+:- necessarily_accessible_ALIVE_at_1.
+:- necessarily_accessible_ALIVE_at_5.
+:- necessarily_accessible_not_ALIVE_at_0.
+:- necessarily_accessible_not_ALIVE_at_1.
+:- necessarily_accessible_not_ALIVE_at_2.
+:- necessarily_accessible_not_ALIVE_at_5.
+:- possibly_executable_SHOOT_at_0.
+:- possibly_executable_SHOOT_at_1.
+:- possibly_executable_SHOOT_at_5.
+:- necessarily_executable_SHOOT_at_0.
+:- necessarily_executable_SHOOT_at_1.
+:- necessarily_executable_SHOOT_at_5.
