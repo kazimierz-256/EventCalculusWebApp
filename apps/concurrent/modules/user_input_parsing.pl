@@ -91,10 +91,13 @@ parse_parts([H|T], Assoc, Domain) :-
     add_to_domain(Action, Value, Assoc, Domain_Tmp),
     parse_parts(T, Domain_Tmp, Domain).
 
-parse_domain(Text, Domain) :-
+parse_domain_h(Text, Domain) :-
     split_string(Text, "\n", "", Parts),
     empty_assoc(Assoc),
     parse_parts(Parts, Assoc, Domain).
+
+parse_domain(Text, Domain) :-
+    once(parse_domain_h(Text, Domain)).
 
 %scenario
 %scenario actions
@@ -117,10 +120,13 @@ parse_parts_acs([H|T], Assoc, Actions) :-
    	add_to_acs(ACS, Time, Assoc, Actions_Tmp),
     parse_parts_acs(T, Actions_Tmp, Actions).
 
-parse_acs(Text, Actions) :-
+parse_acs_h(Text, Actions) :-
     split_string(Text, "\n", "", Parts),
     empty_assoc(Assoc),
     parse_parts_acs(Parts, Assoc, Actions).
+
+parse_acs(Text, Actions) :-
+    once(parse_acs_h(Text, Actions)).
 
 %scenario observations
 
@@ -136,9 +142,10 @@ parse_parts_obs([H|T], Assoc, Observations) :-
    	put_assoc(Time, Assoc, Obs_T, Observations_Tmp),
     parse_parts_obs(T, Observations_Tmp, Observations).
 
-parse_obs(Text, Observations) :-
+parse_obs_h(Text, Observations) :-
     split_string(Text, "\n", "", Parts),
     empty_assoc(Assoc),
     parse_parts_obs(Parts, Assoc, Observations).
 
-
+parse_obs(Text, Observations) :-
+    once(parse_obs_h(Text, Observations)).

@@ -1,4 +1,4 @@
-:- begin_tests(concurrent).
+:- begin_tests(or_story).
 
 :- use_module("../modules/user_input_parsing.pl").
 :- use_module("../modules/query_parsing.pl").
@@ -44,4 +44,4 @@ test(run_scenario) :-
     get_query_from_text(Query, 'necessarily accessible A at 5'),
     \+ run_scenario(Scenario, Domain, Query).
 
-:- end_tests(concurrent).
+:- end_tests(or_story).
