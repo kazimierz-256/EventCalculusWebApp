@@ -6,6 +6,9 @@
         get_sample_fluent_from_tree/2
     ]).
 
+:- use_module(logic_formula_satisfiability).
+
+
 get_sample_fluent_from_tree(Tree, Fluent) :-    
     search_clause(Tree, Fluent).
 
