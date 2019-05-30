@@ -3,12 +3,12 @@
 :- use_module("../concurrent.pl").
 
 possibly_executable :-
-    parse_domain("A causes f or not f", Domain),
+    parse_domain("A causes f and not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
     get_query_from_text(Query, 'possibly executable'),
-    run_scenario(Scenario, Domain, Query).
+    \+ run_scenario(Scenario, Domain, Query).
 
 necessarily_executable :-
     parse_domain("A causes f or not f", Domain),
@@ -23,7 +23,7 @@ possibly_accessible_f_at_5 :-
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
-    get_query_from_text(Query, 'possibly accessible f at 5'),
+    get_query_from_text(Query, 'possibly accessible not f at 5'),
     run_scenario(Scenario, Domain, Query).
 
 possibly_accessible_not_f_at_5 :-

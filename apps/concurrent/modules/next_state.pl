@@ -73,7 +73,7 @@ get_next_state(Time, Fluent_Assignments, Observations, Actions, Action_Domain, M
         dif(Potentailly_Executable_Subset, []),
         
         get_nonempty_action_decomposition(Potentailly_Executable_Subset, Time, Action_Domain, Fluent_Assignments, MNS_Executed_Action),
-        findall(Fluent, (member(Action, MNS_Executed_Action), get_occlusion(Action, Action_Domain, Fluent)), Occlusion_List),
+        findall(Fluent, get_total_occlusion(MNS_Executed_Action, Action_Domain, Fluent), Occlusion_List),
         sort(Occlusion_List, Unique_Occlusion_List),
         Next_Time is Time + 1,
         %prepare causes postconditions

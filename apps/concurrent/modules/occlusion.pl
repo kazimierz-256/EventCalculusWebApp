@@ -1,6 +1,7 @@
 :- module(occlusion, 
     [
         get_occlusion/3,
+        get_total_occlusion/3,
         get_all_fluents_from_tree/2,
         get_sample_fluent_from_tree/2
     ]).
