@@ -4,7 +4,7 @@
 :- use_module("../modules/query_parsing.pl").
 :- use_module("../concurrent.pl").
 
-possibly_executable :-
+test(run_scenario) :-
     parse_domain("A causes f and not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
