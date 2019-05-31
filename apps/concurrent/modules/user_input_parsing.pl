@@ -22,13 +22,13 @@ get_action_and_val([Action, "causes"|Rest], Action, Value) :-
     empty_assoc(Assoc),
     parse_cause_if(Rest, Effect_Parts, If_Parts),
     !,
-    atomic_list_concat(Effect_Parts, ' ', Atom_Ef), 
+    atomic_list_concat(Effect_Parts, ' ', Atom_Ef),
     atom_string(Atom_Ef, Effect),
-    atomic_list_concat(If_Parts, ' ', Atom_If), 
-    atom_string(Atom_If, If),
     logic_tree_from_text(Effect, Effect_T),
+    atomic_list_concat(If_Parts, ' ', Atom_If),
+    atom_string(Atom_If, If),
     logic_tree_from_text(If, If_T),
-    put_assoc("causes", Assoc, (Effect_T, If_T), Value ).
+    put_assoc("causes", Assoc, (Effect_T, If_T), Value).
 
 get_action_and_val([Action, "releases"|Rest], Action, Value) :-
     empty_assoc(Assoc),
