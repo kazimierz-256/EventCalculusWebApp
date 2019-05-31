@@ -21,7 +21,10 @@ parse_query(necessarily_executable(Action, Time)) -->
 parse_query(possibly_executable(Action, Time)) -->
     parse_string("possibly executable "), csv_to_list(Action), parse_string(" at "), integer(Time).
 
-get_query_from_text(Query, Text) :-
+get_query_from_text_h(Query, Text) :-
     normalize_space(string(String_Cleaned), Text),
     string_chars(String_Cleaned, Chars),
     phrase(parse_query(Query), Chars).
+
+get_query_from_text(Query, Text) :-
+    once(get_query_from_text_h(Query, Text)).
