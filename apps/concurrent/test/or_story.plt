@@ -10,7 +10,7 @@ test('possibly executable') :-
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
     get_query_from_text(Query, 'possibly executable'),
-    \+ run_scenario(Scenario, Domain, Query).
+    run_scenario(Scenario, Domain, Query).
 
 test('necessarily executable') :-
     parse_domain("A causes f or not f", Domain),
@@ -34,7 +34,7 @@ test('possibly accessible not f at 5') :-
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
     get_query_from_text(Query, 'possibly executable'),
-    \+ run_scenario(Scenario, Domain, Query).
+    run_scenario(Scenario, Domain, Query).
 
 test('necessarily accessible A at 5') :-
     parse_domain("A causes f or not f", Domain),
