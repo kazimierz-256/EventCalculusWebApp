@@ -1,5 +1,5 @@
 # Folder z treścią
-Część frontowa i backendowa znajduje się w folderze `apps/concurren`t.
+Część frontowa i backendowa znajduje się w folderze `apps/concurrent`.
 
 # Uruchomienie serwera
 `swipl run.pl`
