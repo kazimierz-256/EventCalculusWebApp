@@ -59,8 +59,8 @@ const debugText = "domain([], D),\n" +
 const debugText3 = "parse_domain('SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12', Domain).";
 
 let getNewQuery = function () { return new Query(``, ``, ``, ``, ``, ``); };
-let gif_positive_count = 3;
-let gif_negative_count = 7;
+let gif_positive_count = 5;
+let gif_negative_count = 6;
 let modelData = {
     action_domain: ``,
     answer: undefined,
