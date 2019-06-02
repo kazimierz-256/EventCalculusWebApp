@@ -84,6 +84,7 @@ warsaw_standoff_domain(Domain) :-
 
     %LOAD3
     list_to_assoc(["causes"-(negate("JAMMED3"), "ALIVE3")], Load3_Causes_List), 
+    list_to_assoc(["causes"-(true, true)], Idle_Causes_List), 
 
 
     %CREATING DOMAIN
@@ -94,6 +95,7 @@ warsaw_standoff_domain(Domain) :-
                    "ROTATE21"-Rotate21_Causes_List, "ROTATE23"-Rotate23_Causes_List,
                    "ROTATE31"-Rotate31_Causes_List, "ROTATE32"-Rotate32_Causes_List,
                    "LOAD1"-Load1_Releases_List, "LOAD2"-Load2_Releases_List,
+                   "IDLE"-Idle_Causes_List,
                    "LOAD3"-Load3_Causes_List], Domain).
 
 warsaw_standoff_scenario(Sc) :-
@@ -115,7 +117,7 @@ warsaw_standoff_scenario(Sc) :-
                     1-["SHOOT12", "SHOOT23"],
                     2-["ROTATE13", "ROTATE21", "SHOOT31"],
                     3-["SHOOT13", "SHOOT21", "ROTATE32"],
-                    4-["SHOOT32","ROTATE12","ROTATE21"]], Compound_Actions),
+                    4-["SHOOT32","IDLE"]], Compound_Actions),
     Sc = (Observations, Compound_Actions).
 
 % main_warsaw :-  

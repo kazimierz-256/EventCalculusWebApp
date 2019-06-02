@@ -30,10 +30,10 @@ test(possibly_accessible_alive2_at_5) :-
     run_scenario(Scenario, Domain, Query).
 
 
-test(possibly_accessible_alive3_and_jammed1_at_5) :-
+test(possibly_executable_shoot32_idle_at_4) :-
     warsaw_standoff_domain(Domain),
     warsaw_standoff_scenario(Scenario),
-    get_query_from_text(Query, 'possibly accessible ALIVE3 and JAMMED1 at 5'),
-    not(run_scenario(Scenario, Domain, Query)).
+    get_query_from_text(Query, 'possibly executable SHOOT32, IDLE at 4'),
+    run_scenario(Scenario, Domain, Query).
 
 :- end_tests(warsaw_standoff).
