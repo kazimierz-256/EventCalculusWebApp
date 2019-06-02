@@ -20,3 +20,18 @@ T=true.
 
 :- logic_tree_from_text("LOADED or JAMMED implies (HAPPY implies DEAD)", T),
 T=or("LOADED",implies("JAMMED",implies("HAPPY","DEAD"))).
+
+:- logic_tree_from_text("wait", T),
+T=true.
+
+:- logic_tree_from_text(";", T),
+T=true.
+
+:- not(logic_tree_from_text("true and wait", _)).
+
+:- logic_tree_from_text("true", T),
+T=true.
+:- logic_tree_from_text("false", T),
+T=false.
+:- logic_tree_from_text("true or false and true", T),
+T=or(true, and(false, true)).
