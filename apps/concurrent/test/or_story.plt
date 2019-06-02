@@ -12,6 +12,14 @@ test('possibly executable') :-
     get_query_from_text(Query, 'possibly executable'),
     run_scenario(Scenario, Domain, Query).
 
+test('not possibly executable') :-
+    parse_domain("A causes f and not f", Domain),
+    parse_acs("A|0", Acs),
+    parse_obs("not f|0", Obs),
+    Scenario = (Obs, Acs),
+    get_query_from_text(Query, 'possibly executable'),
+    not(run_scenario(Scenario, Domain, Query)).
+
 test('necessarily executable') :-
     parse_domain("A causes f or not f", Domain),
     parse_acs("A|0", Acs),
@@ -25,15 +33,31 @@ test('possibly accessible f at 5') :-
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
-    get_query_from_text(Query, 'possibly accessible f at 5'),
+    get_query_from_text(Query, 'possibly accessible not f at 5'),
     run_scenario(Scenario, Domain, Query).
 
-test('possibly accessible not f at 5') :-
+test('necessarily accessible not f at 5') :-
     parse_domain("A causes f or not f", Domain),
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
-    get_query_from_text(Query, 'possibly accessible not f at 5'),
+    get_query_from_text(Query, 'necessarily accessible not f at 5'),
+    run_scenario(Scenario, Domain, Query).
+
+test('necessarily accessible not f at 5') :-
+    parse_domain("A causes f and (f or g)", Domain),
+    parse_acs("A|0", Acs),
+    parse_obs("not f and not g|0", Obs),
+    Scenario = (Obs, Acs),
+    get_query_from_text(Query, 'necessarily accessible not g at 5'),
+    run_scenario(Scenario, Domain, Query).
+
+test('possibly executable') :-
+    parse_domain("A causes f or not f", Domain),
+    parse_acs("A|0", Acs),
+    parse_obs("not f|0", Obs),
+    Scenario = (Obs, Acs),
+    get_query_from_text(Query, 'possibly executable'),
     run_scenario(Scenario, Domain, Query).
 
 test('necessarily accessible A at 5') :-
@@ -41,7 +65,7 @@ test('necessarily accessible A at 5') :-
     parse_acs("A|0", Acs),
     parse_obs("not f|0", Obs),
     Scenario = (Obs, Acs),
-    get_query_from_text(Query, 'necessarily accessible A at 5'),
-    \+ run_scenario(Scenario, Domain, Query).
+    get_query_from_text(Query, 'necessarily executable A at 5'),
+    run_scenario(Scenario, Domain, Query).
 
 :- end_tests(or_story).

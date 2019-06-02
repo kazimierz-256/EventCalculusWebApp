@@ -5,7 +5,7 @@
 :- use_module("../concurrent.pl").
 
 get_domain(Domain) :-
-    Domain_Text = 'BUY causes OwnTv or not OwnTv
+    Domain_Text = 'BUY releases OwnTv
         WATCH1 causes HAPPY if OwnTv
         WATCH2 causes not HAPPY if not OwnTv
         STEAL causes OwnTv if not OwnTv',
