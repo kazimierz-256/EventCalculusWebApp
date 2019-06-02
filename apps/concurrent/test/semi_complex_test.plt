@@ -33,9 +33,7 @@ get_scenario(Scenario) :-
 %
 
 test('possibly executable') :-
-    % writeln("ola"),
     get_domain(Domain),
-    % writeln(Domain),
     get_scenario(Scenario),
     get_query_from_text(Query, 'possibly executable'),
     run_scenario(Scenario, Domain, Query).
