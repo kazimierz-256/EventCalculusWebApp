@@ -2,7 +2,9 @@
     [
         logic_formula_satisfied/2,
         get_association_satisfying_formula/2,
-        get_association_satisfying_formula/4
+        get_association_satisfying_formula/4,
+        get_association_satisfying_formula_incomplete/2,
+        get_association_satisfying_formula_incomplete/4
 	]).
 
 :- use_module(occlusion).
@@ -20,9 +22,13 @@ remove_ocl([Ocl | Occlusion_List], Pre_Assigned_Fluents, Initial_Assignment) :-
     ).
 
 flipped_no_get_assoc(Assoc_List, Element) :- not(get_assoc(Element, Assoc_List, _)).
-get_association_satisfying_formula(Occlusion_List, Pre_Assigned_Fluents, Formula_Logic_Tree, Final_Association) :-
+
+get_association_satisfying_formula_incomplete(Occlusion_List, Pre_Assigned_Fluents, Formula_Logic_Tree, Final_Association) :-
     remove_ocl(Occlusion_List, Pre_Assigned_Fluents, Initial_Assignment),
-    truth(Formula_Logic_Tree, Initial_Assignment, Enriched_Fluent_Association_List),
+    truth(Formula_Logic_Tree, Initial_Assignment, Final_Association).
+
+get_association_satisfying_formula(Occlusion_List, Pre_Assigned_Fluents, Formula_Logic_Tree, Final_Association) :-
+    get_association_satisfying_formula_incomplete(Occlusion_List, Pre_Assigned_Fluents, Formula_Logic_Tree, Enriched_Fluent_Association_List),
     include(flipped_no_get_assoc(Enriched_Fluent_Association_List), Occlusion_List, Missing_Fluents),
     added_missing_fluents(Enriched_Fluent_Association_List, Missing_Fluents, Final_Association).
 
@@ -36,10 +42,13 @@ added_missing_fluents(Assoc_List, [M | Missing], Final_Assoc) :-
 
 get_association_satisfying_formula(Formula_Logic_Tree, Final_Association):-
     empty_assoc(List),
-    truth(Formula_Logic_Tree, List, Enriched_Fluent_Association_List),
     get_all_fluents_from_tree(Formula_Logic_Tree, Unique_Fluents),
-    include(flipped_no_get_assoc(Enriched_Fluent_Association_List), Unique_Fluents, Missing_Fluents),
-    added_missing_fluents(Enriched_Fluent_Association_List, Missing_Fluents, Final_Association).
+    get_association_satisfying_formula(Unique_Fluents, List, Formula_Logic_Tree, Final_Association).
+
+get_association_satisfying_formula_incomplete(Formula_Logic_Tree, Final_Association):-
+    empty_assoc(List),
+    get_all_fluents_from_tree(Formula_Logic_Tree, Unique_Fluents),
+    get_association_satisfying_formula_incomplete(Unique_Fluents, List, Formula_Logic_Tree, Final_Association).
 
 % TODO Kazimierz
 % Sometime think about iterative assigning and each time check for reassignment for the tree...?

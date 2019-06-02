@@ -74,11 +74,12 @@ get_total_occlusion(Compound_Action, Action_Domain, Fluent) :-
         (   
             member(Fluent, Causes_Fluents),
             once((
-                get_association_satisfying_formula(Consequence, New_Assignment),
-                del_assoc(Fluent, New_Assignment, Value, Assignment_Without_Fluent),
+                get_association_satisfying_formula_incomplete(Consequence, Incomplete_New_Assignment),
+                % if there is no such fluent, the answer doesnt depend on it being flipped
+                del_assoc(Fluent, Incomplete_New_Assignment, Value, Assignment_Without_Fluent),
                 flip_val(Value, Flipped),
                 put_assoc(Fluent, Assignment_Without_Fluent, Flipped, Changed_Assignment),
-                not(logic_formula_satisfied(Consequence, Changed_Assignment))
+                get_association_satisfying_formula_incomplete([], Changed_Assignment, negate(Consequence), _)
             ))
         )
     )
