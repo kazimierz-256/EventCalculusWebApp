@@ -50,12 +50,6 @@ get_association_satisfying_formula_incomplete(Formula_Logic_Tree, Final_Associat
     get_all_fluents_from_tree(Formula_Logic_Tree, Unique_Fluents),
     get_association_satisfying_formula_incomplete(Unique_Fluents, List, Formula_Logic_Tree, Final_Association).
 
-% TODO Kazimierz
-% Sometime think about iterative assigning and each time check for reassignment for the tree...?
-% 1. Get next variable to define
-% 2. Reduce tree
-% 3. Check if tree is empty, if it is, end defining
-% 4. Repeat step 1.
 truth(and(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
     truth(T1, Fluent_Association_List, Enriched_Fluent_Association_List1), truth(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List).
 
