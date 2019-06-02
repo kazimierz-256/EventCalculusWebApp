@@ -71,16 +71,16 @@ get_total_occlusion(Compound_Action, Action_Domain, Fluent) :-
             Causes_Conditions),
         foldl(conjunct, Causes_Conditions, true, Consequence),
         sort(Flus, Causes_Fluents),
-            (   
-                member(Fluent, Causes_Fluents),
-                once((
-                    get_association_satisfying_formula(Consequence, New_Assignment),
-                    del_assoc(Fluent, New_Assignment, Value, Assignment_Without_Fluent),
-                    flip_val(Value, Flipped),
-                    put_assoc(Fluent, Assignment_Without_Fluent, Flipped, Changed_Assignment),
-                    not(logic_formula_satisfied(Consequence, Changed_Assignment))
-                ))
-            )
+        (   
+            member(Fluent, Causes_Fluents),
+            once((
+                get_association_satisfying_formula(Consequence, New_Assignment),
+                del_assoc(Fluent, New_Assignment, Value, Assignment_Without_Fluent),
+                flip_val(Value, Flipped),
+                put_assoc(Fluent, Assignment_Without_Fluent, Flipped, Changed_Assignment),
+                not(logic_formula_satisfied(Consequence, Changed_Assignment))
+            ))
+        )
     )
     ;
     (
