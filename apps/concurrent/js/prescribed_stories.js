@@ -43,7 +43,7 @@ LOAD1 releases JAMMED1 if ALIVE1
 LOAD2 releases JAMMED2 if ALIVE2
 LOAD3 causes not JAMMED3 if ALIVE3`,
         observations: [
-            new Entry("ALIVE1 and ALIVE2 and ALIVE3 and not JAMMED1 and not JAMMED2 and not JAMMED3 and FACING12 and FACING23 and FACING31", 0),
+            new Entry("ALIVE1 and ALIVE2 and ALIVE3 and not JAMMED1 and not JAMMED2 and not JAMMED3 and FACING12 and FACING23 and FACING31 and not FACING13 and not FACING21 and not FACING32", 0),
             new Entry("not JAMMED1 or not JAMMED2", 1)
         ],
         actions: [
