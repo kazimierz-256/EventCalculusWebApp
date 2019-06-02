@@ -91,14 +91,7 @@ exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Flue
     Next_Time is Time + 1,
     exists_state_at_query_time_executing_action(Query_Action, Query_Time, Next_Time, New_Assignment, Observations, Actions, Action_Domain).
 
-
-get_sample_fluent_assignment([], Assoc) :- empty_assoc(Assoc).
-get_sample_fluent_assignment([F|Fluents], Assoc_Including_F) :-
-    get_sample_fluent_assignment(Fluents, Assoc),
-    (F_Value = true ; F_Value = false),
-    put_assoc(F, Assoc, F_Value, Assoc_Including_F).
-
-prepare_initial_state_time_0(Observations, Action_Domain, Initial_State) :-
+get_all_fluents(Observations, Action_Domain, Unique_Fluents) :-
     findall(Fluent, (
             gen_assoc(_, Observations, Observation),
             get_sample_fluent_from_tree(Observation, Fluent)
@@ -113,12 +106,14 @@ prepare_initial_state_time_0(Observations, Action_Domain, Initial_State) :-
             
             )
         ), Fluents),
-    sort(Fluents, Unique_Fluents),
-    get_sample_fluent_assignment(Unique_Fluents, Initial_State),
+    sort(Fluents, Unique_Fluents).
+
+prepare_initial_state_time_0(Observations, Action_Domain, Initial_State) :-
+    get_all_fluents(Observations, Action_Domain, Unique_Fluents),
+    empty_assoc(Pre_Assigned_Fluents),
     (get_assoc(0, Observations, Initial_Observation)
-    ->
-        logic_formula_satisfied(Initial_Observation, Initial_State)
-    ; true).
+    ->  get_association_satisfying_formula(Unique_Fluents, Pre_Assigned_Fluents, Initial_Observation, Initial_State)
+    ;   get_association_satisfying_formula(Unique_Fluents, Pre_Assigned_Fluents, true, Initial_State)).
 
 
 % outputs nothing, succeeds iff the scenario is possibly executable
