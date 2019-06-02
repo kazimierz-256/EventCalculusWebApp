@@ -1,15 +1,45 @@
 :- module(logic_formula_satisfiability, 
     [
         logic_formula_satisfied/2,
-        get_association_satisfying_formula/2
+        get_association_satisfying_formula/2,
+        get_association_satisfying_formula/4
 	]).
 
-logic_formula_satisfied(FormulaLogicTree, FluentAssociationList) :-
-    truth(FormulaLogicTree, FluentAssociationList, FluentAssociationList).
+:- use_module(occlusion).
 
-get_association_satisfying_formula(FormulaLogicTree, EnrichedFluentAssociationList):-
-    empty_assoc(LIST),
-    truth(FormulaLogicTree, LIST, EnrichedFluentAssociationList).
+
+logic_formula_satisfied(Formula_Logic_Tree, Fluent_Association_List) :-
+    truth(Formula_Logic_Tree, Fluent_Association_List, Fluent_Association_List).
+
+remove_ocl([], Pre_Assigned_Fluents, Pre_Assigned_Fluents).
+remove_ocl([Ocl | Occlusion_List], Pre_Assigned_Fluents, Initial_Assignment) :-
+    remove_ocl(Occlusion_List, Pre_Assigned_Fluents, Pre_Init),
+    (get_assoc(Ocl, Pre_Init, _)
+    -> del_assoc(Ocl, Pre_Init, _, Initial_Assignment)
+    ; Initial_Assignment = Pre_Init
+    ).
+
+flipped_no_get_assoc(Assoc_List, Element) :- not(get_assoc(Element, Assoc_List, _)).
+get_association_satisfying_formula(Occlusion_List, Pre_Assigned_Fluents, Formula_Logic_Tree, Final_Association) :-
+    remove_ocl(Occlusion_List, Pre_Assigned_Fluents, Initial_Assignment),
+    truth(Formula_Logic_Tree, Initial_Assignment, Enriched_Fluent_Association_List),
+    include(flipped_no_get_assoc(Enriched_Fluent_Association_List), Occlusion_List, Missing_Fluents),
+    added_missing_fluents(Enriched_Fluent_Association_List, Missing_Fluents, Final_Association).
+
+added_missing_fluents(Assoc_List, [], Assoc_List).
+added_missing_fluents(Assoc_List, [M | Missing], Final_Assoc) :-
+    added_missing_fluents(Assoc_List, Missing, Pre_Fin_Assoc),
+    (
+        put_assoc(M, Pre_Fin_Assoc, true, Final_Assoc)
+        ; put_assoc(M, Pre_Fin_Assoc, false, Final_Assoc)
+    ).
+
+get_association_satisfying_formula(Formula_Logic_Tree, Final_Association):-
+    empty_assoc(List),
+    truth(Formula_Logic_Tree, List, Enriched_Fluent_Association_List),
+    get_all_fluents_from_tree(Formula_Logic_Tree, Unique_Fluents),
+    include(flipped_no_get_assoc(Enriched_Fluent_Association_List), Unique_Fluents, Missing_Fluents),
+    added_missing_fluents(Enriched_Fluent_Association_List, Missing_Fluents, Final_Association).
 
 % TODO Kazimierz
 % Sometime think about iterative assigning and each time check for reassignment for the tree...?
@@ -17,42 +47,42 @@ get_association_satisfying_formula(FormulaLogicTree, EnrichedFluentAssociationLi
 % 2. Reduce tree
 % 3. Check if tree is empty, if it is, end defining
 % 4. Repeat step 1.
-truth(and(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    truth(T1, FluentAssociationList, EnrichedFluentAssociationList1), truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
+truth(and(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    truth(T1, Fluent_Association_List, Enriched_Fluent_Association_List1), truth(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List).
 
-truth(or(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    truth(T1, FluentAssociationList, EnrichedFluentAssociationList); truth(T2, FluentAssociationList, EnrichedFluentAssociationList).
+truth(or(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    truth(T1, Fluent_Association_List, Enriched_Fluent_Association_List); truth(T2, Fluent_Association_List, Enriched_Fluent_Association_List).
 
-truth(implies(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    falsehood(T1, FluentAssociationList, EnrichedFluentAssociationList); truth(T2, FluentAssociationList, EnrichedFluentAssociationList).
+truth(implies(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    falsehood(T1, Fluent_Association_List, Enriched_Fluent_Association_List); truth(T2, Fluent_Association_List, Enriched_Fluent_Association_List).
 
-truth(iff(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    truth(T1, FluentAssociationList, EnrichedFluentAssociationList1) , truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList)
-    ; falsehood(T2, FluentAssociationList, EnrichedFluentAssociationList1), falsehood(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
+truth(iff(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    truth(T1, Fluent_Association_List, Enriched_Fluent_Association_List1) , truth(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List)
+    ; falsehood(T2, Fluent_Association_List, Enriched_Fluent_Association_List1), falsehood(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List).
 
-truth(negate(T), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    falsehood(T, FluentAssociationList, EnrichedFluentAssociationList).
+truth(negate(T), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    falsehood(T, Fluent_Association_List, Enriched_Fluent_Association_List).
 
-truth(true, FluentAssociationList, FluentAssociationList).
+truth(true, Fluent_Association_List, Fluent_Association_List).
 
-truth(FLUENT, FluentAssociationList, EnrichedFluentAssociationList) :- 
+truth(FLUENT, Fluent_Association_List, Enriched_Fluent_Association_List) :- 
     string(FLUENT),
-    (get_assoc(FLUENT, FluentAssociationList, VALUE) -> (VALUE = true, EnrichedFluentAssociationList = FluentAssociationList)
-    ; put_assoc(FLUENT, FluentAssociationList, true, EnrichedFluentAssociationList)).
+    (get_assoc(FLUENT, Fluent_Association_List, VALUE) -> (VALUE = true, Enriched_Fluent_Association_List = Fluent_Association_List)
+    ; put_assoc(FLUENT, Fluent_Association_List, true, Enriched_Fluent_Association_List)).
 
-falsehood(and(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    falsehood(T1, FluentAssociationList, EnrichedFluentAssociationList); falsehood(T2, FluentAssociationList, EnrichedFluentAssociationList).
-falsehood(or(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    falsehood(T1, FluentAssociationList, EnrichedFluentAssociationList1), falsehood(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
-falsehood(implies(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    truth(T1, FluentAssociationList, EnrichedFluentAssociationList1), falsehood(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
-falsehood(iff(T1, T2), FluentAssociationList, EnrichedFluentAssociationList) :- 
-truth(T1, FluentAssociationList, EnrichedFluentAssociationList1) , falsehood(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList)
-; falsehood(T2, FluentAssociationList, EnrichedFluentAssociationList1), truth(T2, EnrichedFluentAssociationList1, EnrichedFluentAssociationList).
-falsehood(negate(T), FluentAssociationList, EnrichedFluentAssociationList) :- 
-    truth(T, FluentAssociationList, EnrichedFluentAssociationList).
-falsehood(false, FluentAssociationList, FluentAssociationList).
-falsehood(FLUENT, FluentAssociationList, EnrichedFluentAssociationList) :- 
+falsehood(and(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    falsehood(T1, Fluent_Association_List, Enriched_Fluent_Association_List); falsehood(T2, Fluent_Association_List, Enriched_Fluent_Association_List).
+falsehood(or(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    falsehood(T1, Fluent_Association_List, Enriched_Fluent_Association_List1), falsehood(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List).
+falsehood(implies(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    truth(T1, Fluent_Association_List, Enriched_Fluent_Association_List1), falsehood(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List).
+falsehood(iff(T1, T2), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+truth(T1, Fluent_Association_List, Enriched_Fluent_Association_List1) , falsehood(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List)
+; falsehood(T2, Fluent_Association_List, Enriched_Fluent_Association_List1), truth(T2, Enriched_Fluent_Association_List1, Enriched_Fluent_Association_List).
+falsehood(negate(T), Fluent_Association_List, Enriched_Fluent_Association_List) :- 
+    truth(T, Fluent_Association_List, Enriched_Fluent_Association_List).
+falsehood(false, Fluent_Association_List, Fluent_Association_List).
+falsehood(FLUENT, Fluent_Association_List, Enriched_Fluent_Association_List) :- 
     string(FLUENT),
-    (get_assoc(FLUENT, FluentAssociationList, VALUE) -> (VALUE = false, EnrichedFluentAssociationList = FluentAssociationList)
-    ; put_assoc(FLUENT, FluentAssociationList, false, EnrichedFluentAssociationList)).
+    (get_assoc(FLUENT, Fluent_Association_List, VALUE) -> (VALUE = false, Enriched_Fluent_Association_List = Fluent_Association_List)
+    ; put_assoc(FLUENT, Fluent_Association_List, false, Enriched_Fluent_Association_List)).
