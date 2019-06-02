@@ -28,13 +28,19 @@ one_or_more_space() --> [].
 % removeTrailingSpaces() --> [].
 
 %LOGICTREE
-logic_tree_from_text(STRING, true) :-
-    normalize_space(string(String_Cleaned), STRING),
+logic_tree_from_text(String, true) :-
+    normalize_space(string(String_Cleaned), String),
+    string_lower(String_Cleaned, Lower),
+    member(Lower, ["wait", ";"]).
+logic_tree_from_text(String, true) :-
+    normalize_space(string(String_Cleaned), String),
     string_chars(String_Cleaned, []).
-logic_tree_from_text(STRING, T) :-
-    normalize_space(string(String_Cleaned), STRING),
+logic_tree_from_text(String, T) :-
+    normalize_space(string(String_Cleaned), String),
     string_chars(String_Cleaned, CHARS),
     phrase(logictree(T), CHARS).
+
+valid_fluent(Fluent) :- not(member(Fluent, ["true", "false","not","and","or",";","implies","iff","wait"])).
 
 logictree(T) --> optional_whitespace(),logictreeor(T),optional_whitespace().
 
@@ -53,4 +59,6 @@ logictreeiff(A) --> logictreeterm(A).
 logictreeterm(negate(T)) --> parse_string("not "),logictreeterm(T).
 logictreeterm(negate(T)) --> parse_string("not("),optional_whitespace(),logictree(T),optional_whitespace(),[')'].
 logictreeterm(T) --> optional_whitespace(),['('],optional_whitespace(),logictree(T),optional_whitespace(),[')'],optional_whitespace().
-logictreeterm(S) --> fluent(F),{string_chars(S, F)}.
+logictreeterm(S) --> fluent(F),{string_chars(S, F),string_lower(S, Fluent), valid_fluent(Fluent)}.
+logictreeterm(true) --> fluent(F),{string_chars(S, F),string_lower(S, "true")}.
+logictreeterm(false) --> fluent(F),{string_chars(S, F),string_lower(S, "false")}.
