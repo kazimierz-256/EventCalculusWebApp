@@ -62,5 +62,5 @@ compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Act
 
         ;       foldl(conjunct, Causes_Conditions, true, Consequence),
                 no_release_fluent_in_causes(Release_Fluents, Consequence),
-                once(getAssociationThatSatisfiesFormula(Consequence, _))
+                once(get_association_satisfying_formula(Consequence, _))
         ).

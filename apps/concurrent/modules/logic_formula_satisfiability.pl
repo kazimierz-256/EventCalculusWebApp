@@ -1,13 +1,13 @@
 :- module(logic_formula_satisfiability, 
     [
         logic_formula_satisfied/2,
-        getAssociationThatSatisfiesFormula/2
+        get_association_satisfying_formula/2
 	]).
 
 logic_formula_satisfied(FormulaLogicTree, FluentAssociationList) :-
     truth(FormulaLogicTree, FluentAssociationList, FluentAssociationList).
 
-getAssociationThatSatisfiesFormula(FormulaLogicTree, EnrichedFluentAssociationList):-
+get_association_satisfying_formula(FormulaLogicTree, EnrichedFluentAssociationList):-
     empty_assoc(LIST),
     truth(FormulaLogicTree, LIST, EnrichedFluentAssociationList).
 
