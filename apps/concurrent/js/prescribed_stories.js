@@ -28,6 +28,7 @@ SHOOT21 causes not ALIVE1 if ALIVE2 and not JAMMED2 and FACING21
 SHOOT23 causes not ALIVE3 if ALIVE2 and not JAMMED2 and FACING23
 SHOOT31 causes not ALIVE1 if ALIVE3 and not JAMMED3 and FACING31
 SHOOT32 causes not ALIVE2 if ALIVE3 and not JAMMED3 and FACING32
+IDLE causes true
 impossible SHOOT31 at 0
 impossible SHOOT32 at 0
 impossible SHOOT31 at 1
@@ -50,7 +51,7 @@ LOAD3 causes not JAMMED3 if ALIVE3`,
             new Entry("SHOOT12,SHOOT23", 1),
             new Entry("ROTATE13,ROTATE21,SHOOT31", 2),
             new Entry("SHOOT13,SHOOT21,ROTATE32", 3),
-            new Entry("SHOOT32", 4)
+            new Entry("SHOOT32,IDLE", 4)
         ],
         query: new Query(`5`, `Possibly accessible γ at t when Sc`, `ALIVE1 and not ALIVE2 and not ALIVE3`, `5`, ``, `possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5`)
     },
