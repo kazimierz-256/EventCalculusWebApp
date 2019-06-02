@@ -28,8 +28,8 @@ get_scenario(Scenario) :-
 %   not HAPPY           not HAPPY           not HAPPY       not HAPPY               HAPPY
 %
 % 2:
-%   not OWN_TV          OWN_TV                  OWN_TV   X (STEAL is not executable, the scenario fails)
-%   not HAPPY           not HAPPY               HAPPY    X
+%                       OWN_TV                  OWN_TV   X (STEAL is not executable, the scenario fails)
+%                       not HAPPY               HAPPY    X
 %
 
 test('possibly executable') :-
