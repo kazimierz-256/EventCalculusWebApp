@@ -3,6 +3,10 @@
 :- use_module("../modules/user_input_parsing.pl").
 :- use_module("../modules/logic_tree_parsing.pl").
 
+%%%%%%%%%%%%%%%%%%
+% Helper functions
+%%%%%%%%%%%%%%%%%%
+
 check_two_lists_same([], []) :- writeln("same").
 check_two_lists_same([K1-V1 | Pairs1], [K2-V2 | Pairs2]) :-
     write("key1: "),
@@ -29,6 +33,10 @@ check_two_lists_same([K1-V1 | Pairs1], [K2-V2 | Pairs2]) :-
     writeln(Pairs1),
     writeln(Pairs2),
     check_two_lists_same(Pairs1, Pairs2).
+
+%%%%%%%%%%%%%%
+% Parse Domain
+%%%%%%%%%%%%%%
 
 check_assoc_lists_same(Assoc1, Assoc2) :-
     writeln("here"),
@@ -115,6 +123,9 @@ test('domain multiple lines additional nl character') :-
         D),
     check_assoc_lists_same(Domain, D).
 
+%%%%%%%%%%%
+% Parse acs
+%%%%%%%%%%%
 
 test('acs one line') :-
     list_to_assoc([1-["SHOOT"]], Compound_Actions),
@@ -154,6 +165,10 @@ test('acs multiple lines with white spaces at the end') :-
     parse_acs('SHOOT,   HIDE,   RUN   |1
     LOVE,   EAT,   PRAY   |4', Acs),
     check_assoc_lists_same(Compound_Actions, Acs).
+
+%%%%%%%%%%%
+% Parse obs
+%%%%%%%%%%%
 
 % TODO       parse_obs
 
