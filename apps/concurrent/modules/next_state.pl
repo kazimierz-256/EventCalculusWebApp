@@ -8,7 +8,7 @@
 :- use_module(potentially_executable).
 :- use_module(logic_formula_satisfiability).
 
-%compound_executable_atomic(Compound_Action, Time, Action_Domain, Fluent_Assignments)
+%compound_executable(Compound_Action, Time, Action_Domain, Fluent_Assignments)
 
 get_nonempty_action_decomposition(Compound_Action, Time, Action_Domain, Fluent_Assignments, Action_Decomposition) :-
     mns(Compound_Action, Time, Action_Domain, Fluent_Assignments, Action_Decomposition),

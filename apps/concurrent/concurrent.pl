@@ -70,9 +70,7 @@ exists_state_at_query_time_invalidating_condition(Query_Condition, Query_Time, T
 
 
 exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Query_Time, Fluent_Assignments, _, _, Action_Domain) :-
-    (maplist(potentially_executable_atomic(Query_Time, Action_Domain, Fluent_Assignments), Query_Action)
-    ->  not(compound_executable_atomic(Query_Time, Action_Domain, Fluent_Assignments, Query_Action))
-    ;   true).
+    not(compound_executable(Query_Time, Action_Domain, Fluent_Assignments, Query_Action)).
 
 exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Query_Time,
@@ -82,8 +80,7 @@ exists_state_at_query_time_that_could_not_execute_action(Query_Action, Query_Tim
 
 
 exists_state_at_query_time_executing_action(Query_Action, Query_Time, Query_Time, Fluent_Assignments, _, _, Action_Domain) :-
-    maplist(potentially_executable_atomic(Query_Time, Action_Domain, Fluent_Assignments), Query_Action),
-    compound_executable_atomic(Query_Time, Action_Domain, Fluent_Assignments, Query_Action).
+    compound_executable(Query_Time, Action_Domain, Fluent_Assignments, Query_Action).
 
 exists_state_at_query_time_executing_action(Query_Action, Query_Time, Time, Fluent_Assignments, Observations, Actions, Action_Domain) :-
     Time < Query_Time,
