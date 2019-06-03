@@ -18,7 +18,7 @@ split_list_by_keyword(Keyword, [H | T], L1_Temp, L1, L2) :-
 parse_cause_if(Parts, L1, L2) :-
     split_list_by_keyword("if", Parts, [], L1, L2).
 
-get_action_and_val([Action, "causes"|Rest], Action, Value) :-
+get_action_and_val([Action, "causes" | Rest], Action, Value) :-
     empty_assoc(Assoc),
     parse_cause_if(Rest, Effect_Parts, If_Parts),
     !,
@@ -30,7 +30,7 @@ get_action_and_val([Action, "causes"|Rest], Action, Value) :-
     logic_tree_from_text(If, If_T),
     put_assoc("causes", Assoc, (Effect_T, If_T), Value).
 
-get_action_and_val([Action, "releases"|Rest], Action, Value) :-
+get_action_and_val([Action, "releases" | Rest], Action, Value) :-
     empty_assoc(Assoc),
     parse_cause_if(Rest, Effect_Parts, If_Parts),
     !,
@@ -52,11 +52,12 @@ parse_sentence(Text, Action, Value) :-
     get_action_and_val(Parts, Action, Value).
 
 add_to_assoc_list("impossible", Value, Assoc, New_Assoc) :-
-    member("impossible", Assoc)
-    ->  get_assoc("impossible", Assoc, Value_Sf),
-    	append(Value_Sf, [Value], New_Value),
+    (get_assoc("impossible", Assoc, Value_Sf)
+    ->  (
+    	append(Value_Sf, Value, New_Value),
     	put_assoc("impossible", Assoc, New_Value, New_Assoc)
-    ;   put_assoc("impossible", Assoc, Value, New_Assoc).
+    	)
+    ;   put_assoc("impossible", Assoc, Value, New_Assoc)).
 
 add_to_assoc_list("causes", Value, Assoc, New_Assoc) :-
     assoc_to_keys(Assoc, Keys),
@@ -74,8 +75,8 @@ add_if_correct(Action, Value, Assoc, Domain) :-
     get_assoc(Action, Assoc, Value_Sf),
     assoc_to_keys(Value, Action_Keys),
     Action_Keys = [Action_Key],
-    get_assoc(Action_Key, Value, Value_TO_ADD),
-    add_to_assoc_list(Action_Key, Value_TO_ADD, Value_Sf, New_Assoc),
+    get_assoc(Action_Key, Value, Value_To_Add),
+    add_to_assoc_list(Action_Key, Value_To_Add, Value_Sf, New_Assoc),
     put_assoc(Action, Assoc, New_Assoc, Domain).
     
 add_to_domain(Action, Value, Assoc, Domain) :- 
@@ -85,7 +86,7 @@ add_to_domain(Action, Value, Assoc, Domain) :-
     ;   put_assoc(Action, Assoc, Value, Domain).
 
 parse_parts([], Domain, Domain).
-parse_parts([H|T], Assoc, Domain) :-
+parse_parts([H | T], Assoc, Domain) :-
     normalize_space(atom(Line), H),
     parse_sentence(Line, Action, Value),
     add_to_domain(Action, Value, Assoc, Domain_Tmp),
