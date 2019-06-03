@@ -5,6 +5,8 @@
 
 check_two_lists_same([], []) :- writeln("same").
 check_two_lists_same([K1-V1 | Pairs1], [K2-V2 | Pairs2]) :-
+    write("key1: "),
+    writeln(K1),
     K1 = K2,
     K = K1,
     write("key: "),
@@ -17,8 +19,12 @@ check_two_lists_same([K1-V1 | Pairs1], [K2-V2 | Pairs2]) :-
         writeln(Pairs2),
     (is_assoc(V1)
     ->  check_assoc_lists_same(V1, V2)
-    ;   V1=V2),
-    writeln("Pairs: "),
+    ;   (is_list(V1)
+        ->  (sort(V1, Sorted1),
+            sort(V2, Sorted2),
+            Sorted1 = Sorted2)
+        ;   (V1 = V2)),
+    writeln("Pairs: ")),
 
     writeln(Pairs1),
     writeln(Pairs2),
@@ -109,7 +115,34 @@ test('domain multiple lines additional nl character') :-
         D),
     check_assoc_lists_same(Domain, D).
 
-% TODO       parse_acs
+
+test('acs one line') :-
+    list_to_assoc([1-["SHOOT"]], Compound_Actions),
+    parse_acs("SHOOT|1", Acs),
+    check_assoc_lists_same(Compound_Actions, Acs).
+
+test('acs multiple lines different order') :-
+    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
+    parse_acs('SHOOT, HIDE,  RUN|1
+    LOVE, PRAY, EAT|4', Acs),
+    check_assoc_lists_same(Compound_Actions, Acs).
+
+test('acs multiple different lines order') :-
+    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
+    parse_acs('LOVE, PRAY, EAT|4
+    SHOOT, HIDE,  RUN|1', Acs),
+    check_assoc_lists_same(Compound_Actions, Acs).
+
+test('acs multiple lines with breaks in between') :-
+    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
+    parse_acs('
+    SHOOT, HIDE,  RUN|1
+
+
+    LOVE, PRAY, EAT|4
+    ', Acs),
+    check_assoc_lists_same(Compound_Actions, Acs).
+
 % TODO       parse_obs
 
 :- end_tests(user_input_parsing).

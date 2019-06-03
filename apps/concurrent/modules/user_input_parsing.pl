@@ -119,9 +119,11 @@ parse_acs_line(Text, ACS, Time) :-
 parse_parts_acs([], Actions, Actions).
 parse_parts_acs([H|T], Assoc, Actions) :-
     normalize_space(atom(Line), H),
-    parse_acs_line(Line, ACS, Time),
-   	add_to_acs(ACS, Time, Assoc, Actions_Tmp),
-    parse_parts_acs(T, Actions_Tmp, Actions).
+    (Line = ''
+    ->  parse_parts_acs(T, Assoc, Actions)
+    ;   (parse_acs_line(Line, ACS, Time),
+        add_to_acs(ACS, Time, Assoc, Actions_Tmp),
+        parse_parts_acs(T, Actions_Tmp, Actions))).
 
 parse_acs_h(Text, Actions) :-
     split_string(Text, "\n", "", Parts),
