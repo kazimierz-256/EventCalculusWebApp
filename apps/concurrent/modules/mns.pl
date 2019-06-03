@@ -13,11 +13,11 @@ mns(PotentiallyExecutablesList, Time, Action_Domain, Fluent_Assignments, Some_Va
 
 % check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, CompoundAction) :-
 %     append(IncludedActions, ConsideredActions, CompoundAction),
-%     compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction).
+%     compound_executable(Time, Action_Domain, Fluent_Assignments, CompoundAction).
 
 check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-
     append(IncludedActions, ConsideredActions, CompoundAction),
-    (compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, CompoundAction) ->
+    (compound_executable(Time, Action_Domain, Fluent_Assignments, CompoundAction) ->
         Some_Valid_MNS = CompoundAction
     ;
         check_without_first_considering(IncludedActions, ConsideredActions, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)

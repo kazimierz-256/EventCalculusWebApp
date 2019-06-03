@@ -1,6 +1,6 @@
 :- module(compound_executable,
     [
-        compound_executable_atomic/4
+        compound_executable/4
 	]).
 :- use_module(potentially_executable).
 :- use_module(logic_formula_satisfiability).
@@ -38,7 +38,7 @@ conjunct(Statement, [], Statement).
 conjunct(Statement, Acc1, and(Statement, Acc1)).
 
 
-compound_executable_atomic(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-
+compound_executable(Time, Action_Domain, Fluent_Assignments, Compound_Action) :-
     dif(Compound_Action, []),
     maplist(potentially_executable_atomic(Time, Action_Domain, Fluent_Assignments), Compound_Action),
     findall(Causes_Condition,
