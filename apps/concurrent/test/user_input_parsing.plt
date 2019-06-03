@@ -43,8 +43,6 @@ test('domain multiple lines') :-
              impossible STEAL at 7',
         Domain),
     list_to_assoc(["causes"-(or("OWN_TV",negate("OWN_TV")),true)], Buy_Causes_List),
-    writeln("\n"),
-    writeln(Domain),
     list_to_assoc(["causes"-("HAPPY","OWN_TV")], Watch1_Causes_List),
     list_to_assoc(["causes"-(negate("HAPPY"),negate("OWN_TV"))], Watch2_Causes_List),
     list_to_assoc(["causes"-("OWN_TV",negate("OWN_TV")), "impossible"-[5,7]], Steal_Causes_List),
@@ -56,7 +54,59 @@ test('domain multiple lines') :-
             "WATCH2"-Watch2_Causes_List,
             "LOL"-Lol_Causes_List],
         D),
-    writeln(D),
+    check_assoc_lists_same(Domain, D).
+
+test('domain multiple lines with unnecessary spaces') :-
+    parse_domain(
+        'BUY    causes    OWN_TV    or    not    OWN_TV
+             WATCH1    causes    HAPPY     if     OWN_TV
+             WATCH2     causes     not     HAPPY     if     not     OWN_TV
+             STEAL     causes     OWN_TV     if     not     OWN_TV
+             impossible     STEAL     at     5
+             LOL     releases     HAPPY
+             impossible     STEAL     at     7',
+        Domain),
+    list_to_assoc(["causes"-(or("OWN_TV",negate("OWN_TV")),true)], Buy_Causes_List),
+    list_to_assoc(["causes"-("HAPPY","OWN_TV")], Watch1_Causes_List),
+    list_to_assoc(["causes"-(negate("HAPPY"),negate("OWN_TV"))], Watch2_Causes_List),
+    list_to_assoc(["causes"-("OWN_TV",negate("OWN_TV")), "impossible"-[5,7]], Steal_Causes_List),
+    list_to_assoc(["releases"-("HAPPY",true)], Lol_Causes_List),
+    list_to_assoc(
+        ["WATCH1"-Watch1_Causes_List,
+            "BUY"-Buy_Causes_List,
+            "STEAL"-Steal_Causes_List,
+            "WATCH2"-Watch2_Causes_List,
+            "LOL"-Lol_Causes_List],
+        D),
+    check_assoc_lists_same(Domain, D).
+
+test('domain multiple lines additional nl character') :-
+    parse_domain(
+        '
+             BUY causes OWN_TV or not OWN_TV
+             WATCH1 causes HAPPY if OWN_TV
+
+
+             WATCH2 causes not HAPPY if not OWN_TV
+             STEAL causes OWN_TV if not OWN_TV
+             impossible STEAL at 5
+
+             LOL releases HAPPY
+             impossible STEAL at 7
+        ',
+        Domain),
+    list_to_assoc(["causes"-(or("OWN_TV",negate("OWN_TV")),true)], Buy_Causes_List),
+    list_to_assoc(["causes"-("HAPPY","OWN_TV")], Watch1_Causes_List),
+    list_to_assoc(["causes"-(negate("HAPPY"),negate("OWN_TV"))], Watch2_Causes_List),
+    list_to_assoc(["causes"-("OWN_TV",negate("OWN_TV")), "impossible"-[5,7]], Steal_Causes_List),
+    list_to_assoc(["releases"-("HAPPY",true)], Lol_Causes_List),
+    list_to_assoc(
+        ["WATCH1"-Watch1_Causes_List,
+            "BUY"-Buy_Causes_List,
+            "STEAL"-Steal_Causes_List,
+            "WATCH2"-Watch2_Causes_List,
+            "LOL"-Lol_Causes_List],
+        D),
     check_assoc_lists_same(Domain, D).
 
 % TODO       parse_acs

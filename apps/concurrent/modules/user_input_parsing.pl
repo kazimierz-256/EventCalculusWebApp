@@ -88,9 +88,11 @@ add_to_domain(Action, Value, Assoc, Domain) :-
 parse_parts([], Domain, Domain).
 parse_parts([H | T], Assoc, Domain) :-
     normalize_space(atom(Line), H),
-    parse_sentence(Line, Action, Value),
-    add_to_domain(Action, Value, Assoc, Domain_Tmp),
-    parse_parts(T, Domain_Tmp, Domain).
+    (Line = ''
+    ->  parse_parts(T, Assoc, Domain)
+    ;   (parse_sentence(Line, Action, Value),
+        add_to_domain(Action, Value, Assoc, Domain_Tmp),
+        parse_parts(T, Domain_Tmp, Domain))).
 
 parse_domain_h(Text, Domain) :-
     split_string(Text, "\n", "", Parts),
