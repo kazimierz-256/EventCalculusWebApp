@@ -149,6 +149,12 @@ test('acs multiple lines with white spaces') :-
     LOVE,   EAT,   PRAY|4', Acs),
     check_assoc_lists_same(Compound_Actions, Acs).
 
+test('acs multiple lines with white spaces at the end') :-
+    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
+    parse_acs('SHOOT,   HIDE,   RUN   |1
+    LOVE,   EAT,   PRAY   |4', Acs),
+    check_assoc_lists_same(Compound_Actions, Acs).
+
 % TODO       parse_obs
 
 :- end_tests(user_input_parsing).
