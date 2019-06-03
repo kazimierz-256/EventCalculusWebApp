@@ -141,11 +141,13 @@ parse_obs_line(Text, Obs, Time) :-
 
 parse_parts_obs([], Observations, Observations).
 parse_parts_obs([H|T], Assoc, Observations) :-
-    normalize_space(string(Line), H),
-    parse_obs_line(Line, Obs, Time),
-    logic_tree_from_text(Obs, Obs_T),
-   	put_assoc(Time, Assoc, Obs_T, Observations_Tmp),
-    parse_parts_obs(T, Observations_Tmp, Observations).
+    normalize_space(atom(Line), H),
+    (Line = ''
+    ->  parse_parts_obs(T, Assoc, Observations)
+    ;   (parse_obs_line(Line, Obs, Time),
+        logic_tree_from_text(Obs, Obs_T),
+        put_assoc(Time, Assoc, Obs_T, Observations_Tmp),
+        parse_parts_obs(T, Observations_Tmp, Observations))).
 
 parse_obs_h(Text, Observations) :-
     split_string(Text, "\n", "", Parts),
