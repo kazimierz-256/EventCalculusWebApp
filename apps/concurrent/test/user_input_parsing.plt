@@ -10,7 +10,6 @@
 check_two_lists_same([], []).
 check_two_lists_same([K1-V1 | Pairs1], [K2-V2 | Pairs2]) :-
     K1 = K2,
-    K = K1,
     (is_assoc(V1)
     ->  check_assoc_lists_same(V1, V2)
     ;   (is_list(V1)
