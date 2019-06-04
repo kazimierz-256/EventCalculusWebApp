@@ -119,9 +119,3 @@ warsaw_standoff_scenario(Sc) :-
                     3-["SHOOT13", "SHOOT21", "ROTATE32"],
                     4-["SHOOT32","IDLE"]], Compound_Actions),
     Sc = (Observations, Compound_Actions).
-
-% main_warsaw :-  
-%     warsaw_standoff_domain(Domain),
-%     warsaw_standoff_scenario(Scenario),
-%     writeln(Domain),
-%     writeln(Scenario).
