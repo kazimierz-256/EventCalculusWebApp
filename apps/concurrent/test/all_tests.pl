@@ -5,6 +5,7 @@
         "semi_complex_test.plt",
         "simple_concurrent.plt",
         "user_input_parsing.plt",
-        "concurrent_test.plt"
+        "concurrent_test.plt",
+        "mns.plt"
         ]),
     run_tests.
