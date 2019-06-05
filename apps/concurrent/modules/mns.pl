@@ -24,6 +24,6 @@ check_whether_compound_is_valid(IncludedActions, ConsideredActions, Time, Action
     ).
 
 check_without_first_considering(IncludedActions, [Action|Rest], Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS) :-
-    append(IncludedActions, Action, ExtendedActions),
+    append(IncludedActions, [Action], ExtendedActions),
     (check_without_first_considering(ExtendedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)
     ; check_whether_compound_is_valid(IncludedActions, Rest, Time, Action_Domain, Fluent_Assignments, Some_Valid_MNS)).

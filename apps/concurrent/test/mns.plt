@@ -78,6 +78,6 @@ test('mns multiple conditional') :-
         mns(["A","B"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
         Results
     ),
-    Results = ["A"].
+    Results = [["A"]].
 
 :- end_tests(mns).
