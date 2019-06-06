@@ -12,7 +12,7 @@ get_domain_scenario(Domain, Scenario) :-
                     SHOOT,THINKABOUTSUNDAY,ALARM|1
                     SHOOT|2', Acs),
     parse_obs('ALIVE and MOVING|0', Obs),
-    Scenario = (Acs, Obs).
+    Scenario = (Obs, Acs).
 
 
 % TODO fixme
