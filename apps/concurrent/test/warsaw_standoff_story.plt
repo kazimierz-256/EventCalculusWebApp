@@ -10,18 +10,17 @@ test(necessarily_executable_warsaw_stanoff) :-
     get_query_from_text(Query, 'necessarily executable'),
     run_scenario(Scenario, Domain, Query).
 
-
 test(possibly_accessiblt_alive1_and_noe_alive2_and_not_alive3_at_5) :-
     warsaw_standoff_domain(Domain),
     warsaw_standoff_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible ALIVE1 and not ALIVE2 and not ALIVE3 at 5'),
     run_scenario(Scenario, Domain, Query).
 
-test(possibly_accessible_jammed1_and_jammed2_at_1) :-
+test(not_possibly_accessible_jammed1_and_jammed2_at_1) :-
     warsaw_standoff_domain(Domain),
     warsaw_standoff_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible JAMMED1 and JAMMED2 at 1'),
-    not(run_scenario(Scenario, Domain, Query)).
+    \+ run_scenario(Scenario, Domain, Query).
 
 test(possibly_accessible_alive2_at_5) :-
     warsaw_standoff_domain(Domain),
@@ -30,11 +29,11 @@ test(possibly_accessible_alive2_at_5) :-
     run_scenario(Scenario, Domain, Query).
 
 
-test(possibly_accessible_alive3_and_jammed1_at_5) :-
+test(not_possibly_accessible_alive3_and_jammed1_at_5) :-
     warsaw_standoff_domain(Domain),
     warsaw_standoff_scenario(Scenario),
     get_query_from_text(Query, 'possibly accessible ALIVE3 and JAMMED1 at 5'),
-    not(run_scenario(Scenario, Domain, Query)).
+    \+ run_scenario(Scenario, Domain, Query).
 
 test(possibly_executable_shoot32_idle_at_4) :-
     warsaw_standoff_domain(Domain),

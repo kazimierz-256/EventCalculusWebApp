@@ -8,7 +8,7 @@
 :- use_module("../modules/occlusion.pl").
 
 test('mns empty') :-
-    parse_domain("A causes f", Domain),
+    parse_domain("a causes f", Domain),
     list_to_assoc(["f"-true], Fluent_Assignment),
     findall(
         Some_Valid_MNS,
@@ -18,66 +18,66 @@ test('mns empty') :-
     Results = [].
 
 test('mns singular simple') :-
-    parse_domain("A causes f", Domain),
+    parse_domain("a causes f", Domain),
     list_to_assoc(["f"-true], Fluent_Assignment),
     findall(
         Some_Valid_MNS,
-        mns(["A"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
+        mns(["a"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
         Results
     ),
-    Results = [["A"]].
+    Results = [["a"]].
 
 test('mns singular conditional') :-
-    parse_domain("A causes f if not f", Domain),
+    parse_domain("a causes f if not f", Domain),
     list_to_assoc(["f"-true], Fluent_Assignment),
     findall(
         Some_Valid_MNS,
-        mns(["A"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
+        mns(["a"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
         Results
     ),
     Results = [].
 
 test('mns multiple simple') :-
-    parse_domain("A causes f \n B causes g", Domain),
+    parse_domain("a causes f \n b causes g", Domain),
     list_to_assoc(["f"-true,"g"-true], Fluent_Assignment),
     findall(
         Some_Valid_MNS,
-        mns(["A","B"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
+        mns(["a","b"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
         Results
     ),
-    Results = [["A","B"]].
+    Results = [["a","b"]].
 
 %currently fails
 test('mns multiple conflict causes/causes') :-
-    parse_domain("A causes f \n B causes not f", Domain),
+    parse_domain("a causes f \n b causes not f", Domain),
     list_to_assoc(["f"-true], Fluent_Assignment),
     findall(
         Some_Valid_MNS,
-        mns(["A","B"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
+        mns(["a","b"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
         Results
     ),
-    Results = [["A"],["B"]].
+    Results = [["a"],["b"]].
 
 %currently fails
 test('mns multiple conflict causes/releases') :-
-    parse_domain("A causes f \n B causes not f", Domain),
+    parse_domain("a causes f \n b causes not f", Domain),
     list_to_assoc(["f"-true], Fluent_Assignment),
     findall(
         Some_Valid_MNS,
-        mns(["A","B"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
+        mns(["a","b"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
         Results
     ),
-    Results = [["A"],["B"]].
+    Results = [["a"],["b"]].
 
 %currently fails
 test('mns multiple conditional') :-
-    parse_domain("A causes f \n B causes not g if not f", Domain),
+    parse_domain("a causes f \n b causes not g if not f", Domain),
     list_to_assoc(["f"-true,"g"-true], Fluent_Assignment),
     findall(
         Some_Valid_MNS,
-        mns(["A","B"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
+        mns(["a","b"], 0, Domain, Fluent_Assignment, Some_Valid_MNS),
         Results
     ),
-    Results = [["A"]].
+    Results = [["a"]].
 
 :- end_tests(mns).

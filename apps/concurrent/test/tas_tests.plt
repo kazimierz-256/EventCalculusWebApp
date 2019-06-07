@@ -5,9 +5,9 @@
 :- use_module("../concurrent.pl").
 
 get_domain_scenario(Domain, Scenario) :-
-    parse_domain(`THINKABOUTSUNDAY causes not MOVING
+    parse_domain('THINKABOUTSUNDAY causes not MOVING
                     ALARM causes MOVING if ALIVE
-                    SHOOT causes not ALIVE and not MOVING if not MOVING`, Domain),
+                    SHOOT causes not ALIVE and not MOVING if not MOVING', Domain),
     parse_acs('SHOOT,THINKABOUTSUNDAY|0
                     SHOOT,THINKABOUTSUNDAY,ALARM|1
                     SHOOT|2', Acs),

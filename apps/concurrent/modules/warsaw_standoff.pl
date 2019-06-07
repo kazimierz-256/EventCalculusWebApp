@@ -3,119 +3,119 @@
     warsaw_standoff_scenario/1
     ]).
 
-%SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12 +
+%shoot12 causes not alive2 if alive1 and not jammed1 and facing12 +
 
-%SHOOT13 causes not ALIVE3 if ALIVE1 and not JAMMED1 and FACING13 +
+%shoot13 causes not alive3 if alive1 and not jammed1 and facing13 +
 
-%SHOOT21 causes not ALIVE1 if ALIVE2 and not JAMMED2 and FACING21 +
+%shoot21 causes not alive1 if alive2 and not jammed2 and facing21 +
 
-%SHOOT23 causes not ALIVE3 if ALIVE2 and not JAMMED2 and FACING23 +
+%shoot23 causes not alive3 if alive2 and not jammed2 and facing23 +
 
-%SHOOT31 causes not ALIVE1 if ALIVE3 and not JAMMED3 and FACING31 +
+%shoot31 causes not alive1 if alive3 and not jammed3 and facing31 +
 
-%SHOOT32 causes not ALIVE2 if ALIVE3 and not JAMMED3 and FACING32 +
+%shoot32 causes not alive2 if alive3 and not jammed3 and facing32 +
 
-%impossible SHOOT31 at 0 +
-%impossible SHOOT32 at 0 +
-%impossible SHOOT31 at 1 + 
-%impossible SHOOT32 at 1 +
+%impossible shoot31 at 0 +
+%impossible shoot32 at 0 +
+%impossible shoot31 at 1 + 
+%impossible shoot32 at 1 +
 
-%ROTATE12 causes FACING12 if ALIVE1 +
-%ROTATE13 causes FACING13 if ALIVE1 +
-%ROTATE21 causes FACING21 if ALIVE2 +
-%ROTATE23 causes FACING23 if ALIVE2 + 
-%ROTATE31 causes FACING31 if ALIVE3 + 
-%ROTATE32 causes FACING32 if ALIVE3 +
+%rotate12 causes facing12 if alive1 +
+%rotate13 causes facing13 if alive1 +
+%rotate21 causes facing21 if alive2 +
+%rotate23 causes facing23 if alive2 + 
+%rotate31 causes facing31 if alive3 + 
+%rotate32 causes facing32 if alive3 +
 
-%LOAD1 releases JAMMED1 if ALIVE1
-%LOAD2 releases JAMMED2 if ALIVE2
-%LOAD3 causes not JAMMED3 if ALIVE3
+%LOAD1 releases jammed1 if alive1
+%LOAD2 releases jammed2 if alive2
+%LOAD3 causes not jammed3 if alive3
 
-%ALIVE1 and ALIVE2 and ALIVE3 and not JAMMED1 and not JAMMED2 and not JAMMED3 and FACING12 and FACING23 and FACING31
+%alive1 and alive2 and alive3 and not jammed1 and not jammed2 and not jammed3 and facing12 and facing23 and facing31
 
 warsaw_standoff_domain(Domain) :-
-    %SHOOT12
-    list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE1", and(negate("JAMMED1"), "FACING12")))], Shoot12_Causes_List),
+    %shoot12
+    list_to_assoc(["causes"-(negate("alive2"), and("alive1", and(negate("jammed1"), "facing12")))], Shoot12_Causes_List),
 
-    %SHOOT13
-    list_to_assoc(["causes"-(negate("ALIVE3"), and("ALIVE1", and(negate("JAMMED1"), "FACING13")))], Shoot13_Causes_List),
+    %shoot13
+    list_to_assoc(["causes"-(negate("alive3"), and("alive1", and(negate("jammed1"), "facing13")))], Shoot13_Causes_List),
 
-    %SHOOT21
-    list_to_assoc(["causes"-(negate("ALIVE1"), and("ALIVE2", and(negate("JAMMED2"), "FACING21")))], Shoot21_Causes_List),
+    %shoot21
+    list_to_assoc(["causes"-(negate("alive1"), and("alive2", and(negate("jammed2"), "facing21")))], Shoot21_Causes_List),
     
-    %SHOOT23
-    list_to_assoc(["causes"-(negate("ALIVE3"), and("ALIVE2", and(negate("JAMMED2"), "FACING23")))], Shoot23_Causes_List),
+    %shoot23
+    list_to_assoc(["causes"-(negate("alive3"), and("alive2", and(negate("jammed2"), "facing23")))], Shoot23_Causes_List),
 
-    %SHOOT31
-    list_to_assoc(["causes"-(negate("ALIVE1"), and("ALIVE3", and(negate("JAMMED3"), "FACING31"))), "impossible"-[0, 1]], Shoot31_Causes_List),
+    %shoot31
+    list_to_assoc(["causes"-(negate("alive1"), and("alive3", and(negate("jammed3"), "facing31"))), "impossible"-[0, 1]], Shoot31_Causes_List),
 
-    %SHOOT32
-    list_to_assoc(["causes"-(negate("ALIVE2"), and("ALIVE3", and(negate("JAMMED3"), "FACING32"))), "impossible"-[0,1]], Shoot32_Causes_List),
+    %shoot32
+    list_to_assoc(["causes"-(negate("alive2"), and("alive3", and(negate("jammed3"), "facing32"))), "impossible"-[0,1]], Shoot32_Causes_List),
 
     %************************************************
 
-    %**************ROTATES
+    %**************rotateS
     
-    %ROTATE12
-    list_to_assoc(["causes"-("FACING12", "ALIVE1")], Rotate12_Causes_List),
+    %rotate12
+    list_to_assoc(["causes"-("facing12", "alive1")], Rotate12_Causes_List),
 
-    %ROTATE13
-    list_to_assoc(["causes"-("FACING13", "ALIVE1")], Rotate13_Causes_List),
+    %rotate13
+    list_to_assoc(["causes"-("facing13", "alive1")], Rotate13_Causes_List),
 
-    %ROTATE21
-    list_to_assoc(["causes"-("FACING21", "ALIVE2")], Rotate21_Causes_List),
+    %rotate21
+    list_to_assoc(["causes"-("facing21", "alive2")], Rotate21_Causes_List),
 
-    %ROTATE23
-    list_to_assoc(["causes"-("FACING23", "ALIVE2")], Rotate23_Causes_List),
+    %rotate23
+    list_to_assoc(["causes"-("facing23", "alive2")], Rotate23_Causes_List),
 
-    %ROTATE31
-    list_to_assoc(["causes"-("FACING31", "ALIVE3")], Rotate31_Causes_List),
+    %rotate31
+    list_to_assoc(["causes"-("facing31", "alive3")], Rotate31_Causes_List),
 
-    %ROTATE32
-    list_to_assoc(["causes"-("FACING32", "ALIVE3")], Rotate32_Causes_List),
+    %rotate32
+    list_to_assoc(["causes"-("facing32", "alive3")], Rotate32_Causes_List),
 
     %*************LOADED
 
     %LOAD1
-    list_to_assoc(["releases"-("JAMMED1", "ALIVE1")], Load1_Releases_List), 
+    list_to_assoc(["releases"-("jammed1", "alive1")], Load1_Releases_List), 
 
     %LOAD2
-    list_to_assoc(["releases"-("JAMMED2", "ALIVE2")], Load2_Releases_List), 
+    list_to_assoc(["releases"-("jammed2", "alive2")], Load2_Releases_List), 
 
     %LOAD3
-    list_to_assoc(["causes"-(negate("JAMMED3"), "ALIVE3")], Load3_Causes_List), 
+    list_to_assoc(["causes"-(negate("jammed3"), "alive3")], Load3_Causes_List), 
     list_to_assoc(["causes"-(true, true)], Idle_Causes_List), 
 
 
     %CREATING DOMAIN
-    list_to_assoc(["SHOOT12"-Shoot12_Causes_List, "SHOOT13"-Shoot13_Causes_List,
-                   "SHOOT21"-Shoot21_Causes_List, "SHOOT23"-Shoot23_Causes_List,
-                   "SHOOT31"-Shoot31_Causes_List, "SHOOT32"-Shoot32_Causes_List,
-                   "ROTATE12"-Rotate12_Causes_List, "ROTATE13"-Rotate13_Causes_List,
-                   "ROTATE21"-Rotate21_Causes_List, "ROTATE23"-Rotate23_Causes_List,
-                   "ROTATE31"-Rotate31_Causes_List, "ROTATE32"-Rotate32_Causes_List,
+    list_to_assoc(["shoot12"-Shoot12_Causes_List, "shoot13"-Shoot13_Causes_List,
+                   "shoot21"-Shoot21_Causes_List, "shoot23"-Shoot23_Causes_List,
+                   "shoot31"-Shoot31_Causes_List, "shoot32"-Shoot32_Causes_List,
+                   "rotate12"-Rotate12_Causes_List, "rotate13"-Rotate13_Causes_List,
+                   "rotate21"-Rotate21_Causes_List, "rotate23"-Rotate23_Causes_List,
+                   "rotate31"-Rotate31_Causes_List, "rotate32"-Rotate32_Causes_List,
                    "LOAD1"-Load1_Releases_List, "LOAD2"-Load2_Releases_List,
-                   "IDLE"-Idle_Causes_List,
+                   "idle"-Idle_Causes_List,
                    "LOAD3"-Load3_Causes_List], Domain).
 
 warsaw_standoff_scenario(Sc) :-
     %OBS
-    list_to_assoc([0-and("ALIVE1",
-        and("ALIVE2",
-            and("ALIVE3",
-                and(negate("JAMMED1"),
-                and(negate("JAMMED2"),
-                and(negate("JAMMED3"),
-                and("FACING12",
-                    and("FACING23",
-                        and("FACING31", and(negate("FACING13"),and(negate("FACING21"), negate("FACING32"))))
-                            )))))))), 1-or(negate("JAMMED1"), negate("JAMMED2"))], Observations),
+    list_to_assoc([0-and("alive1",
+        and("alive2",
+            and("alive3",
+                and(negate("jammed1"),
+                and(negate("jammed2"),
+                and(negate("jammed3"),
+                and("facing12",
+                    and("facing23",
+                        and("facing31", and(negate("facing13"),and(negate("facing21"), negate("facing32"))))
+                            )))))))), 1-or(negate("jammed1"), negate("jammed2"))], Observations),
 
     %ACS
     list_to_assoc([
                     0-["LOAD1", "LOAD2", "LOAD3"],
-                    1-["SHOOT12", "SHOOT23"],
-                    2-["ROTATE13", "ROTATE21", "SHOOT31"],
-                    3-["SHOOT13", "SHOOT21", "ROTATE32"],
-                    4-["SHOOT32","IDLE"]], Compound_Actions),
+                    1-["shoot12", "shoot23"],
+                    2-["rotate13", "rotate21", "shoot31"],
+                    3-["shoot13", "shoot21", "rotate32"],
+                    4-["shoot32","idle"]], Compound_Actions),
     Sc = (Observations, Compound_Actions).

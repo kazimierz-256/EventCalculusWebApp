@@ -95,7 +95,8 @@ parse_parts([H | T], Assoc, Domain) :-
         parse_parts(T, Domain_Tmp, Domain))).
 
 parse_domain_h(Text, Domain) :-
-    split_string(Text, "\n", "", Parts),
+    string_lower(Text, LowerCase),
+    split_string(LowerCase, "\n", "", Parts),
     empty_assoc(Assoc),
     parse_parts(Parts, Assoc, Domain).
 
@@ -126,7 +127,8 @@ parse_parts_acs([H|T], Assoc, Actions) :-
         parse_parts_acs(T, Actions_Tmp, Actions))).
 
 parse_acs_h(Text, Actions) :-
-    split_string(Text, "\n", "", Parts),
+    string_lower(Text, LowerCase),
+    split_string(LowerCase, "\n", "", Parts),
     empty_assoc(Assoc),
     parse_parts_acs(Parts, Assoc, Actions).
 
@@ -150,7 +152,8 @@ parse_parts_obs([H|T], Assoc, Observations) :-
         parse_parts_obs(T, Observations_Tmp, Observations))).
 
 parse_obs_h(Text, Observations) :-
-    split_string(Text, "\n", "", Parts),
+    string_lower(Text, LowerCase),
+    split_string(LowerCase, "\n", "", Parts),
     empty_assoc(Assoc),
     parse_parts_obs(Parts, Assoc, Observations).
 
