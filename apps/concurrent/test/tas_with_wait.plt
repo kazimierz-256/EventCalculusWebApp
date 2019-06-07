@@ -5,20 +5,26 @@
 :- use_module("../concurrent.pl").
 
 get_domain_scenario(Domain, Scenario) :-
-    parse_domain(`THINKABOUTSUNDAY causes not MOVING
+    parse_domain(`WAIT causes wait
+                    THINKABOUTSUNDAY causes not MOVING
                     ALARM causes MOVING if ALIVE
                     SHOOT causes not ALIVE and not MOVING if not MOVING`, Domain),
-    parse_acs('wait|0
+    parse_acs('WAIT|0
 					SHOOT,THINKABOUTSUNDAY|1
                     SHOOT,THINKABOUTSUNDAY,ALARM|2
                     SHOOT|3', Acs),
     parse_obs('ALIVE and MOVING|0', Obs),
     Scenario = (Obs, Acs).
 
+test('possibly executable SHOOT at 3') :-
+    get_domain_scenario(Domain, Scenario),
+    get_query_from_text(Query, 'possibly executable SHOOT at 3'),
+    run_scenario(Scenario, Domain, Query).
+
 test('possibly executable') :-
     get_domain_scenario(Domain, Scenario),
     get_query_from_text(Query, 'possibly executable'),
-    \+ run_scenario(Scenario, Domain, Query).
+    run_scenario(Scenario, Domain, Query).
 
 test('not necessarily executable') :-
     get_domain_scenario(Domain, Scenario),
