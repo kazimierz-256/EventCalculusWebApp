@@ -7,6 +7,9 @@
         "user_input_parsing.plt",
         "concurrent_test.plt",
         "tas_tests.plt",
-        "mns.plt"
+        "tas_with_wait.plt",
+        "tas_true_false.plt",
+        "mns.plt",
+        "true_false.plt"
         ]),
     run_tests.
