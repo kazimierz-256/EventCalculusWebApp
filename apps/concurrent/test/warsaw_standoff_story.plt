@@ -10,7 +10,6 @@ test(necessarily_executable_warsaw_stanoff) :-
     get_query_from_text(Query, 'necessarily executable'),
     run_scenario(Scenario, Domain, Query).
 
-
 test(possibly_accessiblt_alive1_and_noe_alive2_and_not_alive3_at_5) :-
     warsaw_standoff_domain(Domain),
     warsaw_standoff_scenario(Scenario),

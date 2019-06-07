@@ -38,41 +38,41 @@ test('domain multiple lines') :-
              LOL releases HAPPY
              impossible STEAL at 7',
         Domain),
-    list_to_assoc(["causes"-(or("OWN_TV",negate("OWN_TV")),true)], Buy_Causes_List),
-    list_to_assoc(["causes"-("HAPPY","OWN_TV")], Watch1_Causes_List),
-    list_to_assoc(["causes"-(negate("HAPPY"),negate("OWN_TV"))], Watch2_Causes_List),
-    list_to_assoc(["causes"-("OWN_TV",negate("OWN_TV")), "impossible"-[5,7]], Steal_Causes_List),
-    list_to_assoc(["releases"-("HAPPY",true)], Lol_Causes_List),
+    list_to_assoc(["causes"-(or("own_tv",negate("own_tv")),true)], Buy_Causes_List),
+    list_to_assoc(["causes"-("happy","own_tv")], Watch1_Causes_List),
+    list_to_assoc(["causes"-(negate("happy"),negate("own_tv"))], Watch2_Causes_List),
+    list_to_assoc(["causes"-("own_tv",negate("own_tv")), "impossible"-[5,7]], Steal_Causes_List),
+    list_to_assoc(["releases"-("happy",true)], Lol_Causes_List),
     list_to_assoc(
-        ["WATCH1"-Watch1_Causes_List,
-            "BUY"-Buy_Causes_List,
-            "STEAL"-Steal_Causes_List,
-            "WATCH2"-Watch2_Causes_List,
-            "LOL"-Lol_Causes_List],
+        ["watch1"-Watch1_Causes_List,
+            "buy"-Buy_Causes_List,
+            "steal"-Steal_Causes_List,
+            "watch2"-Watch2_Causes_List,
+            "lol"-Lol_Causes_List],
         D),
     check_assoc_lists_same(Domain, D).
 
 test('domain multiple lines with unnecessary spaces') :-
     parse_domain(
-        'BUY    causes    OWN_TV    or    not    OWN_TV
+        'buy    causes    OWN_TV    or    not    OWN_TV
              WATCH1    causes    HAPPY     if     OWN_TV
              WATCH2     causes     not     HAPPY     if     not     OWN_TV
              STEAL     causes     OWN_TV     if     not     OWN_TV
              impossible     STEAL     at     5
-             LOL     releases     HAPPY
+             lol     releases     HAPPY
              impossible     STEAL     at     7',
         Domain),
-    list_to_assoc(["causes"-(or("OWN_TV",negate("OWN_TV")),true)], Buy_Causes_List),
-    list_to_assoc(["causes"-("HAPPY","OWN_TV")], Watch1_Causes_List),
-    list_to_assoc(["causes"-(negate("HAPPY"),negate("OWN_TV"))], Watch2_Causes_List),
-    list_to_assoc(["causes"-("OWN_TV",negate("OWN_TV")), "impossible"-[5,7]], Steal_Causes_List),
-    list_to_assoc(["releases"-("HAPPY",true)], Lol_Causes_List),
+    list_to_assoc(["causes"-(or("own_tv",negate("own_tv")),true)], Buy_Causes_List),
+    list_to_assoc(["causes"-("happy","own_tv")], Watch1_Causes_List),
+    list_to_assoc(["causes"-(negate("happy"),negate("own_tv"))], Watch2_Causes_List),
+    list_to_assoc(["causes"-("own_tv",negate("own_tv")), "impossible"-[5,7]], Steal_Causes_List),
+    list_to_assoc(["releases"-("happy",true)], Lol_Causes_List),
     list_to_assoc(
-        ["WATCH1"-Watch1_Causes_List,
-            "BUY"-Buy_Causes_List,
-            "STEAL"-Steal_Causes_List,
-            "WATCH2"-Watch2_Causes_List,
-            "LOL"-Lol_Causes_List],
+        ["watch1"-Watch1_Causes_List,
+            "buy"-Buy_Causes_List,
+            "steal"-Steal_Causes_List,
+            "watch2"-Watch2_Causes_List,
+            "lol"-Lol_Causes_List],
         D),
     check_assoc_lists_same(Domain, D).
 
@@ -91,17 +91,17 @@ test('domain multiple lines additional nl character') :-
              impossible STEAL at 7
         ',
         Domain),
-    list_to_assoc(["causes"-(or("OWN_TV",negate("OWN_TV")),true)], Buy_Causes_List),
-    list_to_assoc(["causes"-("HAPPY","OWN_TV")], Watch1_Causes_List),
-    list_to_assoc(["causes"-(negate("HAPPY"),negate("OWN_TV"))], Watch2_Causes_List),
-    list_to_assoc(["causes"-("OWN_TV",negate("OWN_TV")), "impossible"-[5,7]], Steal_Causes_List),
-    list_to_assoc(["releases"-("HAPPY",true)], Lol_Causes_List),
+    list_to_assoc(["causes"-(or("own_tv",negate("own_tv")),true)], Buy_Causes_List),
+    list_to_assoc(["causes"-("happy","own_tv")], Watch1_Causes_List),
+    list_to_assoc(["causes"-(negate("happy"),negate("own_tv"))], Watch2_Causes_List),
+    list_to_assoc(["causes"-("own_tv",negate("own_tv")), "impossible"-[5,7]], Steal_Causes_List),
+    list_to_assoc(["releases"-("happy",true)], Lol_Causes_List),
     list_to_assoc(
-        ["WATCH1"-Watch1_Causes_List,
-            "BUY"-Buy_Causes_List,
-            "STEAL"-Steal_Causes_List,
-            "WATCH2"-Watch2_Causes_List,
-            "LOL"-Lol_Causes_List],
+        ["watch1"-Watch1_Causes_List,
+            "buy"-Buy_Causes_List,
+            "steal"-Steal_Causes_List,
+            "watch2"-Watch2_Causes_List,
+            "lol"-Lol_Causes_List],
         D),
     check_assoc_lists_same(Domain, D).
 
@@ -110,25 +110,24 @@ test('domain multiple lines additional nl character') :-
 %%%%%%%%%%%
 
 test('acs one line') :-
-    list_to_assoc([1-["SHOOT"]], Compound_Actions),
+    list_to_assoc([1-["shoot"]], Compound_Actions),
     parse_acs("SHOOT|1", Acs),
     check_assoc_lists_same(Compound_Actions, Acs).
 
 test('acs multiple lines different order') :-
-    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
+    list_to_assoc([1-["shoot", "hide", "run"], 4-["love", "eat","pray"]], Compound_Actions),
     parse_acs('SHOOT, HIDE,  RUN|1
     LOVE, PRAY, EAT|4', Acs),
     check_assoc_lists_same(Compound_Actions, Acs).
 
 test('acs multiple different lines order') :-
-    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
+    list_to_assoc([1-["shoot", "hide", "run"], 4-["love", "eat","pray"]], Compound_Actions),
     parse_acs('LOVE, PRAY, EAT|4
     SHOOT, HIDE,  RUN|1', Acs),
     check_assoc_lists_same(Compound_Actions, Acs).
 
 test('acs multiple lines with new line characters in between') :-
-    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
-    parse_acs('
+    list_to_assoc([1-["shoot", "hide", "run"], 4-["love", "eat","pray"]], Compound_Actions),    parse_acs('
     SHOOT,HIDE, RUN|1
 
 
@@ -137,14 +136,14 @@ test('acs multiple lines with new line characters in between') :-
     check_assoc_lists_same(Compound_Actions, Acs).
 
 test('acs multiple lines with white characters') :-
-    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
+    list_to_assoc([1-["shoot", "hide", "run"], 4-["love", "eat","pray"]], Compound_Actions),
     parse_acs('SHOOT,   HIDE,   RUN|1
     LOVE,   EAT,   PRAY|4', Acs),
     check_assoc_lists_same(Compound_Actions, Acs).
 
 test('acs multiple lines with white characters at the end') :-
-    list_to_assoc([1-["SHOOT", "HIDE", "RUN"], 4-["LOVE", "EAT","PRAY"]], Compound_Actions),
-    parse_acs('SHOOT,   HIDE,   RUN   |1
+    list_to_assoc([1-["shoot", "hide", "run"], 4-["love", "eat","pray"]], Compound_Actions),
+    parse_acs('shoot,   hide,   run   |1
     LOVE,   EAT,   PRAY   |4', Acs),
     check_assoc_lists_same(Compound_Actions, Acs).
 
@@ -153,48 +152,48 @@ test('acs multiple lines with white characters at the end') :-
 %%%%%%%%%%%
 
 test('obs one line') :-
-    list_to_assoc([0-"ALIVE"], Observations),
+    list_to_assoc([0-"alive"], Observations),
     parse_obs("ALIVE|0", Obs),
     check_assoc_lists_same(Observations, Obs).
 
 test('obs one line slightly more complex') :-
-    list_to_assoc([0-and("ALIVE", "WELL")], Observations),
+    list_to_assoc([0-and("alive", "well")], Observations),
     parse_obs("ALIVE and WELL|0", Obs),
     check_assoc_lists_same(Observations, Obs).
 
 test('obs one line even more complex') :-
-    list_to_assoc([0-or(and("ALIVE", "WELL"), "DEAD")], Observations),
+    list_to_assoc([0-or(and("alive", "well"), "dead")], Observations),
     parse_obs("ALIVE and WELL or DEAD|0", Obs),
     check_assoc_lists_same(Observations, Obs).
 
 test('obs multiple lines') :-
-    list_to_assoc([0-or(and("ALIVE", "WELL"), "DEAD"), 1-implies("ALIVE", negate("DEAD"))], Observations),
+    list_to_assoc([0-or(and("alive", "well"), "dead"), 1-implies("alive", negate("dead"))], Observations),
     parse_obs("ALIVE and WELL or DEAD|0
     ALIVE implies not DEAD|1", Obs),
     check_assoc_lists_same(Observations, Obs).
 
 test('obs multiple lines wrong order') :-
-    list_to_assoc([0-or(and("ALIVE", "WELL"), "DEAD"), 1-implies("ALIVE", negate("DEAD"))], Observations),
+    list_to_assoc([0-or(and("alive", "well"), "dead"), 1-implies("alive", negate("dead"))], Observations),
     parse_obs("ALIVE implies not DEAD|1
     ALIVE and WELL or DEAD|0", Obs),
     check_assoc_lists_same(Observations, Obs).
 
 test('obs multiple lines with white characters') :-
-    list_to_assoc([0-or(and("ALIVE", "WELL"), "DEAD"), 1-implies("ALIVE", negate("DEAD"))], Observations),
-    parse_obs("ALIVE  and    WELL  or  DEAD|0
-    ALIVE  implies   not  DEAD|1", Obs),
+    list_to_assoc([0-or(and("alive", "well"), "dead"), 1-implies("alive", negate("dead"))], Observations),
+    parse_obs("alive  and    WELL  or  DEAD|0
+    ALIVE  implies   not  dead|1", Obs),
     check_assoc_lists_same(Observations, Obs).
 
 test('obs multiple lines with white characters at the end') :-
-    list_to_assoc([0-or(and("ALIVE", "WELL"), "DEAD"), 1-implies("ALIVE", negate("DEAD"))], Observations),
-    parse_obs("ALIVE  and    WELL  or  DEAD   |0
-    ALIVE  implies   not  DEAD   |1", Obs),
+    list_to_assoc([0-or(and("alive", "well"), "dead"), 1-implies("alive", negate("dead"))], Observations),
+    parse_obs("alive  and    WELL  or  DEAD   |0
+    ALIVE  implies   not  dead   |1", Obs),
     check_assoc_lists_same(Observations, Obs).
 
 test('obs multiple lines with new lines in between') :-
-    list_to_assoc([0-or(and("ALIVE", "WELL"), "DEAD"), 1-implies("ALIVE", negate("DEAD"))], Observations),
+    list_to_assoc([0-or(and("alive", "well"), "dead"), 1-implies("alive", negate("dead"))], Observations),
     parse_obs("
-    ALIVE and WELL or DEAD|0
+    alive and WELL or DEAD|0
 
 
     ALIVE implies not DEAD|1
