@@ -5,14 +5,14 @@
 :- use_module("../concurrent.pl").
 
 get_domain_scenario(Domain, Scenario) :-
-    parse_domain(`THINKABOUTSUNDAY causes not MOVING
+    parse_domain("THINKABOUTSUNDAY causes not MOVING
                     ALARM causes MOVING if ALIVE
                     SHOOT causes not ALIVE and not MOVING if not MOVING
-					DESTROY causes false`, Domain),
-    parse_acs('SHOOT,THINKABOUTSUNDAY,DESTROY|0
+					DESTROY causes false", Domain),
+    parse_acs("SHOOT,THINKABOUTSUNDAY,DESTROY|0
                     SHOOT,THINKABOUTSUNDAY,ALARM,DESTROY|1
-                    SHOOT,DESTROY|2', Acs),
-    parse_obs('ALIVE and MOVING|0', Obs),
+                    SHOOT,DESTROY|2", Acs),
+    parse_obs("ALIVE and MOVING|0", Obs),
     Scenario = (Obs, Acs).
 
 test('possibly executable') :-
