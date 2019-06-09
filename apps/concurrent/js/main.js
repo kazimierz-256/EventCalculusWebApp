@@ -168,10 +168,6 @@ let form = new Vue({
         materialize_init();
         this.adjustCollection(this.observations);
         this.adjustCollection(this.actions);
-        $(".btn-floating").on("keyup", function(event) {
-            var $target = $(event.currentTarget);
-            $newActiveButton = $target.next() || $target.parent().children("a").first().focus()
-        });
     },
     watch: {
         action_domain: update_method,
