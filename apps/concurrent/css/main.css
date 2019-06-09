@@ -1,3 +1,7 @@
+html {
+    font-size: 18px;
+}
+
 .nav-wrapper{
     padding: 0 1em;
 }
@@ -27,13 +31,58 @@ body {
     margin-top: 2em;
 }
 
-.helper-text > *:not(:first-child) {
-    margin-left: .3em;
-}
-.helper-text > span:not(:first-child) {
-    margin-left: 1.0em;
-}
 .card-title > .btn, .card-title > .btn-large, .card-title > .btn-small {
     margin-left: 2em;
     float: inline-end;
+}
+
+.two-columns {
+    overflow: hidden;
+}
+
+.two-columns > div:first-child {   
+    width: 48%;
+    float: left;
+}
+
+.two-columns > div:last-child {   
+    width: 48%;
+    float: right;
+}
+
+.input-field {
+    min-height: 120px;
+}
+
+.input-field input[type=text] {
+    margin-top: -10px;
+}
+
+.input-field > * {
+    margin-right: 10px
+}
+
+.btn-floating:focus {
+    background-color: orange !important;
+}
+
+b {
+    font-size: 150%;
+}
+
+.table-div {
+    display:table;
+    width: 100%;
+    border-collapse:separate;
+    border-spacing:10px;
+}
+
+.tr-div {
+    display:table-row
+}
+
+.td-div {
+    display:table-cell;
+    width: 50%;
+    margin: 10px;
 }

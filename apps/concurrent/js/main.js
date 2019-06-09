@@ -105,6 +105,9 @@ let mainMethodsObject = {
         }
 
     },
+    clear_answer: function () {
+        this.answer = undefined;
+    },
     retrieve_answer: function () {
         let command =
             `once((parse_domain('` + this.action_domain + `', Domain),` +
