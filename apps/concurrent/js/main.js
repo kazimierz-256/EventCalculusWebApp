@@ -105,6 +105,9 @@ let mainMethodsObject = {
         }
 
     },
+    clear_answer: function () {
+        this.answer = undefined;
+    },
     retrieve_answer: function () {
         let command =
             `once((parse_domain('` + this.action_domain + `', Domain),` +
@@ -165,6 +168,10 @@ let form = new Vue({
         materialize_init();
         this.adjustCollection(this.observations);
         this.adjustCollection(this.actions);
+        $(".btn-floating").on("keyup", function(event) {
+            var $target = $(event.currentTarget);
+            $newActiveButton = $target.next() || $target.parent().children("a").first().focus()
+        });
     },
     watch: {
         action_domain: update_method,
