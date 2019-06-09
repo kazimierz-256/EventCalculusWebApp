@@ -113,13 +113,16 @@ prepare_initial_state_time_0(Observations, Action_Domain, Initial_State) :-
     ;   get_association_satisfying_formula(Unique_Fluents, Pre_Assigned_Fluents, true, Initial_State)).
 
 
+max_assoc_default(Assoc, Max, Default) :-
+    max_assoc(Assoc, Max, _) -> true ; Max = Default.
+
 % outputs nothing, succeeds iff the scenario is possibly executable
 run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
     writeln("possibly executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
-    max_assoc(Actions, Last_Action_Time, _),
+    max_assoc_default(Actions, Last_Action_Time, 0),
     Maxtime_ACS is Last_Action_Time + 1,
-    max_assoc(Observations, Last_Observaiotn_Time, _),
+    max_assoc_default(Observations, Last_Observaiotn_Time, 0),
     Maxtime_OBS is Last_Observaiotn_Time,
     Maxtime is max(Maxtime_ACS, Maxtime_OBS),
     once(
@@ -129,13 +132,14 @@ run_scenario((Observations, Actions), Action_Domain, possibly_executable) :-
         )
     ).
 
+
 % outputs nothing, succeeds iff the scenario is necessarily executable
 run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
     writeln("necessarily executable scenario"),
     %TODO should we care about observations later than (1+last planned action moment)
-    max_assoc(Actions, Last_Action_Time, _),
+    max_assoc_default(Actions, Last_Action_Time, 0),
     Maxtime_ACS is Last_Action_Time + 1,
-    max_assoc(Observations, Last_Observaiotn_Time, _),
+    max_assoc_default(Observations, Last_Observaiotn_Time, 0),
     Maxtime_OBS is Last_Observaiotn_Time,
     Maxtime is max(Maxtime_ACS, Maxtime_OBS),
     once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
