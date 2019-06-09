@@ -26,7 +26,7 @@ get_domain_scenario(Domain, Scenario) :-
     parse_obs('CON3 and not CON2 and not CON1 and BON2 and not BON1 and AON1 and not SAFEA and not SAFEB and not SAFEC|0', Obs),
     Scenario = (Obs, Acs).
 
-test('possibly accessible safe at 4') :-
+test('not possibly accessible safe at 4') :-
     get_domain_scenario(Domain, Scenario),
     get_query_from_text(Query, 'possibly accessible SAFEA and SAFEB and SAFEC at 4'),
     \+ run_scenario(Scenario, Domain, Query).
@@ -36,7 +36,7 @@ test('possibly accessible safe at 5') :-
     get_query_from_text(Query, 'possibly accessible SAFEA and SAFEB and SAFEC at 5'),
     run_scenario(Scenario, Domain, Query).
 
-test('necessarily accessible safe at 5') :-
+test('not necessarily accessible safe at 5') :-
     get_domain_scenario(Domain, Scenario),
     get_query_from_text(Query, 'necessarily accessible SAFEA and SAFEB and SAFEC at 5'),
     \+ run_scenario(Scenario, Domain, Query).
