@@ -10,6 +10,9 @@
         "tas_with_wait.plt",
         "tas_true_false.plt",
         "mns.plt",
-        "true_false.plt"
+        "true_false.plt",
+		"tas_with_idle.plt",
+		"tas_with_idle_2.plt",
+		"tas_without_idle.plt"
         ]),
     run_tests.
