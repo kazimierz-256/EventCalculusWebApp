@@ -142,7 +142,6 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
     max_assoc_default(Observations, Last_Observaiotn_Time, 0),
     Maxtime_OBS is Last_Observaiotn_Time,
     Maxtime is max(Maxtime_ACS, Maxtime_OBS),
-    % once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
     not(once(
         (
             prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
@@ -152,13 +151,6 @@ run_scenario((Observations, Actions), Action_Domain, necessarily_executable) :-
 
 run_scenario((Observations, Actions), Action_Domain, necessarily_accessible(Query_Condition, Query_Time)) :-
     writeln("necessarily accessible gamma at t"),
-    % once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
-    % not(once(
-    %     (
-    %         prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
-    %         exists_state_without_future(Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
-    %     )
-    % )),
     not(once(
         (
             prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
@@ -177,13 +169,6 @@ run_scenario((Observations, Actions), Action_Domain, possibly_accessible(Query_C
 
 run_scenario((Observations, Actions), Action_Domain, necessarily_executable(Query_Action, Query_Time)) :-
     writeln("necessarily executable A at t"),
-    % once(prepare_initial_state_time_0(Observations, Action_Domain, _)),
-    % not(once(
-    %     (
-    %         prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
-    %         exists_state_without_future(Query_Time, 0, Initial_State, Observations, Actions, Action_Domain)
-    %     )
-    % )),
     not(once(
         (
             prepare_initial_state_time_0(Observations, Action_Domain, Initial_State),
