@@ -78,7 +78,7 @@
               <a class="btn light-blue waves-effect waves-light" v-if="answer==undefined" v-on:click="retrieve_answer()">Retrieve
                 answer</a>
               <a class="btn light-blue waves-effect waves-light" v-if="answer!=undefined" v-on:click="clear_answer()">Hide
-                answer`</a>
+                answer</a>
               <a class="btn red waves-effect waves-light" v-bind:disabled="!pengine_running" v-on:click="abort_pengine()">Abort
                 computation</a>
 
@@ -160,14 +160,14 @@
                       </div>
                       <div>
                         <span>at {{act.time}}</span>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > 1 && actions.length > index + 1)"
-                          href="javascript:void(0)" v-on:click="remove(act, actions)">
-                          <i class="material-icons">delete_forever</i>
-                        </button>
                         <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > index + 1)"
                           href="javascript:void(0)" v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></button>
                         <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(act.time > 0 && actions.length > index + 1)"
                           href="javascript:void(0)" v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></button>
+                          <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > 1 && actions.length > index + 1)"
+                            href="javascript:void(0)" v-on:click="remove(act, actions)">
+                            <i class="material-icons">delete_forever</i>
+                          </button>
                       </div>
                     </div>
                   </li>

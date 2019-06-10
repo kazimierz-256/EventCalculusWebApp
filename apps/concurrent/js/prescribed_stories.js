@@ -8,7 +8,7 @@ let prescribed_stories =
         actions: [  
             new Entry("M", 0)
         ],
-        query: new Query(`1`, `Possibly accesible γ at t when Sc`, `HAPPY`, `1`, ``, `possibly accessible HAPPY at 1`)
+        query: new Query(`1`, `Possibly accessible γ at t when Sc`, `HAPPY`, `1`, ``, `possibly accessible HAPPY at 1`)
     },
     'simplest': {
         action_domain: `SHOOT causes not ALIVE
@@ -19,7 +19,7 @@ impossible SHOOT at 0`,
         actions: [
             new Entry("SHOOT", 1)
         ],
-        query: new Query(`1`, `Possibly accesible γ at t when Sc`, `ALIVE`, `1`, ``, `possibly accessible ALIVE at 1`)
+        query: new Query(`1`, `Possibly accessible γ at t when Sc`, `ALIVE`, `1`, ``, `possibly accessible ALIVE at 1`)
     },
     'Warsaw Standoff': {
         action_domain: `SHOOT12 causes not ALIVE2 if ALIVE1 and not JAMMED1 and FACING12
