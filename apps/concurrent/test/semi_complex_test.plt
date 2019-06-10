@@ -60,7 +60,8 @@ test('not true that necessarily executable BUY at 4') :-
    get_domain(Domain),
    get_scenario(Scenario),
    get_query_from_text(Query, 'necessarily executable BUY at 4'),
-   \+ run_scenario(Scenario, Domain, Query).
+   % previously STEAL would cause some model to become contradictory, in all noncontradictory models, this passes
+   run_scenario(Scenario, Domain, Query).
 
 test('possibly executable BUY at 5') :-
    get_domain(Domain),
@@ -90,6 +91,7 @@ test('not true that necessarily accessible OwnTv at 1') :-
     get_domain(Domain),
     get_scenario(Scenario),
     get_query_from_text(Query, 'necessarily accessible OwnTv at 4'),
-    \+ run_scenario(Scenario, Domain, Query).
+    % previously STEAL would cause some model to become contradictory, in all noncontradictory models, this passes
+    run_scenario(Scenario, Domain, Query).
 
 :- end_tests(semi_complex_test).
