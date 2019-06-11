@@ -140,13 +140,13 @@
                       </div>
                       <div>
                         <span>at {{obs.time}}</span>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > index + 1)"
+                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > index)"
                           href="javascript:void(0)" v-on:keydown="clear_answer()" v-on:click="moveUp(obs, observations)"><i class="material-icons">add</i>
                         </button>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(obs.time > 0 && observations.length > index + 1)"
+                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(obs.time > 0 && observations.length > index)"
                           href="javascript:void(0)" v-on:keydown="clear_answer()" v-on:click="moveDown(obs, observations)"><i class="material-icons">remove</i>
                         </button>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > 1 && observations.length > index + 1)"
+                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > 1 && observations.length > index)"
                           href="javascript:void(0)" v-on:keydown="clear_answer()" v-on:click="remove(obs, observations)">
                            <i class="material-icons left">delete_forever</i>
                         </button>
@@ -170,13 +170,13 @@
                       </div>
                       <div>
                         <span>at {{act.time}}</span>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > 1 && actions.length > index + 1)"
+                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > 1 && actions.length > index)"
                           href="javascript:void(0)"  v-on:keydown="clear_answer()" v-on:click="remove(act, actions)">
                           <i class="material-icons">delete_forever</i>
                         </button>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > index + 1)"
+                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > index)"
                           href="javascript:void(0)"  v-on:keydown="clear_answer()" v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></button>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(act.time > 0 && actions.length > index + 1)"
+                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(act.time > 0 && actions.length > index)"
                           href="javascript:void(0)"  v-on:keydown="clear_answer()" v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></button>
                       </div>
                     </div>
