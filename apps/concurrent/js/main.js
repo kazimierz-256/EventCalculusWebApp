@@ -62,17 +62,16 @@ let getNewQuery = function () { return new Query(``, ``, ``, ``, ``, ``); };
 let gif_positive_count = 5;
 let gif_negative_count = 6;
 let modelData = {
-    action_domain: ``,
+    action_domain: prescribed_stories[`simplest`].action_domain,
     answer: undefined,
     gif_id: 0,
-    query: getNewQuery(),
-    debug: debugText,
-    actions: [],
-    observations: [],
+    query: prescribed_stories[`simplest`].query,
+    debug: "parse_domain(\'" + prescribed_stories[`simplest`].action_domain + "\', Domain).",
+    actions: prescribed_stories[`simplest`].actions,
+    observations: prescribed_stories[`simplest`].observations,
     queries: query_collection,
     pengine_running: false
 };
-
 
 let mainMethodsObject = {
     debug_query: function () {
@@ -143,6 +142,7 @@ let mainMethodsObject = {
     clear_action_domain: function () {
         this.answer = undefined;
         this.action_domain = ``;
+
     },
     clear_observations: function () {
         this.answer = undefined;
@@ -166,17 +166,13 @@ let form = new Vue({
     methods: mainMethodsObject,
     mounted() {
         materialize_init();
-        this.adjustCollection(this.observations);
-        this.adjustCollection(this.actions);
     },
     watch: {
         action_domain: update_method,
         actions: function () {
-            this.adjustCollection(this.actions);
             update_method();
         },
         observations: function () {
-            this.adjustCollection(this.observations);
             update_method();
         },
         query: update_method

@@ -14,7 +14,6 @@ var ScenarioSectionEventHandlers = {
     remove: function (elem, array) {
         let index = array.indexOf(elem);
         array.splice(index, 1);
-        this.adjustCollection(array);
         this.answer = undefined;
     },
     clear_answer: function () {
@@ -42,7 +41,7 @@ var ScenarioSectionEventHandlers = {
             }
         }
     },
-    adjustCollection: function (array) {
+    addToCollection: function (array) {
         if (array.length === 0) {
             array.push(new Entry("", 0));
             return;
