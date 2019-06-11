@@ -37,3 +37,12 @@ body {
     margin-left: 2em;
     float: inline-end;
 }
+
+.acs-input, .obs-input {
+    /* width: 20em !important; */
+    width: 25em !important;
+}
+
+.two-columns > button {
+    margin-left: 0.618em;
+}
