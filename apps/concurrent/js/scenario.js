@@ -51,6 +51,15 @@ var ScenarioSectionEventHandlers = {
         if (!lastElem.isEmpty())
             array.push(new Entry("", lastElem.time + 1));
     },
+    addToCollection: function (array) {
+        if (array.length === 0) {
+            array.push(new Entry("", 0));
+            return;
+        }
+        let lastElem = array[array.length - 1];
+        if (!lastElem.isEmpty())
+            array.push(new Entry("", lastElem.time + 1));
+    },
     getScenarioString: function () {
         return "(" + this.getObservationsString() + "," + this.getActionsString() + ")";
     },
