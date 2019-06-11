@@ -74,7 +74,7 @@
               <li v-for="(obs, index) in observations">
                 <div class="input-field">
                     <textarea placeholder="Enter a new observation" v-model="obs.data" class="materialize-textarea"
-                              v-on:input="adjustCollection(observations)"></textarea>
+                    v-on:keydown="clear_answer()" v-on:change="clear_answer()" v-on:input="adjustCollection(observations)"></textarea>
                   <span class="helper-text">
                       <!-- <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a> -->
                       <a class="waves-effect waves-light btn-floating btn-small blue"
@@ -104,7 +104,7 @@
               <li v-for="(act, index) in actions">
                 <div class="input-field">
                     <textarea placeholder="Enter a new compound action" v-model="act.data" class="materialize-textarea"
-                              v-on:input="adjustCollection(actions)" v-on:change="clear_answer()"></textarea>
+                              v-on:input="adjustCollection(actions)" v-on:keydown="clear_answer()" v-on:change="clear_answer()"></textarea>
                   <span class="helper-text">
                       <a class="waves-effect waves-light btn-floating btn-small blue"
                          v-bind:disabled="!(actions.length > 1 && actions.length > index + 1)" href="javascript:void(0)"
@@ -144,15 +144,15 @@
         <span
                 v-if="query.type_text == 'Necessarily executable A at t when Sc' || query.type_text == 'Possibly executable A at t when Sc'"
                 id="hide">Action: <input v-model="query.action" placeholder="A" type="text" id="query"
-                                         v-on:change="changedProperty($event, query)"></span>
+                v-on:keydown="changedProperty($event, query)" v-on:change="changedProperty($event, query)"></span>
         <span
                 v-if="query.type_text == 'Possibly accessible γ at t when Sc' || query.type_text == 'Necessarily accessible γ at t when Sc'"
                 id="hide">Condition:<input v-model="query.condition" placeholder="γ" type="text" id="query"
-                                           v-on:change="changedProperty($event, query)"></span>
+                v-on:keydown="changedProperty($event, query)" v-on:change="changedProperty($event, query)"></span>
         <span
                 v-if="!(query.type_text == 'Necessarily executable scenario Sc' || query.type_text == 'Possibly executable scenario Sc' || query.type_text == ``)"
                 id="hide">Time:<input v-model="query.time" placeholder="t" type="number" min="0" id="query"
-                                      v-on:change="changedProperty($event, query)"></span>
+                v-on:keydown="changedProperty($event, query)" v-on:change="changedProperty($event, query)"></span>
         <div v-if="query.type_text != ``" class="card blue-grey lighten-5">
           <div class="card-content">
             <span class="card-title">Generated query</span>
