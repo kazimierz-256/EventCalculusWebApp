@@ -3,7 +3,7 @@
 }
 
 #form > *{
-    margin: 2em 0 0 0;
+    margin: 1em 0 0 0;
 }
 
 #answer img{
@@ -16,7 +16,7 @@
 }
 
 body {
-    margin-bottom: 20em;
+    margin-bottom: 10em;
 }
 
 .card-content > ul.spaced > li {
@@ -24,7 +24,7 @@ body {
 }
 
 .card-content > .card {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 .helper-text > *:not(:first-child) {

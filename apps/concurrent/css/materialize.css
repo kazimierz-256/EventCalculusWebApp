@@ -3430,19 +3430,19 @@ table span.badge {
 
 .container {
   margin: 0 auto;
-  max-width: 1280px;
-  width: 90%;
+  max-width: 1680px;
+  width: 95%;
 }
 
 @media only screen and (min-width: 601px) {
   .container {
-    width: 85%;
+    width: 95%;
   }
 }
 
 @media only screen and (min-width: 993px) {
   .container {
-    width: 70%;
+    width: 95%;
   }
 }
 
@@ -4744,13 +4744,13 @@ small {
 
 .card {
   position: relative;
-  margin: 0.5rem 0 1rem 0;
+  margin: 0.1rem 0 1rem 0;
   background-color: #fff;
   -webkit-transition: -webkit-box-shadow .25s;
   transition: -webkit-box-shadow .25s;
   transition: box-shadow .25s;
   transition: box-shadow .25s, -webkit-box-shadow .25s;
-  border-radius: 2px;
+  border-radius: 20px;
 }
 
 .card .card-title {
