@@ -15,182 +15,236 @@
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- TOP NAVIGATION -->
-    <nav>
-      <div class="nav-wrapper light-blue">
-        <a href="#" class="brand-logo light">Reprezentacja Wiedzy</a>
+  <!-- TOP NAVIGATION -->
+  <nav>
+    <div class="nav-wrapper light-blue">
+      <a href="#" class="brand-logo light">Reprezentacja Wiedzy</a>
+    </div>
+  </nav>
+
+
+
+
+
+  <ul id="dropdown" class="dropdown-content">
+    <!-- <li v-for="(item, index) in items">{{item.action_domain}} {{index}}</li> -->
+    <li v-for="(item, index) in items">
+      <a class="blue-text" v-on:click="prefill(index)" href="#!">{{index}}</a>
+    </li>
+  </ul>
+  <!-- MAIN PAGE -->
+  <div id="form">
+
+    <div class="card blue-grey lighten-4">
+      <div class="card-content">
+        <span class="card-title">Prescribed stories</span>
+        <a class="btn light-blue dropdown-trigger" href="#!" data-target="dropdown">Choose a prescribed story<i
+                class="material-icons right">arrow_drop_down</i></a>
+        <a class="btn light-blue waves-effect waves-light" v-on:click="clear()">Clear all input</a>
       </div>
-    </nav>
-
-    <ul id="dropdown" class="dropdown-content">
-      <!-- <li v-for="(item, index) in items">{{item.action_domain}} {{index}}</li> -->
-      <li v-for="(item, index) in items">
-        <a class="blue-text" v-on:click="prefill(index)" href="#!">{{index}}</a>
-      </li>
-    </ul>
-    <!-- MAIN PAGE -->
-    <div id="form">
+    </div>
 
 
-      <div class="table-div">
-        <div class="tr-div">
-          <!-- ACTION DOMAIN -->
-          <div class="card blue-grey lighten-4 td-div">
-            <div class="card-content">
-              <span class="card-title">Domain <a class="btn-small blue-grey lighten-3 waves-effect waves-light"
-                  v-bind:disabled="action_domain==``" v-on:click="clear_action_domain()">Clear input</a>
-                <a class="btn light-blue dropdown-trigger" href="#!" data-target="dropdown">Choose a prescribed story<i
-                    class="material-icons right">arrow_drop_down</i></a>
-              </span>
-              <div class="input-field">
-                <textarea placeholder="Enter a new Action Domain" v-model="action_domain" id="action_domain" class="materialize-textarea">
-                    </textarea>
-              </div>
-            </div>
-          </div>
-          <div id="answer-box" class="card blue-grey lighten-4 td-div">
-            <div class="card-content">
 
-              <span class="card-title">Query to the system <a class="btn-small blue-grey lighten-3 waves-effect waves-light"
-                  v-bind:disabled="query.full_text==``" v-on:click="clear_query()">Clear input</a></span>
-
-              <select id="select" class="form-control" v-model="query.type_text" v-on:change="changedProperty($event, query)">
-                <option v-for="item in queries" :value="item.type_text" :key="item.type_text" v-bind:value="item.type_text">
-                  {{ item.type_text }}
-                </option>
-              </select>
-              <span v-if="query.type_text == 'Necessarily executable A at t when Sc' || query.type_text == 'Possibly executable A at t when Sc'"
-                id="hide">Action: <input v-model="query.action" placeholder="A" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
-              <span v-if="query.type_text == 'Possibly accessible γ at t when Sc' || query.type_text == 'Necessarily accessible γ at t when Sc'"
-                id="hide">Condition:<input v-model="query.condition" placeholder="γ" type="text" id="query" v-on:change="changedProperty($event, query)"></span>
-              <span v-if="!(query.type_text == 'Necessarily executable scenario Sc' || query.type_text == 'Possibly executable scenario Sc' || query.type_text == ``)"
-                id="hide">Time:<input v-model="query.time" placeholder="t" type="number" min="0" id="query" v-on:change="changedProperty($event, query)"></span>
-              <div v-if="query.type_text != ``" class="card blue-grey lighten-5">
-                <div class="card-content">
-                  <span class="card-title">Generated query</span>
-                  <span type="text" class="blue-text"> {{query.getQueryFullText()}}</span>
-                </div>
-              </div>
-
-
-              <a class="btn light-blue waves-effect waves-light" v-if="answer==undefined" v-on:click="retrieve_answer()">Retrieve
-                answer</a>
-              <a class="btn light-blue waves-effect waves-light" v-if="answer!=undefined" v-on:click="clear_answer()">Hide
-                answer</a>
-              <a class="btn red waves-effect waves-light" v-bind:disabled="!pengine_running" v-on:click="abort_pengine()">Abort
-                computation</a>
-
-              <div id="answer">
-
-                <div v-if="pengine_running" class="progress blue lighten-3">
-                  <div class="indeterminate"></div>
-                </div>
-
-                <div v-if="answer!=undefined">
-                  <img class="z-depth-1" src="gif/yep1.gif" v-if="answer && gif_id==0">
-                  <img class="z-depth-1" src="gif/yep2.gif" v-if="answer && gif_id==1">
-                  <img class="z-depth-1" src="gif/yep3.gif" v-if="answer && gif_id==2">
-                  <img class="z-depth-1" src="gif/yep4.gif" v-if="answer && gif_id==3">
-                  <img class="z-depth-1" src="gif/yep5.gif" v-if="answer && gif_id==4">
-                  <img class="z-depth-1" src="gif/nope1.gif" v-if="!answer && gif_id==0">
-                  <img class="z-depth-1" src="gif/nope2.gif" v-if="!answer && gif_id==1">
-                  <img class="z-depth-1" src="gif/nope3.gif" v-if="!answer && gif_id==2">
-                  <img class="z-depth-1" src="gif/nope4.gif" v-if="!answer && gif_id==3">
-                  <img class="z-depth-1" src="gif/nope5.gif" v-if="!answer && gif_id==4">
-                  <img class="z-depth-1" src="gif/nope6.gif" v-if="!answer && gif_id==5">
-                </div>
-              </div>
-            </div>
-          </div>
-
+    <!-- ACTION DOMAIN -->
+    <div class="card blue-grey lighten-4">
+      <div class="card-content">
+          <span class="card-title">Action Domain <a class="btn-small blue-grey lighten-3 waves-effect waves-light"
+                                                    v-bind:disabled="action_domain==``" v-on:click="clear_action_domain()">Clear input</a></span>
+        <div class="input-field">
+            <textarea placeholder="Enter a new Action Domain" v-model="action_domain" id="action_domain"
+                      class="materialize-textarea">
+          </textarea>
         </div>
       </div>
+    </div>
 
-      <!-- SCENARIO -->
-      <div class="card blue-grey lighten-4">
-        <div class="card-content">
-          <span class="card-title">Scenario</span>
-          <p>You can define your scenario here. For your convenience, use <b>TAB</b> and <b>SHIFT+TAB</b> to navigate
-            between elements.</p>
-          <p>New inputs will show up automagically when needed.</p>
-          <p>Example observation: <b>ALIVE and not MOVING</b></p>
-          <p>Example compound action: <b>SHOOT,LOAD</b></p>
+    <!-- SCENARIO -->
+    <div class="card blue-grey lighten-4">
+      <div class="card-content">
+        <span class="card-title">Scenario</span>
 
-          <div class="two-columns">
-            <div class="card blue-grey lighten-5">
-              <div class="card-content">
-                <span class="card-title">Observations <a class="btn-small blue-grey lighten-4 waves-effect waves-light"
-                    v-bind:disabled="observations.length==1" v-on:click="clear_observations()">Clear input</a></span>
-                <ul class="spaced">
-                  <li v-for="(obs, index) in observations">
-                    <div class="input-field two-columns">
-                      <div>
-                        <input type="text" placeholder="Enter a new observation" v-model="obs.data" v-on:input="adjustCollection(observations)"></input>
-                      </div>
-                      <div>
-                        <span>at {{obs.time}}</span>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > index + 1)"
-                          href="javascript:void(0)" v-on:click="moveUp(obs, observations)"><i class="material-icons">add</i>
-                        </button>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(obs.time > 0 && observations.length > index + 1)"
-                          href="javascript:void(0)" v-on:click="moveDown(obs, observations)"><i class="material-icons">remove</i>
-                        </button>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > 1 && observations.length > index + 1)"
-                          href="javascript:void(0)" v-on:click="remove(obs, observations)">
-                          <i class="material-icons left">delete_forever</i>
-                        </button>
-                      </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
+        <div class="card blue-grey lighten-5">
+          <div class="card-content">
+              <span class="card-title">Observations <a class="btn-small blue-grey lighten-4 waves-effect waves-light"
+                                                       v-bind:disabled="observations.length==1" v-on:click="clear_observations()">Clear input</a></span>
+            <ul class="spaced">
+              <li v-for="(obs, index) in observations">
+                <div class="input-field">
+                    <textarea placeholder="Enter a new observation" v-model="obs.data" class="materialize-textarea"
+                              v-on:input="adjustCollection(observations)"></textarea>
+                  <span class="helper-text">
+                      <!-- <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a> -->
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                         v-bind:disabled="!(observations.length > 1 && observations.length > index + 1)"
+                         href="javascript:void(0)" v-on:click="remove(obs, observations)">
+                        <i class="material-icons left">delete_forever</i> delete
+                      </a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                         v-bind:disabled="!(observations.length > index + 1)" href="javascript:void(0)"
+                         v-on:click="moveUp(obs, observations)"><i class="material-icons">add</i></a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                         v-bind:disabled="!(obs.time > 0 && observations.length > index + 1)" href="javascript:void(0)"
+                         v-on:click="moveDown(obs, observations)"><i class="material-icons">remove</i></a>
+                      <span>At time {{obs.time}} this observation shall hold</span>
+                    </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-            <div class="card blue-grey lighten-5">
-              <div class="card-content">
-                <span class="card-title">Actions <a class="btn-small blue-grey lighten-4 waves-effect waves-light"
-                    v-bind:disabled="actions.length==1" v-on:click="clear_actions()">Clear input</a></span>
-                <ul class="spaced">
-                  <li v-for="(act, index) in actions">
-                    <div class="input-field two-columns">
-                      <div>
-                        <input type="text" placeholder="Enter a new compound action" v-model="act.data" class="materialize-textarea"
-                          v-on:input="adjustCollection(actions)" v-on:change="clear_answer()"></input>
-                      </div>
-                      <div>
-                        <span>at {{act.time}}</span>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > index + 1)"
-                          href="javascript:void(0)" v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></button>
-                        <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(act.time > 0 && actions.length > index + 1)"
-                          href="javascript:void(0)" v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></button>
-                          <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(actions.length > 1 && actions.length > index + 1)"
-                            href="javascript:void(0)" v-on:click="remove(act, actions)">
-                            <i class="material-icons">delete_forever</i>
-                          </button>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
+        <div class="card blue-grey lighten-5">
+          <div class="card-content">
+              <span class="card-title">Actions <a class="btn-small blue-grey lighten-4 waves-effect waves-light"
+                                                  v-bind:disabled="actions.length==1" v-on:click="clear_actions()">Clear input</a></span>
+            <ul class="spaced">
+              <li v-for="(act, index) in actions">
+                <div class="input-field">
+                    <textarea placeholder="Enter a new compound action" v-model="act.data" class="materialize-textarea"
+                              v-on:input="adjustCollection(actions)" v-on:change="clear_answer()"></textarea>
+                  <span class="helper-text">
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                         v-bind:disabled="!(actions.length > 1 && actions.length > index + 1)" href="javascript:void(0)"
+                         v-on:click="remove(act, actions)">
+                        <i class="material-icons">delete_forever</i>
+                      </a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                         v-bind:disabled="!(actions.length > index + 1)" href="javascript:void(0)"
+                         v-on:click="moveUp(act, actions)"><i class="material-icons">add</i></a>
+                      <a class="waves-effect waves-light btn-floating btn-small blue"
+                         v-bind:disabled="!(act.time > 0 && actions.length > index + 1)" href="javascript:void(0)"
+                         v-on:click="moveDown(act, actions)"><i class="material-icons">remove</i></a>
+                      <span>At time {{act.time}} this action shall be executed</span>
+                    </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- QUERY -->
+    <div class="card blue-grey lighten-4">
+      <div class="card-content">
+          <span class="card-title">Query to the system <a class="btn-small blue-grey lighten-3 waves-effect waves-light"
+                                                          v-bind:disabled="query.full_text==``" v-on:click="clear_query()">Clear input</a></span>
+        <select id="select" class="form-control" v-model="query.type_text"
+                v-on:change="changedProperty($event, query)">
+          <option v-for="item in queries" :value="item.type_text" :key="item.type_text" v-bind:value="item.type_text">
+            {{ item.type_text }}
+          </option>
+        </select>
+        <span
+                v-if="query.type_text == 'Necessarily executable A at t when Sc' || query.type_text == 'Possibly executable A at t when Sc'"
+                id="hide">Action: <input v-model="query.action" placeholder="A" type="text" id="query"
+                                         v-on:change="changedProperty($event, query)"></span>
+        <span
+                v-if="query.type_text == 'Possibly accessible γ at t when Sc' || query.type_text == 'Necessarily accessible γ at t when Sc'"
+                id="hide">Condition:<input v-model="query.condition" placeholder="γ" type="text" id="query"
+                                           v-on:change="changedProperty($event, query)"></span>
+        <span
+                v-if="!(query.type_text == 'Necessarily executable scenario Sc' || query.type_text == 'Possibly executable scenario Sc' || query.type_text == ``)"
+                id="hide">Time:<input v-model="query.time" placeholder="t" type="number" min="0" id="query"
+                                      v-on:change="changedProperty($event, query)"></span>
+        <div v-if="query.type_text != ``" class="card blue-grey lighten-5">
+          <div class="card-content">
+            <span class="card-title">Generated query</span>
+            <span type="text" class="blue-text"> {{query.getQueryFullText()}}</span>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- JAVASCRIPT -->
-    <script src="js/vue.js"></script>
-    <script src="js/nouislider.js"></script>
-    <script src="js/materialize.js"></script>
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="/pengine/pengines.js"></script>
-    <script src="js/ipc.js"></script>
-    <script src="js/scenario.js"></script>
-    <script src="js/query.js"></script>
-    <script src="js/prescribed_stories.js"></script>
-    <script src="js/main.js"></script>
+    <!-- LOADER
+  <div v-show="loading" class="preloader-wrapper big active center-align">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div> -->
+
+
+    <!-- DEBUG QUERY -->
+
+    <div class="row">
+      <div class="card light-green">
+        <div class="card-content white-text">
+            <span class="card-title"><a class="waves-effect grey lighten-4 black-text btn"
+                                        v-on:click="debug_query()">DEBUG</a></span>
+          <div class="input-field">
+            <textarea v-model="debug" id="debug" class="materialize-textarea white-text"></textarea>
+            <!-- <label for="debug">Debug query</label> -->
+            <span>*results are available from the web console</span>
+          </div>
+        </div>
+        <!-- <div class="card-action"> -->
+        <!-- </div> -->
+      </div>
+    </div>
+
+    <div id="answer-box" class="card blue-grey lighten-4">
+      <div class="card-content">
+        <span class="card-title">System's answer</span>
+
+        <a class="btn light-blue waves-effect waves-light" v-bind:disabled="answer!=undefined"
+           v-on:click="retrieve_answer()">Retrieve answer</a>
+        <a class="btn red waves-effect waves-light" v-bind:disabled="!pengine_running"
+           v-on:click="abort_pengine()">Abort computation</a>
+
+        <div id="answer">
+
+          <div v-if="pengine_running" class="progress blue lighten-3">
+            <div class="indeterminate"></div>
+          </div>
+
+          <div v-if="answer!=undefined">
+            <img class="z-depth-1" src="gif/yep1.gif" v-if="answer && gif_id==0">
+            <img class="z-depth-1" src="gif/yep2.gif" v-if="answer && gif_id==1">
+            <img class="z-depth-1" src="gif/yep3.gif" v-if="answer && gif_id==2">
+            <img class="z-depth-1" src="gif/yep4.gif" v-if="answer && gif_id==3">
+            <img class="z-depth-1" src="gif/yep5.gif" v-if="answer && gif_id==4">
+            <img class="z-depth-1" src="gif/nope1.gif" v-if="!answer && gif_id==0">
+            <img class="z-depth-1" src="gif/nope2.gif" v-if="!answer && gif_id==1">
+            <img class="z-depth-1" src="gif/nope3.gif" v-if="!answer && gif_id==2">
+            <img class="z-depth-1" src="gif/nope4.gif" v-if="!answer && gif_id==3">
+            <img class="z-depth-1" src="gif/nope5.gif" v-if="!answer && gif_id==4">
+            <img class="z-depth-1" src="gif/nope6.gif" v-if="!answer && gif_id==5">
+          </div>
+        </div>
+        <div v-if="answer==undefined && !pengine_running">Please submit a new query to the system.</div>
+
+        <!-- <img class="z-depth-1" src="gif/waiting.gif" v-else> -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script src="js/vue.js"></script>
+  <script src="js/nouislider.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="/pengine/pengines.js"></script>
+  <script src="js/ipc.js"></script>
+  <script src="js/scenario.js"></script>
+  <script src="js/query.js"></script>
+  <script src="js/prescribed_stories.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>
