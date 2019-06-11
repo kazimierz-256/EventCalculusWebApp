@@ -69,26 +69,28 @@
         <div class="card blue-grey lighten-5">
           <div class="card-content">
               <span class="card-title">Observations <a class="btn-small blue-grey lighten-4 waves-effect waves-light"
-                                                       v-bind:disabled="observations.length==1" v-on:click="clear_observations()">Clear input</a></span>
+                                                       v-bind:disabled="observations.length==0" v-on:click="clear_observations()">Clear input</a>
+                    <a class="btn-small blue-grey lighten-4 waves-effect waves-light"
+                       v-on:click="addToCollection(observations)">Add new</a>
+                  </span>
             <ul class="spaced">
               <li v-for="(obs, index) in observations">
-                <div class="input-field">
-                    <textarea placeholder="Enter a new observation" v-model="obs.data" class="materialize-textarea"
-                    v-on:keydown="clear_answer()" v-on:change="clear_answer()" v-on:input="adjustCollection(observations)"></textarea>
-                  <span class="helper-text">
-                      <!-- <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a> -->
-                      <a class="waves-effect waves-light btn-floating btn-small blue"
-                         v-bind:disabled="!(observations.length > 1 && observations.length > index + 1)"
-                         href="javascript:void(0)" v-on:click="remove(obs, observations)">
-                        <i class="material-icons left">delete_forever</i> delete
-                      </a>
-                      <a class="waves-effect waves-light btn-floating btn-small blue"
-                         v-bind:disabled="!(observations.length > index + 1)" href="javascript:void(0)"
-                         v-on:click="moveUp(obs, observations)"><i class="material-icons">add</i></a>
-                      <a class="waves-effect waves-light btn-floating btn-small blue"
-                         v-bind:disabled="!(obs.time > 0 && observations.length > index + 1)" href="javascript:void(0)"
-                         v-on:click="moveDown(obs, observations)"><i class="material-icons">remove</i></a>
-                      <span>At time {{obs.time}} this observation shall hold</span>
+                <div class="input-field two-columns">
+                  <div>
+                    <input type="text" placeholder="Enter a new observation" v-model="obs.data" v-on:keydown="clear_answer()" v-on:change="clear_answer()"></input>
+                  </div>
+                  <div>
+                    <span>at {{obs.time}}</span>
+                    <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > index)"
+                            href="javascript:void(0)" v-on:keydown="clear_answer()" v-on:click="moveUp(obs, observations)"><i class="material-icons">add</i>
+                    </button>
+                    <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(obs.time > 0 && observations.length > index)"
+                            href="javascript:void(0)" v-on:keydown="clear_answer()" v-on:click="moveDown(obs, observations)"><i class="material-icons">remove</i>
+                    </button>
+                    <button class="waves-effect waves-light btn-floating btn-small blue" v-bind:disabled="!(observations.length > 1 && observations.length > index)"
+                            href="javascript:void(0)" v-on:keydown="clear_answer()" v-on:click="remove(obs, observations)">
+                      <i class="material-icons left">delete_forever</i>
+                    </button>
                     </span>
                 </div>
               </li>
