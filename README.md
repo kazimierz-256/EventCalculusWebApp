@@ -2,7 +2,7 @@
 
 Knowledge representation and reasoning logic documentation (written in polish):
 
-[Event Calculus Documentation](../blob/master/EventCalculusDocumentation.pdf)
+[Event Calculus Documentation](../master/EventCalculusDocumentation.pdf)
 ___
 
 ## Folder z treścią
