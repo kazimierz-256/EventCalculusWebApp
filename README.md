@@ -1,15 +1,22 @@
-# Folder z treścią
+# Event Calculus Web App
+
+Knowledge representation and reasoning logic documentation (written in polish):
+
+[Event Calculus Documentation](../blob/master/EventCalculusDocumentation.pdf)
+___
+
+## Folder z treścią
 Część frontowa i backendowa znajduje się w folderze `apps/concurrent`.
 
-# Uruchomienie serwera
+## Uruchomienie serwera
 `swipl run.pl`
 Login i hasło podałem na slacku  
 Otwieramy w przeglądarce http://localhost:3030/
 
-# Uruchomienie testów
+## Uruchomienie testów
 `swipl apps/concurrent/test/all_tests.pl`
 
-# Tworzenie Pull Requestów itp
+## Tworzenie Pull Requestów itp
 Do każdego feature'a/ poprawki tworzymy osobnego branch'a.
 Jak wasz branch jest gotowy do mergowania z masterem to robimy tak:
 
@@ -23,5 +30,5 @@ Jak wasz branch jest gotowy do mergowania z masterem to robimy tak:
 9. poczekaj na `approve`
 10. możesz zrobic `merge`.
 
-# Docelowy styl kodowania:
+## Docelowy styl kodowania:
 https://arxiv.org/pdf/0911.2899.pdf
